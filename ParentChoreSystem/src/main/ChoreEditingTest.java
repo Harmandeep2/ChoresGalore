@@ -23,7 +23,7 @@ class ChoreEditingTest {
 	void test() {
 		
 		ArrayList<ParentAccount> choreName = chore.getChores();
-		
+		//bvvr
 		assertEquals(choreName.get(0).getChoreName(), "Vaccum");
 		
 	}
