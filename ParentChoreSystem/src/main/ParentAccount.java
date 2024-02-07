@@ -7,7 +7,6 @@ public class ParentAccount {
 	private String choreName;
 	private double payment;
 	private double test;
-	private double test2; // Heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 	
 	
 	public ParentAccount(String choreName) {
