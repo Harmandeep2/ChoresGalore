@@ -6,7 +6,8 @@ public class ParentAccount {
 	
 	private String choreName;
 	private double payment;
-	private List<ChoreEditing> chores;
+	
+	
 	
 	public ParentAccount(String choreName) {
 		this.choreName= choreName;
