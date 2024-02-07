@@ -6,7 +6,7 @@ public class ParentAccount {
 	
 	private String choreName;
 	private double payment;
-	
+	private double test;
 	
 	
 	public ParentAccount(String choreName) {
