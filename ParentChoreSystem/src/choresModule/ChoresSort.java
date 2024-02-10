@@ -1,21 +1,11 @@
 package choresModule;
 
-<<<<<<< HEAD
 import java.util.*;
-=======
-import java.util.ArrayList;
-//import java.util.Collections;
-//import java.util.List;
->>>>>>> branch 'main' of https://github.com/Harmandeep2/ChoresGalore.git
 
 public class ChoresSort {
 	
 	
-<<<<<<< HEAD
 	ArrayList<Chore> chores = new ArrayList<Chore>();
-=======
-	ArrayList<Chore> chores = new ArrayList<Chore>(); 
->>>>>>> branch 'main' of https://github.com/Harmandeep2/ChoresGalore.git
 
 
 	//Might have to make a constructor for this class
