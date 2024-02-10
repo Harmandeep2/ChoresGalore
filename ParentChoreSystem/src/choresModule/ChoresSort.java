@@ -1,13 +1,13 @@
 package choresModule;
 
-//import java.util.ArrayList;
+import java.util.ArrayList;
 //import java.util.Collections;
 //import java.util.List;
 
 public class ChoresSort {
 	
 	
-	ChoresList chores = new ChoresList();
+	ArrayList<Chore> chores = new ArrayList<Chore>(); 
 
 
 		
