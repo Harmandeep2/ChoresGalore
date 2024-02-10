@@ -5,7 +5,7 @@ import java.util.*;
 public class ChoresSort {
 	
 	
-	ArrayList<Chore> chores = new ArrayList<Chore>();
+	public ArrayList<Chore> chores = new ArrayList<Chore>();
 
 
 	//Might have to make a constructor for this class
