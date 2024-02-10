@@ -25,13 +25,13 @@ public class ChoresSort {
 	 * 
 	 */
 public void sortAlphabetically() {
-	//making a string arraylist cuz collection sort only works on java made objects
+	//making a string arrayList because collection sort only works on java made objects
 	ArrayList<String> choresString = new ArrayList<>();
 	for (int i=0;i<chores.size();i++) {
 		//using a for loop to convert each element from chores into a string
 		choresString.add(chores.get(i).toString());
 	}
-	//sorting the string arraylist by alphabets
+	//sorting the string arrayList by alphabets
     Collections.sort(choresString);
 }
 
@@ -54,11 +54,11 @@ public void sortByPayment() {
 	//import 
 	
 	//return sorted list
-	ArrayList<Double> choresTime = new ArrayList<>();
+	ArrayList<Double> choresPayment = new ArrayList<>();
 	for (int i=0;i<chores.size();i++) {
-		choresTime.add(chores.get(i).getTime());
+		choresPayment.add(chores.get(i).getPayment());
 	}
-	Collections.sort(choresTime);
+	Collections.sort(choresPayment);
 }
 
 public void filterCompleted() {
