@@ -60,4 +60,48 @@ public class ParentAccount extends Account {
 	public double checkChildBalance(ChildAccount childAccount) {
 		return childAccount.getBalance();
 	}
+	
+	/**
+	 * This method is used to edit the details of a Chore
+	 * @param chore	: Chore that needs to be edited
+	 * @param changeType : 	"name" if name needs to be changed,
+	 * 						"time" if time needs to be changed
+	 * 						"payment" if payment needs to be changed,
+	 * 						"category" if category needs to be changed
+	 * @param value	: Value that needs to be changed
+	 */
+	public void editChore(Chore chore, String changeType, Object value) {
+		if (changeType .equals("name")) {
+			if(value instanceof String) {
+				chore.setName((String) value);
+			}
+			else {
+				System.out.println("Invalid value, please enter a string value that represents the new name of the chore");
+			}
+		}
+		else if (changeType.equals("time")) {
+			if(value instanceof Double) {
+				chore.setTime((double) value);
+			}
+			else {
+				System.out.println("Invalid value, please enter a double value that represents the new time of the chore");
+			}
+		}
+		else if (changeType.equals("payment")) {
+			if(value instanceof Double) {
+				chore.setPayment((double) value);
+			}
+			else {
+				System.out.println("Invalid value, please enter a double value that represents the new payment of the chore");
+			}
+		}
+		else if (changeType.equals("category")) {
+			if(value instanceof String) {
+				chore.setCategory((String) value);
+			}
+			else {
+				System.out.println("Invalid value, please enter a string value that represents the new category of the chore");
+			}
+		}
+	}
 }
