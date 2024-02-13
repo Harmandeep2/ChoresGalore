@@ -25,9 +25,9 @@ public class LoginPage extends JFrame implements ActionListener{
 	private JButton loginButton;
 	private ParentRegistration parent;
 
-	public LoginPage(ParentRegistration parent) {
+	public LoginPage() {
 
-		this.parent = parent;
+		//this.parent = parent;
 		setTitle("Account Login");
 		setSize(300,150);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -115,7 +115,7 @@ public class LoginPage extends JFrame implements ActionListener{
 
 
 	public static void main(String[] args) {
-		new LoginPage(null);
+		new LoginPage();
 	}
 
 

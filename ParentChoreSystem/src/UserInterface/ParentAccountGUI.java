@@ -1,83 +1,117 @@
 package UserInterface;
 
-import java.awt.BorderLayout;
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import accountsModule.ChildAccount;
 import accountsModule.ParentAccount;
 import choresModule.Chore;
 
-public class ParentAccountGUI extends JFrame implements ActionListener{
+public class ParentAccountGUI extends JFrame{
+
+	 private ParentAccount parentAccount;
+	    private JComboBox<ChildAccount> childDropdown;
+	    private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
+	    private JButton createChoreButton, checkBalanceButton;
+
+	    public ParentAccountGUI(ParentAccount parentAccount) {
+	        this.parentAccount = parentAccount;
+	        initialize();
+	    }
+
+	    private void initialize() {
+	        setTitle("Parent Account");
+	        setSize(400, 300);
+	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	        JPanel mainPanel = new JPanel();
+	        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+	        // Child Dropdown
+	        List<ChildAccount> children = parentAccount.getChildren();
+	        childDropdown = new JComboBox<>(children.toArray(new ChildAccount[0]));
+	        mainPanel.add(childDropdown);
+
+	        // Chore Creation Panel
+	        JPanel chorePanel = new JPanel();
+	        chorePanel.setBorder(BorderFactory.createTitledBorder("Chore Creation"));
+
+	        choreNameField = new JTextField(15);
+	        choreCategoryField = new JTextField(15);
+	        choreTimeField = new JTextField(5);
+	        chorePaymentField = new JTextField(5);
+	        createChoreButton = new JButton("Create Chore");
+
+	        chorePanel.add(new JLabel("Name: "));
+	        chorePanel.add(choreNameField);
+	        chorePanel.add(new JLabel("Category: "));
+	        chorePanel.add(choreCategoryField);
+	        chorePanel.add(new JLabel("Time: "));
+	        chorePanel.add(choreTimeField);
+	        chorePanel.add(new JLabel("Payment: "));
+	        chorePanel.add(chorePaymentField);
+	        chorePanel.add(createChoreButton);
+
+	        mainPanel.add(chorePanel);
+
+	        // Check Balance Button
+	        checkBalanceButton = new JButton("Check Balance");
+	        mainPanel.add(checkBalanceButton);
+
+	        createChoreButton.addActionListener((ActionListener) new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                createChore();
+	            }
+	        });
+
+	        checkBalanceButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                checkBalance();
+	            }
+	        });
+
+	        getContentPane().add(mainPanel);
+	        setVisible(true);
+	    }
+
+	    private void createChore() {
+	        String choreName = choreNameField.getText();
+	        String choreCategory = choreCategoryField.getText();
+	        double choreTime = Double.parseDouble(choreTimeField.getText());
+	        double chorePayment = Double.parseDouble(chorePaymentField.getText());
+
+	        ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+	        Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
+	        parentAccount.assignChore(selectedChild, newChore);
+	    }
+
+	    private void checkBalance() {
+	        ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+	        double balance = parentAccount.checkChildBalance(selectedChild);
+	        JOptionPane.showMessageDialog(this, "Child's Balance: " + balance);
+	    }
+
+	    public static void main(String[] args) {
+	        // Example usage
+	        ParentAccount parentAccount = new ParentAccount("parentUsername", "parentPassword");
+	        ParentAccountGUI parentAccountGUI = new ParentAccountGUI(parentAccount);
+	    }
 	
-	private ParentAccount parentAccount;
-    private JTextArea childAccountsTextArea;
-
-    public ParentAccountGUI(ParentAccount parentAccount) {
-        this.parentAccount = parentAccount;
-
-        setTitle("Parent Account");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-
-        childAccountsTextArea = new JTextArea(10, 30);
-        JScrollPane scrollPane = new JScrollPane(childAccountsTextArea);
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        JButton refreshButton = new JButton("Refresh");
-        refreshButton.addActionListener(this);
-        panel.add(refreshButton, BorderLayout.SOUTH);
-
-        displayChildAccounts();
-
-        add(panel);
-        setVisible(true);
-    }
-
-    private void displayChildAccounts() {
-        List<ChildAccount> childAccounts = parentAccount.getChildren();
-        StringBuilder sb = new StringBuilder();
-        for (ChildAccount child : childAccounts) {
-            sb.append("Username: ").append(child.getUsername()).append(", Balance: ").append(child.getBalance()).append("\n");
-            sb.append("Chores:\n");
-            for (Chore chore : child.getChores()) {
-                sb.append("- ").append(chore.getName()).append(", Payment: ").append(chore.getPayment()).append("\n");
-            }
-            sb.append("\n");
-        }
-        childAccountsTextArea.setText(sb.toString());
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	
-    	if (e.getActionCommand().equals("Refresh")) {
-            displayChildAccounts();
-        }
-        
-    }
-
-    public static void main(String[] args) {
-    	ParentAccount parent = new ParentAccount("parent", "password");
-        ChildAccount child1 = new ChildAccount("child1", "password");
-        ChildAccount child2 = new ChildAccount("child2", "password");
-        parent.addChildAccount(child1);
-        parent.addChildAccount(child2);
-        Chore chore1 = new Chore("Clean Room", "Household", 10.0, 5.00);
-        Chore chore2 = new Chore("Do Dishes", "Household", 5.0, 20.00);
-        parent.assignChore(child1, chore1);
-        parent.assignChore(child2, chore2);
-        new ParentAccountGUI(parent);
-    }
+	
 
 }

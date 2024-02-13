@@ -49,7 +49,7 @@ public class MainPage extends JFrame implements ActionListener{
             new ChildRegistration();
         } 
         else if (e.getSource() == loginButton) {
-            new LoginPage(null);
+            new LoginPage();
         }
         setVisible(false);
     }
