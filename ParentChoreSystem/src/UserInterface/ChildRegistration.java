@@ -80,6 +80,9 @@ public class ChildRegistration extends JFrame implements ActionListener {
         System.out.println("New Account Registered:");
         System.out.println("Username: " + newAccount.getUsername());
         System.out.println("Password: " + newAccount.getPassword());
+        
+        new LoginPage(); 
+
     }
     
     private void saveAccount(Account account) {
