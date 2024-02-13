@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import accountsModule.Account;
+import accountsModule.ParentAccount;
 
 public class ParentRegistration extends JFrame implements ActionListener {
 	
@@ -72,7 +73,7 @@ public class ParentRegistration extends JFrame implements ActionListener {
         String password = new String(passwordField.getPassword());
 
         // Create an Account object with the entered username and password
-        Account newAccount = new Account(username, password);
+        ParentAccount newAccount = new ParentAccount(username, password);
         saveAccount(newAccount);
 
         // Perform registration process (e.g., save the account details to a database)
@@ -82,10 +83,10 @@ public class ParentRegistration extends JFrame implements ActionListener {
         System.out.println("Password: " + newAccount.getPassword());
     }
     
-    private void saveAccount(Account account) {
+    private void saveAccount(ParentAccount account) {
         try {
             FileWriter writer = new FileWriter("accounts.txt", true); // append mode
-            writer.write(account.getUsername() + ":" + account.getPassword() + "\n");
+            writer.write(account.getUsername() + ":" + account.getPassword() + "\n" );
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

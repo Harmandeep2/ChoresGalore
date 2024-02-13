@@ -25,7 +25,7 @@ public class ParentAccountGUI extends JFrame{
 	 private ParentAccount parentAccount;
 	    private JComboBox<ChildAccount> childDropdown;
 	    private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
-	    private JButton createChoreButton, checkBalanceButton;
+	    private JButton createChoreButton, checkBalanceButton, addChildButton;
 
 	    public ParentAccountGUI(ParentAccount parentAccount) {
 	        this.parentAccount = parentAccount;
@@ -44,6 +44,10 @@ public class ParentAccountGUI extends JFrame{
 	        List<ChildAccount> children = parentAccount.getChildren();
 	        childDropdown = new JComboBox<>(children.toArray(new ChildAccount[0]));
 	        mainPanel.add(childDropdown);
+	        
+	     // Add Child Button
+	        addChildButton = new JButton("Add Child"); // Added button
+	        mainPanel.add(addChildButton); // Added button
 
 	        // Chore Creation Panel
 	        JPanel chorePanel = new JPanel();
@@ -84,9 +88,25 @@ public class ParentAccountGUI extends JFrame{
 	                checkBalance();
 	            }
 	        });
+	        
+	        addChildButton.addActionListener(new ActionListener() { // Add action listener for add child button
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                addChild();
+	            }
+	        });
 
 	        getContentPane().add(mainPanel);
 	        setVisible(true);
+	    }
+	    
+	    private void addChild() {
+	        String childName = JOptionPane.showInputDialog("Enter child's name:");
+	        if (childName != null && !childName.isEmpty()) {
+	            ChildAccount newChild = new ChildAccount(childName, childName);
+	            parentAccount.addChildAccount(newChild);
+	            childDropdown.addItem(newChild);
+	        }
 	    }
 
 	    private void createChore() {
@@ -107,9 +127,10 @@ public class ParentAccountGUI extends JFrame{
 	    }
 
 	    public static void main(String[] args) {
-	        // Example usage
+	        
 	        ParentAccount parentAccount = new ParentAccount("parentUsername", "parentPassword");
 	        ParentAccountGUI parentAccountGUI = new ParentAccountGUI(parentAccount);
+	        //new ParentAccount(title, title);
 	    }
 	
 	
