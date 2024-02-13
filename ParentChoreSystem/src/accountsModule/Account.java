@@ -14,6 +14,10 @@ public class Account {
 		return username;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+	
 	public boolean authenticate(String username, String password) {
 		return this.username.equals(username) && this.password.equals(password);
 	}
