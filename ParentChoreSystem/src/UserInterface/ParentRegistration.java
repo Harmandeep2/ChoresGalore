@@ -1,7 +1,5 @@
 package UserInterface;
 
-
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,33 +16,50 @@ import javax.swing.JTextField;
 
 import accountsModule.Account;
 
-public class Registration extends JFrame implements ActionListener {
+public class ParentRegistration extends JFrame implements ActionListener {
 	
+	private JTextField firstNameField;
+	private JTextField lastNameField;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private JTextField numberOfChildrenField;
     private JButton registerButton;
 
-    public Registration() {
+    public ParentRegistration() {
         setTitle("Registration Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 150);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));
+        panel.setLayout(new GridLayout(6, 2));
 
+        JLabel firstNameLabel = new JLabel("First Name:");
+        JLabel lastNameLabel = new JLabel("Second Name:");
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
+        JLabel numberOfChildrenLabel = new JLabel("Enter number of children:");
+    
 
+        firstNameField = new JTextField();
+        lastNameField = new JTextField();
         usernameField = new JTextField();
         passwordField = new JPasswordField();
+        numberOfChildrenField = new JTextField();
+        
 
         registerButton = new JButton("Register");
         registerButton.addActionListener(this);
 
+        panel.add(firstNameLabel);
+        panel.add(firstNameField);
+        panel.add(lastNameLabel);
+        panel.add(lastNameField);
         panel.add(usernameLabel);
         panel.add(usernameField);
         panel.add(passwordLabel);
         panel.add(passwordField);
+        panel.add(numberOfChildrenLabel);
+        panel.add(numberOfChildrenField);
         panel.add(registerButton);
 
         add(panel);
@@ -78,10 +93,7 @@ public class Registration extends JFrame implements ActionListener {
         }
 
     public static void main(String[] args) {
-        new Registration();
+        new ParentRegistration();
     }
-        
 
 }
-
-

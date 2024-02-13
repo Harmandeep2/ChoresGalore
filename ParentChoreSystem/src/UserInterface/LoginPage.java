@@ -15,15 +15,19 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import accountsModule.ParentAccount;
+
 public class LoginPage extends JFrame implements ActionListener{
 
 
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JButton loginButton;
+	private ParentRegistration parent;
 
-	public LoginPage() {
+	public LoginPage(ParentRegistration parent) {
 
+		this.parent = parent;
 		setTitle("Account Login");
 		setSize(300,150);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -57,9 +61,13 @@ public class LoginPage extends JFrame implements ActionListener{
 		String password = new String(passwordField.getPassword());
 
 		// Check if the entered username and password match any saved account
-		if (authenticate(username, password)) {
+		if (authenticate(username, password)) 
+		{
 			JOptionPane.showMessageDialog(this, "Login successful!");
-		} else {
+			openParentAccountGUI();
+            dispose(); // Close the login window
+		} 
+		else {
 			JOptionPane.showMessageDialog(this, "Invalid username or password. Please try again.");
 		}
 	}
@@ -96,9 +104,18 @@ public class LoginPage extends JFrame implements ActionListener{
 
 		return false;
 	}
+	
+	private void openParentAccountGUI() {
+        // Create the ParentAccount object
+        ParentAccount parentAccount = new ParentAccount(usernameField.getText(), new String(passwordField.getPassword()));
+
+        // Open the ParentAccountGUI window
+        new ParentAccountGUI(parentAccount);
+    }
+
 
 	public static void main(String[] args) {
-		new LoginPage();
+		new LoginPage(null);
 	}
 
 

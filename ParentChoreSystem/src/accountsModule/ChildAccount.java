@@ -39,7 +39,7 @@ public class ChildAccount extends Account {
 		return chores;
 	}
 	
-	protected double getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 

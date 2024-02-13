@@ -10,7 +10,8 @@ import javax.swing.JPanel;
 
 public class MainPage extends JFrame implements ActionListener{
 	
-	private JButton registerButton;
+	private JButton parentRegisterButton;
+	private JButton childRegisterButton;
     private JButton loginButton;
 
     public MainPage() {
@@ -19,16 +20,21 @@ public class MainPage extends JFrame implements ActionListener{
         setSize(300, 150);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 1));
-
-        registerButton = new JButton("Register");
-        registerButton.addActionListener(this);
-
+        panel.setLayout(new GridLayout(3, 1));
+        
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);
 
-        panel.add(registerButton);
+        parentRegisterButton = new JButton("I'm a new Parent");
+        parentRegisterButton.addActionListener(this);
+        
+        childRegisterButton = new JButton("I'm a new Child");
+        childRegisterButton.addActionListener(this);    
+
         panel.add(loginButton);
+        panel.add(parentRegisterButton);
+        panel.add(childRegisterButton);
+        
 
         add(panel);
         setVisible(true);
@@ -36,10 +42,14 @@ public class MainPage extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == registerButton) {
-            new Registration();
-        } else if (e.getSource() == loginButton) {
-            new LoginPage();
+        if (e.getSource() == parentRegisterButton) {
+            new ParentRegistration();
+        } 
+        else if (e.getSource() == childRegisterButton) {
+            new ChildRegistration();
+        } 
+        else if (e.getSource() == loginButton) {
+            new LoginPage(null);
         }
         setVisible(false);
     }
