@@ -34,7 +34,7 @@ public class ParentAccountGUI extends JFrame{
 
 	    private void initialize() {
 	        setTitle("Parent Account");
-	        setSize(400, 300);
+	        setSize(550, 400);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	        JPanel mainPanel = new JPanel();
