@@ -28,7 +28,7 @@ public class ParentRegistration extends JFrame implements ActionListener {
     public ParentRegistration() {
         setTitle("Registration Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 150);
+        setSize(600, 300);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(6, 2));
