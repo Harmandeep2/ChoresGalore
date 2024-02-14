@@ -30,7 +30,7 @@ public class LoginPage extends JFrame implements ActionListener{
 
 		//this.parent = parent;
 		setTitle("Account Login");
-		setSize(300,150);
+		setSize(300,200);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		JPanel panel = new JPanel();
