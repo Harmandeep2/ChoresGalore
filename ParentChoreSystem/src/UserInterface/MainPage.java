@@ -18,7 +18,7 @@ public class MainPage extends JFrame implements ActionListener{
     public MainPage() {
         setTitle("Registration or Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 150);
+        setSize(450, 300);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 1));

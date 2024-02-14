@@ -27,7 +27,7 @@ public class ChildRegistration extends JFrame implements ActionListener {
     private JButton backButton;
 
     public ChildRegistration() {
-        setTitle("Registration Page");
+        setTitle("Child Registration Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 300);
 
@@ -35,7 +35,7 @@ public class ChildRegistration extends JFrame implements ActionListener {
         panel.setLayout(new GridLayout(6, 2));
 
         JLabel firstNameLabel = new JLabel("First Name:");
-        JLabel lastNameLabel = new JLabel("Second Name:");
+        JLabel lastNameLabel = new JLabel("Last Name:");
         JLabel ageLabel = new JLabel("Enter age:");
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
@@ -50,6 +50,8 @@ public class ChildRegistration extends JFrame implements ActionListener {
 
         registerButton = new JButton("Register");
         registerButton.addActionListener(this);
+
+
         
         backButton = new JButton("Return");
         backButton.addActionListener(new ActionListener() {
@@ -95,6 +97,7 @@ public class ChildRegistration extends JFrame implements ActionListener {
         System.out.println("Password: " + newAccount.getPassword());
         
         new LoginPage(); 
+        dispose();
 
     }
     

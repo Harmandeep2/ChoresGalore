@@ -28,7 +28,7 @@ public class ParentRegistration extends JFrame implements ActionListener {
     private JButton backButton;
 
     public ParentRegistration() {
-        setTitle("Registration Page");
+        setTitle("Parent Registration Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 300);
 
@@ -93,6 +93,9 @@ public class ParentRegistration extends JFrame implements ActionListener {
         System.out.println("New Account Registered:");
         System.out.println("Username: " + newAccount.getUsername());
         System.out.println("Password: " + newAccount.getPassword());
+        
+        new LoginPage(); 
+        dispose();
     }
     
     private void saveAccount(ParentAccount account) {
