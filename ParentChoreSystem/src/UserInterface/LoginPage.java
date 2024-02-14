@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import accountsModule.Account;
+import accountsModule.ChildAccount;
 import accountsModule.ParentAccount;
 
 public class LoginPage extends JFrame implements ActionListener{
@@ -77,7 +79,8 @@ public class LoginPage extends JFrame implements ActionListener{
 		if (authenticate(username, password)) 
 		{
 			JOptionPane.showMessageDialog(this, "Login successful!");
-			openParentAccountGUI();
+			openChildAccountGUI();
+			//openParentAccountGUI();
             dispose(); // Close the login window
 		} 
 		else {
@@ -125,6 +128,13 @@ public class LoginPage extends JFrame implements ActionListener{
         // Open the ParentAccountGUI window
         new ParentAccountGUI(parentAccount);
     }
+	
+	
+	private void openChildAccountGUI() {
+        ChildAccount childAccount = new ChildAccount(usernameField.getText(), new String(passwordField.getPassword()));
+        new ChildAccountGUI(childAccount);
+
+	}
 
 
 	public static void main(String[] args) {
