@@ -26,6 +26,8 @@ public class ParentAccountGUI extends JFrame{
 	    private JComboBox<ChildAccount> childDropdown;
 	    private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
 	    private JButton createChoreButton, checkBalanceButton, addChildButton;
+	    private JButton logoutButton;
+
 
 	    public ParentAccountGUI(ParentAccount parentAccount) {
 	        this.parentAccount = parentAccount;
@@ -58,6 +60,18 @@ public class ParentAccountGUI extends JFrame{
 	        choreTimeField = new JTextField(5);
 	        chorePaymentField = new JTextField(5);
 	        createChoreButton = new JButton("Create Chore");
+	        
+	        logoutButton = new JButton("Log Out");
+	        logoutButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	    	        JOptionPane.showMessageDialog(null, "Logged Out Successfully");
+	            	MainPage mainPage = new MainPage();
+					mainPage.setVisible(true);
+	            	dispose(); // Close login window
+	            }
+	        });
+
 
 	        chorePanel.add(new JLabel("Name: "));
 	        chorePanel.add(choreNameField);
@@ -68,13 +82,17 @@ public class ParentAccountGUI extends JFrame{
 	        chorePanel.add(new JLabel("Payment: "));
 	        chorePanel.add(chorePaymentField);
 	        chorePanel.add(createChoreButton);
-
+	        
 	        mainPanel.add(chorePanel);
 
 	        // Check Balance Button
 	        checkBalanceButton = new JButton("Check Balance");
 	        mainPanel.add(checkBalanceButton);
 
+	        // Log Out Button
+	        mainPanel.add(logoutButton);
+
+	      
 	        createChoreButton.addActionListener((ActionListener) new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
