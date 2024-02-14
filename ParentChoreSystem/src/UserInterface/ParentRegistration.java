@@ -36,7 +36,7 @@ public class ParentRegistration extends JFrame implements ActionListener {
         panel.setLayout(new GridLayout(6, 2));
 
         JLabel firstNameLabel = new JLabel("First Name:");
-        JLabel lastNameLabel = new JLabel("Second Name:");
+        JLabel lastNameLabel = new JLabel("Last Name:");
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
         JLabel numberOfChildrenLabel = new JLabel("Enter number of children:");
