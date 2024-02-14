@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.awt.event.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -41,6 +42,26 @@ public class LoginPage extends JFrame implements ActionListener{
 
 		JLabel passwordLabel = new JLabel("Password:");
 		passwordField = new JPasswordField(15);
+		
+		// Add KeyListener to passwordField
+        passwordField.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                	 // Check if the entered username and password match any parent account
+                    String username = usernameField.getText();
+                    String password = new String(passwordField.getPassword());
+                    
+                    // Check if the entered username and password match any parent account
+                    if (authenticate(username, password)) {
+                        JOptionPane.showMessageDialog(LoginPage.this, "Login successful!");
+                        openParentAccountGUI();
+                        dispose(); // Close the login window
+                    } else {
+                        JOptionPane.showMessageDialog(LoginPage.this, "Invalid username or password. Please try again.");
+                    }
+                }
+            }
+        });
 
 		loginButton = new JButton("Login");
 		loginButton.addActionListener(this);
