@@ -14,6 +14,8 @@ double rewardPoints2; //storing rewards points 2
 public ChildAccount child1; //child account 1 declaration
 public ChildAccount child2; //child account 2 declaration
 	
+
+
     
     /*
      * Competition constructor for this class
@@ -27,6 +29,8 @@ public ChildAccount child2; //child account 2 declaration
 		rewardPoints2 = 0;     //initializing reward points 2 
 		
 	}
+	
+	
 	
 	/* 
 	 * Method used to calculate competition points for list of chores 
@@ -45,6 +49,9 @@ public ChildAccount child2; //child account 2 declaration
 		return rewardPoints; //returning rewardPoints
 	}
 	
+	
+	
+	
 	/*
 	 * Method used to calculate rewardPoints for each child
 	 */
@@ -53,6 +60,9 @@ public ChildAccount child2; //child account 2 declaration
 		this.rewardPoints2 = calculatePoints(child2.getChores());
 	}
 	
+	
+	
+	
 	/*
 	 * Getter method used for rewardPoints of child 1      
 	 * @return Reward points of child 1
@@ -60,6 +70,9 @@ public ChildAccount child2; //child account 2 declaration
 	public double getRewardPointsOfChild1() {
 		return rewardPoints1;
 	}
+	
+	
+	
 	
 	/*
 	 * 
