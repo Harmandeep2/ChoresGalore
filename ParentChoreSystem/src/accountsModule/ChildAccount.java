@@ -21,10 +21,12 @@ public class ChildAccount extends Account {
 	
 	//Child can only mark a chore as completed. Payment is done by parent after verifying.
 	public void markChoreCompleted(Chore chore) {
-        if (chores.contains(chore)) {
+        if (chores.contains(chore) && !chore.isCompleted()) {
             chore.markCompleted();
             hoursWorked += chore.getTime()/60;
         }
+        else
+        	System.out.println("Either the chore does not exist or it has already been completed");
     }
 		
 	public void setParent(ParentAccount parent) {
