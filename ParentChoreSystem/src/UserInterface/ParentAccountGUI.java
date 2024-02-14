@@ -117,6 +117,7 @@ public class ParentAccountGUI extends JFrame{
 	        getContentPane().add(mainPanel);
 	        setVisible(true);
 	    }
+	    ///////////////
 	    
 	    private void addChild() {
 	        String childName = JOptionPane.showInputDialog("Enter child's name:");
