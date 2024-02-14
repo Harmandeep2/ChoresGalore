@@ -2,6 +2,7 @@ package UserInterface;
 
 
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -67,9 +68,11 @@ public class ChildAccountGUI extends JFrame{
 	        // Check Balance Button
 	        checkBalanceButton = new JButton("Check Balance");
 	        mainPanel.add(checkBalanceButton);
+        	//add(checkBalanceButton,BorderLayout.SOUTH);
 
 	        // Log Out Button
-	        mainPanel.add(logoutButton);
+        	add(logoutButton,BorderLayout.PAGE_END);
+	        //mainPanel.add(logoutButton);
 
 
 	        checkBalanceButton.addActionListener(new ActionListener() {
@@ -108,7 +111,7 @@ public class ChildAccountGUI extends JFrame{
 	    
     
 	    private void checkBalance() {
-	        ChildAccount selectedChild = (ChildAccount) this.childAccount;
+	        ChildAccount selectedChild = (ChildAccount) childAccount;
 	        double balance = parentAccount.checkChildBalance(selectedChild);
 	        JOptionPane.showMessageDialog(this, "Your Balance: $" + balance);
 	    }
