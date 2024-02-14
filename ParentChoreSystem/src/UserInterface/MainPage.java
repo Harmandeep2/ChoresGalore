@@ -13,6 +13,7 @@ public class MainPage extends JFrame implements ActionListener{
 	private JButton parentRegisterButton;
 	private JButton childRegisterButton;
     private JButton loginButton;
+    
 
     public MainPage() {
         setTitle("Registration or Login");
@@ -31,10 +32,10 @@ public class MainPage extends JFrame implements ActionListener{
         childRegisterButton = new JButton("I'm a new Child");
         childRegisterButton.addActionListener(this);    
 
+
         panel.add(loginButton);
         panel.add(parentRegisterButton);
         panel.add(childRegisterButton);
-        
 
         add(panel);
         setVisible(true);

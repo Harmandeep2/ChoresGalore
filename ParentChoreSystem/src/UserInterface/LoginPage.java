@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,6 +25,7 @@ public class LoginPage extends JFrame implements ActionListener{
 	private JPasswordField passwordField;
 	private JButton loginButton;
 	private ParentRegistration parent;
+	private JButton backButton;
 
 	public LoginPage() {
 
@@ -43,12 +45,24 @@ public class LoginPage extends JFrame implements ActionListener{
 
 		loginButton = new JButton("Login");
 		loginButton.addActionListener(this);
+		
+	     backButton = new JButton("Return");
+	        backButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	            	MainPage mainPage = new MainPage();
+					mainPage.setVisible(true);
+	            	dispose(); // Close login window
+	            }
+	        });
+		
 
 		panel.add(usernameLabel);
 		panel.add(usernameField);
 		panel.add(passwordLabel);
 		panel.add(passwordField);
-		panel.add(loginButton);
+		panel.add(loginButton); 
+		panel.add(backButton);
 
 		add(panel);
 		setVisible(true);
@@ -117,6 +131,7 @@ public class LoginPage extends JFrame implements ActionListener{
 	public static void main(String[] args) {
 		new LoginPage();
 	}
+	
 
 
 }

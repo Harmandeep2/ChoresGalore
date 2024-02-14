@@ -24,6 +24,7 @@ public class ChildRegistration extends JFrame implements ActionListener {
     private JPasswordField passwordField;
     private JTextField ageField;
     private JButton registerButton;
+    private JButton backButton;
 
     public ChildRegistration() {
         setTitle("Registration Page");
@@ -49,6 +50,17 @@ public class ChildRegistration extends JFrame implements ActionListener {
 
         registerButton = new JButton("Register");
         registerButton.addActionListener(this);
+        
+        backButton = new JButton("Return");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	MainPage mainPage = new MainPage();
+				mainPage.setVisible(true);
+            	dispose(); // Close login window
+            }
+        });
+
 
         panel.add(firstNameLabel);
         panel.add(firstNameField);
@@ -61,6 +73,7 @@ public class ChildRegistration extends JFrame implements ActionListener {
         panel.add(passwordLabel);
         panel.add(passwordField);
         panel.add(registerButton);
+        panel.add(backButton);
 
         add(panel);
         setVisible(true);
