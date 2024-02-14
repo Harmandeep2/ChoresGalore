@@ -41,7 +41,7 @@ public class ChildAccountGUI extends JFrame{
 	    }
 
 	    private void initialize() {
-	        setTitle("Parent Account");
+	        setTitle("Child Account");
 	        setSize(550, 400);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
