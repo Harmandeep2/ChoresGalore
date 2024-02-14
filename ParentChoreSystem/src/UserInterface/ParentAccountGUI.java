@@ -22,7 +22,7 @@ import choresModule.Chore;
 
 public class ParentAccountGUI extends JFrame{
 
-	 private ParentAccount parentAccount;
+	 	private ParentAccount parentAccount;
 	    private JComboBox<ChildAccount> childDropdown;
 	    private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
 	    private JButton createChoreButton, checkBalanceButton, addChildButton;
@@ -106,6 +106,7 @@ public class ParentAccountGUI extends JFrame{
 	            ChildAccount newChild = new ChildAccount(childName, childName);
 	            parentAccount.addChildAccount(newChild);
 	            childDropdown.addItem(newChild);
+	       
 	        }
 	    }
 
@@ -123,7 +124,7 @@ public class ParentAccountGUI extends JFrame{
 	    private void checkBalance() {
 	        ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
 	        double balance = parentAccount.checkChildBalance(selectedChild);
-	        JOptionPane.showMessageDialog(this, "Child's Balance: " + balance);
+	        JOptionPane.showMessageDialog(this, selectedChild+ "'s Balance: $" + balance);
 	    }
 
 	    public static void main(String[] args) {

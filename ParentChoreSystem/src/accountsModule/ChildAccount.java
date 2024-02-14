@@ -47,5 +47,11 @@ public class ChildAccount extends Account {
 		return hoursWorked;
 	}
 	
+	@Override
+	public String toString() {
+	    return getUsername(); 
+	}
+
+	
 
 }
