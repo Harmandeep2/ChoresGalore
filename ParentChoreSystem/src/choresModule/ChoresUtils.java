@@ -1,6 +1,16 @@
 package choresModule;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ChoresUtils {
 	
@@ -173,4 +183,52 @@ public class ChoresUtils {
 		return secondaryList;
 	}
 	
+	public static void createExcelSheet(List<Chore> chores) {
+        try {
+            // Prompt user to choose a file location
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify a file to save");
+            int userSelection = fileChooser.showSaveDialog(null);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                String filePath = fileChooser.getSelectedFile().getAbsolutePath() + ".xlsx";
+
+                try (Workbook workbook = new XSSFWorkbook()) {
+                    Sheet sheet = workbook.createSheet("Chores");
+
+                    // Create header row
+                    Row headerRow = sheet.createRow(0);
+                    headerRow.createCell(0).setCellValue("Name");
+                    headerRow.createCell(1).setCellValue("Category");
+                    headerRow.createCell(2).setCellValue("Time (minutes)");
+                    headerRow.createCell(3).setCellValue("Payment");
+                    headerRow.createCell(4).setCellValue("Completed");
+                    headerRow.createCell(5).setCellValue("Paid");
+
+                    // Fill data rows
+                    int rowNum = 1;
+                    for (Chore chore : chores) {
+                        Row row = sheet.createRow(rowNum++);
+                        row.createCell(0).setCellValue(chore.getName());
+                        row.createCell(1).setCellValue(chore.getCategory());
+                        row.createCell(2).setCellValue(chore.getTime());
+                        row.createCell(3).setCellValue(chore.getPayment());
+                        row.createCell(4).setCellValue(chore.isCompleted() ? "Yes" : "No");
+                        row.createCell(5).setCellValue(chore.isPaid() ? "Yes" : "No");
+                    }
+
+                    // Write the workbook to the file
+                    try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                        workbook.write(fileOut);
+                    }
+
+                    JOptionPane.showMessageDialog(null, "Excel sheet created successfully!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
