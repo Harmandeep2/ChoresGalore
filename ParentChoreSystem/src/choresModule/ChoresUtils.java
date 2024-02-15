@@ -2,7 +2,7 @@ package choresModule;
 
 import java.util.*;
 
-public class ChoresSort {
+public class ChoresUtils {
 	
 	
 	//public ArrayList<Chore> chores = new ArrayList<Chore>();

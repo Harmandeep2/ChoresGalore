@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import accountsModule.ChildAccount;
 import accountsModule.ParentAccount;
 import choresModule.Chore;
-import choresModule.ChoresSort;
+import choresModule.ChoresUtils;
 
 class choresSortTestCases {
 	
@@ -21,7 +21,7 @@ class choresSortTestCases {
         chores.add(new Chore("Wash Dishes", "Cleaning", 15, 5.0));
         chores.add(new Chore("Mow Lawn", "Yard Work", 60, 20.0));
 
-        List<Chore> sortedChores = ChoresSort.sortAlphabetically(chores);
+        List<Chore> sortedChores = ChoresUtils.sortAlphabetically(chores);
 
         assertEquals("Mow Lawn", sortedChores.get(0).getName());
         assertEquals("Vacuum", sortedChores.get(1).getName());
@@ -35,7 +35,7 @@ class choresSortTestCases {
         chores.add(new Chore("Wash Dishes", "Cleaning", 15, 5.0));
         chores.add(new Chore("Mow Lawn", "Yard Work", 60, 20.0));
 
-        List<Chore> sortedChores = ChoresSort.sortByTime(chores);
+        List<Chore> sortedChores = ChoresUtils.sortByTime(chores);
 
         assertEquals("Wash Dishes", sortedChores.get(0).getName());
         assertEquals("Vacuum", sortedChores.get(1).getName());
@@ -49,7 +49,7 @@ class choresSortTestCases {
         chores.add(new Chore("Wash Dishes", "Cleaning", 15, 5.0));
         chores.add(new Chore("Mow Lawn", "Yard Work", 60, 20.0));
 
-        List<Chore> sortedChores = ChoresSort.sortByPayment(chores);
+        List<Chore> sortedChores = ChoresUtils.sortByPayment(chores);
 
         assertEquals("Wash Dishes", sortedChores.get(0).getName());
         assertEquals("Vacuum", sortedChores.get(1).getName());

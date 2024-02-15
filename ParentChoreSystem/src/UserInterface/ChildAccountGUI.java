@@ -23,7 +23,7 @@ import javax.swing.JTextField;
 import accountsModule.ChildAccount;
 import accountsModule.ParentAccount;
 import choresModule.Chore;
-import choresModule.ChoresSort;
+import choresModule.ChoresUtils;
 
 
 public class ChildAccountGUI extends JFrame{
