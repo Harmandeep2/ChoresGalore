@@ -91,7 +91,29 @@ public class ChildAccountGUI extends JFrame{
 	        mainPanel.add(scrollPane);
 	        
 
-	        
+		     // Initialize JList with chores from ChildAccount
+//	        List<Chore> chores = childAccount.getChores();
+//	        DefaultListModel<Chore> listModel = new DefaultListModel<>();
+//	        for (Chore chore : chores) {
+//	            listModel.addElement(chore);
+//	        }@
+//	        JList<Chore> list = new JList<>(listModel);
+//
+//	        // Add the JList to the panel within a scroll pane
+//	        JScrollPane scrollPane = new JScrollPane(list);
+//	        mainPanel.add(scrollPane);
+//	        
+//	        String[] choreArray = {"Chore 1", "Chore 2", "Chore 3"};
+//	        JList choreList = new JList<>(choreArray); // Initialize JList with String array
+//
+//	        // Add the JList to the panel
+//	        mainPanel.add(choreList);
+//
+//	        
+//	        
+//	        getContentPane().add(mainPanel);
+//	        setVisible(true);
+
 
 
 
