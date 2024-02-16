@@ -17,7 +17,7 @@ The project is organized into the following main folders:
 - **test:** Includes JUnit tests for each class and method.
 - **lib:** External libraries, including Apache POI for creating Excel sheets and WindowBuilder for GUI design.
 
-For a detailed breakdown of the project structure and major components, refer to the [https://github.com/Harmandeep2/ChoresGalore/wiki](wiki).
+For a detailed breakdown of the project structure and major components, refer to the Wiki of the repository.
 
 ## Getting Started
 
@@ -31,14 +31,14 @@ For a detailed breakdown of the project structure and major components, refer to
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/ParentChoreSystem.git
+   git clone https://github.com/Harmandeep2/ChoresGalore.git
 
 ## Usage
 
 1. **Open the Project in Your Preferred IDE:**
    - Clone the repository to your local machine:
      ```bash
-     git clone https://github.com/your-username/ParentChoreSystem.git
+     git clone https://github.com/Harmandeep2/ChoresGalore.git
      ```
    - Open the project in your preferred Integrated Development Environment (IDE).
 
@@ -50,6 +50,10 @@ For a detailed breakdown of the project structure and major components, refer to
 
 4. **Use the GUI to Manage Chores and View Competition Standings:**
    - Utilize the Graphical User Interface (GUI) to manage chores, view competition standings, and perform other actions.
+
+5. **For Detailed Instructions:**
+   - Refer to your project's documentation for detailed instructions on using the system.
+
 
 
 ///FOR TA'S AND PROFESSOR 
