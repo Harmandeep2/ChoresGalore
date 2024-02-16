@@ -17,7 +17,7 @@ The project is organized into the following main folders:
 - **test:** Includes JUnit tests for each class and method.
 - **lib:** External libraries, including Apache POI for creating Excel sheets and WindowBuilder for GUI design.
 
-For a detailed breakdown of the project structure and major components, refer to the [Wiki](wiki).
+For a detailed breakdown of the project structure and major components, refer to the [https://github.com/Harmandeep2/ChoresGalore/wiki](wiki).
 
 ## Getting Started
 
@@ -50,9 +50,6 @@ For a detailed breakdown of the project structure and major components, refer to
 
 4. **Use the GUI to Manage Chores and View Competition Standings:**
    - Utilize the Graphical User Interface (GUI) to manage chores, view competition standings, and perform other actions.
-
-5. **For Detailed Instructions:**
-   - Refer to the [User Guide](wiki/User-Guide) for detailed instructions on using the system.
 
 
 ///FOR TA'S AND PROFESSOR 
