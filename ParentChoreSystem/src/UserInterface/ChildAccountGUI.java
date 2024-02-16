@@ -1,7 +1,6 @@
 package UserInterface;
 
 
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -93,28 +92,6 @@ public class ChildAccountGUI extends JFrame{
 	        
 
 	        
-	     // Initialize JList with chores from ChildAccount
-//	        List<Chore> chores = childAccount.getChores();
-//	        DefaultListModel<Chore> listModel = new DefaultListModel<>();
-//	        for (Chore chore : chores) {
-//	            listModel.addElement(chore);
-//	        }
-//	        JList<Chore> list = new JList<>(listModel);
-//
-//	        // Add the JList to the panel within a scroll pane
-//	        JScrollPane scrollPane = new JScrollPane(list);
-//	        mainPanel.add(scrollPane);
-//	        
-//	        String[] choreArray = {"Chore 1", "Chore 2", "Chore 3"};
-//	        JList choreList = new JList<>(choreArray); // Initialize JList with String array
-//
-//	        // Add the JList to the panel
-//	        mainPanel.add(choreList);
-//
-//	        
-//	        
-//	        getContentPane().add(mainPanel);
-//	        setVisible(true);
 
 
 
@@ -126,19 +103,7 @@ public class ChildAccountGUI extends JFrame{
 	        double balance = parentAccount.checkChildBalance(selectedChild);
 	        JOptionPane.showMessageDialog(this, "Your Balance: $" + balance);
 	    }
-	    
-//        private void initializeTable() {
-//            String[] columnNames = {"Column 1", "Column 2", "Column 3", "Column 4"};
-//            Object[][] data = {{"Data 1", "Data 2", "Data 3", "Data 4"}};
-//
-//            // Create a table model
-//            DefaultTableModel model = new DefaultTableModel(data, columnNames);
-//            JTable table = new JTable(model);
-//
-//            // Add the table to a scroll pane
-//            JScrollPane scrollPane = new JScrollPane(table);
-//        }
-//
+
 
 
 
@@ -149,5 +114,3 @@ public class ChildAccountGUI extends JFrame{
 	    }
 
 }
-
-
