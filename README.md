@@ -19,6 +19,12 @@ The project is organized into the following main folders:
 
 For a detailed breakdown of the project structure and major components, refer to the Wiki of the repository.
 
+## Customer Video
+
+Please click the following link to view the video:
+
+https://youtu.be/edRkbj_j44c
+
 ## Getting Started
 
 ### Prerequisites
