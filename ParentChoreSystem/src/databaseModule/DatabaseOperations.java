@@ -8,18 +8,12 @@ import accountsModule.Account;
 import choresModule.Chore;
 
 public class DatabaseOperations {
-    private static final String DB_URL = "jdbc:mysql://your_database_url:3306/ParentChoreSystem";
-    private static final String DB_USER = "your_database_username";
-    private static final String DB_PASSWORD = "your_database_password";
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-    }
 
     // ACCOUNTS TABLE OPERATIONS
 
     public static void insertAccount(String username, String password, String accountType) {
-        try (Connection connection = getConnection();
+        try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "INSERT INTO Accounts (username, password, accountType) VALUES (?, ?, ?)")) {
             preparedStatement.setString(1, username);
@@ -33,7 +27,7 @@ public class DatabaseOperations {
 
     /*public static List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
-        try (Connection connection = getConnection();
+        try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Accounts");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
@@ -53,7 +47,7 @@ public class DatabaseOperations {
     // CHORES TABLE OPERATIONS
 
     public static void insertChore(Chore chore) {
-        try (Connection connection = getConnection();
+        try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "INSERT INTO Chores (name, category, time, payment, isPaid, isCompleted) VALUES (?, ?, ?, ?, ?, ?)")) {
             preparedStatement.setString(1, chore.getName());
@@ -70,7 +64,7 @@ public class DatabaseOperations {
 
     /*public static List<Chore> getAllChores() {
         List<Chore> chores = new ArrayList<>();
-        try (Connection connection = getConnection();
+        try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Chores");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
@@ -93,7 +87,7 @@ public class DatabaseOperations {
     // PARENT CHILD RELATIONSHIP TABLE OPERATIONS
 
     public static void insertParentChildRelationship(int parentID, int childID) {
-        try (Connection connection = getConnection();
+        try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "INSERT INTO ParentChildRelationship (parentID, childID) VALUES (?, ?)")) {
             preparedStatement.setInt(1, parentID);
@@ -107,7 +101,7 @@ public class DatabaseOperations {
     // CHORE ASSIGNMENT TABLE OPERATIONS
 
     public static void insertChoreAssignment(int choreID, int childID) {
-        try (Connection connection = getConnection();
+        try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "INSERT INTO ChoreAssignment (choreID, childID) VALUES (?, ?)")) {
             preparedStatement.setInt(1, choreID);
