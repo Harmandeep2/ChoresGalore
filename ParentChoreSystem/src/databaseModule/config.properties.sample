@@ -1,0 +1,9 @@
+#copy this file and paste it in the same directory and name it config.properties.
+#Replace the following data with your username and password.
+
+#Database name will be "ParentChoreSystem" so kindly keep that
+#Also, create that database first and then run the code.
+
+db.url=jdbc:mysql://localhost:3306/ParentChoreSystem
+db.username=your_username
+db.password=your_password
