@@ -101,7 +101,7 @@ public class ParentRegistration extends JFrame implements ActionListener {
     private void saveAccount(ParentAccount account) {
         try {
             FileWriter writer = new FileWriter("accounts.txt", true); // append mode
-            writer.write(account.getUsername() + ":" + account.getPassword() + "\n" );
+            writer.write(account.getUsername() + ":" + account.getPassword()+":"+"parent" + "\n" );
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

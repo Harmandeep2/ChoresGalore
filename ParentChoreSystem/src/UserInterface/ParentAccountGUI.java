@@ -4,14 +4,18 @@ package UserInterface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -26,6 +30,8 @@ public class ParentAccountGUI extends JFrame{
 	    private JComboBox<ChildAccount> childDropdown;
 	    private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
 	    private JButton createChoreButton, checkBalanceButton, addChildButton;
+	    private DefaultListModel<Chore> choreListModel;
+	    private JList<Chore> choreList;
 	    private JButton logoutButton;
 
 
@@ -60,6 +66,32 @@ public class ParentAccountGUI extends JFrame{
 	        choreTimeField = new JTextField(5);
 	        chorePaymentField = new JTextField(5);
 	        createChoreButton = new JButton("Create Chore");
+	        
+	        JButton assignChoreButton = new JButton("Assign Chore");
+	        mainPanel.add(assignChoreButton);
+
+	        // Add action listener for the assign chore button
+	        assignChoreButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                assignChore();
+	            }
+	        });
+	        
+	        // Add Chore List Panel
+	        JPanel choreListPanel = new JPanel();
+	        choreListPanel.setBorder(BorderFactory.createTitledBorder("Chore List"));
+	        mainPanel.add(choreListPanel);
+
+	        // Existing initialization code...
+
+	        // Add action listener for creating a chore
+	        createChoreButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                createChore();
+	            }
+	        });
 	        
 	        logoutButton = new JButton("Log Out");
 	        logoutButton.addActionListener(new ActionListener() {
@@ -125,6 +157,7 @@ public class ParentAccountGUI extends JFrame{
 	            ChildAccount newChild = new ChildAccount(childName, childName);
 	            parentAccount.addChildAccount(newChild);
 	            childDropdown.addItem(newChild);
+	            saveChild(childName);
 	       
 	        }
 	    }
@@ -138,7 +171,35 @@ public class ParentAccountGUI extends JFrame{
 	        ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
 	        Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
 	        parentAccount.assignChore(selectedChild, newChore);
+	        choreListModel.addElement(newChore);
 	    }
+	    
+	 // Define a method to handle chore assignment
+	    private void assignChore() {
+	        String choreName = choreNameField.getText();
+	        String choreCategory = choreCategoryField.getText();
+	        double choreTime = Double.parseDouble(choreTimeField.getText());
+	        double chorePayment = Double.parseDouble(chorePaymentField.getText());
+
+	        ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+	        Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
+	        parentAccount.assignChore(selectedChild, newChore);
+
+	        // Optionally, provide feedback to the user
+	        JOptionPane.showMessageDialog(this, "Chore assigned to " + selectedChild.getUsername());
+	    }
+	    
+	    private void saveChild(String childName) {
+	        try {
+	            FileWriter writer = new FileWriter("childNames.txt", true); // append mode
+	            writer.write(childName+ "\n" );
+	            writer.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            JOptionPane.showMessageDialog(this, "Failed to save account!");}
+	        }
+	    
+	  
 
 	    private void checkBalance() {
 	        ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();

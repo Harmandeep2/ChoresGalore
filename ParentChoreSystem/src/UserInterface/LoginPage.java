@@ -54,7 +54,7 @@ public class LoginPage extends JFrame implements ActionListener{
                     String password = new String(passwordField.getPassword());
                     
                     // Check if the entered username and password match any parent account
-                    if (authenticate(username, password)) {
+                    if (authenticate(username, password) != null) {
                         JOptionPane.showMessageDialog(LoginPage.this, "Login successful!");
                         openParentAccountGUI();
                         dispose(); // Close the login window
@@ -97,11 +97,20 @@ public class LoginPage extends JFrame implements ActionListener{
 		String password = new String(passwordField.getPassword());
 
 		// Check if the entered username and password match any saved account
-		if (authenticate(username, password)) 
+		String role = authenticate(username, password);
+		if (role != null) 
 		{
 			JOptionPane.showMessageDialog(this, "Login successful!");
-			openChildAccountGUI();
-			//openParentAccountGUI();
+			
+			if(role.equals("child"))
+			{
+			openChildAccountGUI();		
+			}
+			else if(role.equals("parent"))
+			{
+			openParentAccountGUI();
+			}
+	
             dispose(); // Close the login window
 		} 
 		else {
@@ -109,7 +118,7 @@ public class LoginPage extends JFrame implements ActionListener{
 		}
 	}
 
-	private boolean authenticate(String username, String password) {
+	private String authenticate(String username, String password) {
 		try {
 			FileReader fileReader = new FileReader("accounts.txt");
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -120,14 +129,15 @@ public class LoginPage extends JFrame implements ActionListener{
 				if(line.contains(":")) {
 					String[] parts = line.split(":");
 
-					if(parts.length == 2) {
+					if(parts.length == 3) {
 						String savedUsername = parts[0];
 						String savedPassword = parts[1];
-
+						String savedRole = parts[2];
+			
 
 						if (savedUsername.equals(username) && savedPassword.equals(password)) {
 							bufferedReader.close();
-							return true;
+							return savedRole;
 						}
 					}
 				}
@@ -139,7 +149,7 @@ public class LoginPage extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(this, "Failed to authenticate!");
 		}
 
-		return false;
+		return null;
 	}
 	
 	private void openParentAccountGUI() {
