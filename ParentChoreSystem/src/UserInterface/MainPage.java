@@ -12,7 +12,8 @@ public class MainPage extends JFrame implements ActionListener{
 	
 	private JButton parentRegisterButton;
 	private JButton childRegisterButton;
-    private JButton loginButton;
+	private JButton parentLoginButton;
+    private JButton childLoginButton;
     
 
     public MainPage() {
@@ -21,10 +22,13 @@ public class MainPage extends JFrame implements ActionListener{
         setSize(450, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new GridLayout(4, 1));
         
-        loginButton = new JButton("Login");
-        loginButton.addActionListener(this);
+        parentLoginButton = new JButton("Parent Login");
+        parentLoginButton.addActionListener(this);
+        
+        childLoginButton = new JButton("Child Login");
+        childLoginButton.addActionListener(this);
 
         parentRegisterButton = new JButton("I'm a new Parent");
         parentRegisterButton.addActionListener(this);
@@ -33,7 +37,8 @@ public class MainPage extends JFrame implements ActionListener{
         childRegisterButton.addActionListener(this);    
 
 
-        panel.add(loginButton);
+        panel.add(parentLoginButton);
+        panel.add(childLoginButton);
         panel.add(parentRegisterButton);
         panel.add(childRegisterButton);
 
@@ -49,8 +54,11 @@ public class MainPage extends JFrame implements ActionListener{
         else if (e.getSource() == childRegisterButton) {
             new ChildRegistration();
         } 
-        else if (e.getSource() == loginButton) {
-            new LoginPage();
+        else if (e.getSource() == parentLoginButton) {
+            new ParentLoginPage();
+        }
+        else if (e.getSource() == childLoginButton) {
+            new ChildLoginPage();
         }
         setVisible(false);
     }

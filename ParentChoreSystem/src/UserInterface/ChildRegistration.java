@@ -96,14 +96,14 @@ public class ChildRegistration extends JFrame implements ActionListener {
         System.out.println("Username: " + newAccount.getUsername());
         System.out.println("Password: " + newAccount.getPassword());
         
-        new LoginPage(); 
+        new ChildLoginPage(); 
         dispose();
 
     }
     
     private void saveAccount(Account account) {
         try {
-            FileWriter writer = new FileWriter("accounts.txt", true); // append mode
+            FileWriter writer = new FileWriter("childAccounts.txt", true); // append mode
             writer.write(account.getUsername() + ":" + account.getPassword()+":"+"child" + "\n");
             writer.close();
         } catch (IOException e) {

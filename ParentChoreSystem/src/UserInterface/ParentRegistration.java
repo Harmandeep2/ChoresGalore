@@ -94,14 +94,14 @@ public class ParentRegistration extends JFrame implements ActionListener {
         System.out.println("Username: " + newAccount.getUsername());
         System.out.println("Password: " + newAccount.getPassword());
         
-        new LoginPage(); 
+        new ParentLoginPage(); 
         dispose();
     }
     
     private void saveAccount(ParentAccount account) {
         try {
-            FileWriter writer = new FileWriter("accounts.txt", true); // append mode
-            writer.write(account.getUsername() + ":" + account.getPassword()+":"+"parent" + "\n" );
+            FileWriter writer = new FileWriter("parentAccounts.txt", true); // append mode
+            writer.write(account.getUsername() + ":" + account.getPassword() + "\n" );
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
