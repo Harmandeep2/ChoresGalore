@@ -44,11 +44,11 @@ public class ChildLoginPage extends JFrame implements ActionListener {
         passwordField.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                	 // Check if the entered username and password match any parent account
+                	 // Check if the entered username and password match any child account
                     String username = usernameField.getText();
                     String password = new String(passwordField.getPassword());
                     
-                    // Check if the entered username and password match any parent account
+                    // Check if the entered username and password match any child account
                     if (authenticate(username, password)) {
                         JOptionPane.showMessageDialog(ChildLoginPage.this, "Login successful!");
                         openChildAccountGUI();

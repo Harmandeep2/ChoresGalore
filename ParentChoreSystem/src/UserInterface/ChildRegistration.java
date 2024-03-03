@@ -104,7 +104,7 @@ public class ChildRegistration extends JFrame implements ActionListener {
     private void saveAccount(Account account) {
         try {
             FileWriter writer = new FileWriter("childAccounts.txt", true); // append mode
-            writer.write(account.getUsername() + ":" + account.getPassword()+":"+"child" + "\n");
+            writer.write(account.getUsername() + ":" + account.getPassword()+ "\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

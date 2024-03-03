@@ -196,7 +196,7 @@ public class ParentAccountGUI extends JFrame{
 	            writer.close();
 	        } catch (IOException e) {
 	            e.printStackTrace();
-	            JOptionPane.showMessageDialog(this, "Failed to save account!");}
+	            JOptionPane.showMessageDialog(this, "Failed to save name!");}
 	        }
 	    
 	  
