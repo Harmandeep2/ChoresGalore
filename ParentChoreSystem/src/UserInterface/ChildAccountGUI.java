@@ -90,15 +90,15 @@ public class ChildAccountGUI extends JFrame{
 	        JScrollPane scrollPane = new JScrollPane(table);
 	        mainPanel.add(scrollPane);
 	        
-
-
-	        
+	     // Populate the table with assigned chores
+	        List<Chore> assignedChores = childAccount.getChores();
+	        for (Chore chore : assignedChores) {
+	            Object[] rowData = {chore.getName(), chore.getCategory(), chore.getTime(), chore.getPayment()};
+	            model.addRow(rowData);
+	        }       
 	        
 	        getContentPane().add(mainPanel);
 	        setVisible(true);
-
-
-
 
 	    }
 	    

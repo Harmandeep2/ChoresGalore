@@ -1,5 +1,7 @@
 package choresModule;
 
+import accountsModule.ChildAccount;
+
 public class Chore {
 
 	private String name;				//case sensitive
@@ -65,6 +67,7 @@ public class Chore {
 	public String toString() {
 		return "Chore [name=" + name + ", category=" + category + ", time=" + time + ", payment=" + payment + "]";
 	}
+
 	
 	
 }
