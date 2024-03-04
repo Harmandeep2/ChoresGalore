@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import accountsModule.ChildAccount;
+import databaseModule.DatabaseConnector;
 
 public class ChildLoginPage extends JFrame implements ActionListener {
 	
@@ -99,22 +101,22 @@ public class ChildLoginPage extends JFrame implements ActionListener {
     }
 
     private boolean authenticate(String username, String password) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("childAccounts.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                if (parts.length == 2 && parts[0].equals(username) && parts[1].equals(password)) {
-                    return true;
-                }
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return false;
+    	try (Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT * FROM Accounts WHERE username = ? AND password = ? AND accountType = 'Parent'")) {
+               preparedStatement.setString(1, username);
+               preparedStatement.setString(2, password);
+               try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                   return resultSet.next();
+               }
+           } catch (SQLException ex) {
+               ex.printStackTrace();
+           }
+           return false;
     }
 
     private void openChildAccountGUI() {
-        ChildAccount childAccount = new ChildAccount(usernameField.getText(), new String(passwordField.getPassword()));
+        ChildAccount childAccount = new ChildAccount(usernameField.getText(),new String(passwordField.getPassword()));
         new ChildAccountGUI(childAccount);
     }
 
