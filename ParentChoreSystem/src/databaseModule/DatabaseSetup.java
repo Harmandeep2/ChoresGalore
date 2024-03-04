@@ -34,13 +34,6 @@ public class DatabaseSetup {
             + "isPaid BOOLEAN NOT NULL,"
             + "isCompleted BOOLEAN NOT NULL)";
 
-    private static final String CREATE_PARENT_CHILD_RELATIONSHIP_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ParentChildRelationship ("
-            + "parentUsername VARCHAR(255),"
-            + "childUsername VARCHAR(255),"
-            + "PRIMARY KEY (parentUsername, childUsername),"
-            + "FOREIGN KEY (parentUsername) REFERENCES Accounts(username),"
-            + "FOREIGN KEY (childUsername) REFERENCES Accounts(username))";
-
     private static final String CREATE_CHORE_ASSIGNMENT_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChoreAssignment ("
             + "choreID INT,"
             + "childUsername VARCHAR(255),"
@@ -55,7 +48,6 @@ public class DatabaseSetup {
              PreparedStatement createAccountsTableStatement = connection.prepareStatement(CREATE_ACCOUNTS_TABLE_SQL);
 			 PreparedStatement createChildAccountsTableStatement = connection.prepareStatement(CREATE_CHILD_ACCOUNTS_TABLE_SQL);
              PreparedStatement createChoresTableStatement = connection.prepareStatement(CREATE_CHORES_TABLE_SQL);
-             PreparedStatement createParentChildRelationshipTableStatement = connection.prepareStatement(CREATE_PARENT_CHILD_RELATIONSHIP_TABLE_SQL);
              PreparedStatement createChoreAssignmentTableStatement = connection.prepareStatement(CREATE_CHORE_ASSIGNMENT_TABLE_SQL)) {
 
             // Create the database if not exists
@@ -72,9 +64,6 @@ public class DatabaseSetup {
 
             // Create the 'Chores' table if not exists
             createChoresTableStatement.executeUpdate();
-
-            // Create the 'ParentChildRelationship' table if not exists
-            createParentChildRelationshipTableStatement.executeUpdate();
 
             // Create the 'ChoreAssignment' table if not exists
             createChoreAssignmentTableStatement.executeUpdate();

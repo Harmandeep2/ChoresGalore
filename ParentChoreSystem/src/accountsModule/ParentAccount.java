@@ -41,7 +41,7 @@ public class ParentAccount extends Account {
 	
 	public void depositChorePayment(ChildAccount childAccount, Chore chore) {
 		if(childAccounts.contains(childAccount) && childAccount.getChores().contains(chore)) {
-			childAccount.balance += chore.getPayment();
+			childAccount.setBalance(childAccount.getBalance() + chore.getPayment());
 		}
 	}
 	
