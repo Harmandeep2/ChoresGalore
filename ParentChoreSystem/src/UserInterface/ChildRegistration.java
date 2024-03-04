@@ -19,11 +19,10 @@ import databaseModule.DatabaseOperations;
 
 public class ChildRegistration extends JFrame implements ActionListener {
 	
-	private JTextField firstNameField;
-	private JTextField lastNameField;
+	
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JTextField ageField;
+    private JPasswordField confirmPasswordField;
     private JButton registerButton;
     private JButton backButton;
 
@@ -33,20 +32,19 @@ public class ChildRegistration extends JFrame implements ActionListener {
         setSize(600, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 2));
+        panel.setLayout(new GridLayout(4, 2));
 
-        JLabel firstNameLabel = new JLabel("First Name:");
-        JLabel lastNameLabel = new JLabel("Last Name:");
-        JLabel ageLabel = new JLabel("Enter age:");
+        
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
    
 
-        firstNameField = new JTextField();
-        lastNameField = new JTextField();
+        
         usernameField = new JTextField();
         passwordField = new JPasswordField();
-        ageField = new JTextField();
+        confirmPasswordField = new JPasswordField();
+        
         
 
         registerButton = new JButton("Register");
@@ -65,16 +63,13 @@ public class ChildRegistration extends JFrame implements ActionListener {
         });
 
 
-        panel.add(firstNameLabel);
-        panel.add(firstNameField);
-        panel.add(lastNameLabel);
-        panel.add(lastNameField);
-        panel.add(ageLabel);
-        panel.add(ageField);
+        
         panel.add(usernameLabel);
         panel.add(usernameField);
         panel.add(passwordLabel);
         panel.add(passwordField);
+        panel.add(confirmPasswordLabel);
+        panel.add(confirmPasswordField);
         panel.add(registerButton);
         panel.add(backButton);
 

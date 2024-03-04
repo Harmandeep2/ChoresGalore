@@ -95,10 +95,15 @@ public class ChildAccountGUI extends JFrame{
 	        for (Chore chore : assignedChores) {
 	            Object[] rowData = {chore.getName(), chore.getCategory(), chore.getTime(), chore.getPayment()};
 	            model.addRow(rowData);
-	        }       
+	        }
+
+	        
 	        
 	        getContentPane().add(mainPanel);
 	        setVisible(true);
+
+
+
 
 	    }
 	    
