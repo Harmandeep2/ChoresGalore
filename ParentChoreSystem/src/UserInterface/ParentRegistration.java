@@ -15,18 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import accountsModule.Account;
-import accountsModule.ParentAccount;
-import databaseModule.DatabaseConnector;
 import databaseModule.DatabaseOperations;
 
 public class ParentRegistration extends JFrame implements ActionListener {
 	
-	private JTextField firstNameField;
-	private JTextField lastNameField;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JTextField numberOfChildrenField;
+    private JPasswordField confirmPasswordField;
     private JButton registerButton;
     private JButton backButton;
 
@@ -36,20 +31,16 @@ public class ParentRegistration extends JFrame implements ActionListener {
         setSize(600, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 2));
-
-        JLabel firstNameLabel = new JLabel("First Name:");
-        JLabel lastNameLabel = new JLabel("Last Name:");
+        panel.setLayout(new GridLayout(4, 2));
+        
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
-        JLabel numberOfChildrenLabel = new JLabel("Enter number of children:");
-    
-
-        firstNameField = new JTextField();
-        lastNameField = new JTextField();
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
+        
         usernameField = new JTextField();
         passwordField = new JPasswordField();
-        numberOfChildrenField = new JTextField();
+        confirmPasswordField = new JPasswordField();
+ 
         
 
         registerButton = new JButton("Register");
@@ -65,16 +56,14 @@ public class ParentRegistration extends JFrame implements ActionListener {
             }
         });
 
-        panel.add(firstNameLabel);
-        panel.add(firstNameField);
-        panel.add(lastNameLabel);
-        panel.add(lastNameField);
+        
+      
         panel.add(usernameLabel);
         panel.add(usernameField);
         panel.add(passwordLabel);
         panel.add(passwordField);
-        panel.add(numberOfChildrenLabel);
-        panel.add(numberOfChildrenField);
+        panel.add(confirmPasswordLabel);
+        panel.add(confirmPasswordField);
         panel.add(registerButton);
         panel.add(backButton);
 
@@ -98,17 +87,7 @@ public class ParentRegistration extends JFrame implements ActionListener {
         dispose();
     }
     
-   /* private void saveAccount(ParentAccount account) {
-        try {
-            FileWriter writer = new FileWriter("parentAccounts.txt", true); // append mode
-            writer.write(account.getUsername() + ":" + account.getPassword() + "\n" );
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Failed to save account!");}
-        }*/
-    
-  
+   
    
     public static void main(String[] args) {
         new ParentRegistration();

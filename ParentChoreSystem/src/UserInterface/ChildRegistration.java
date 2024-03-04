@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import accountsModule.Account;
+import databaseModule.DatabaseOperations;
 
 public class ChildRegistration extends JFrame implements ActionListener {
 	
@@ -86,22 +87,21 @@ public class ChildRegistration extends JFrame implements ActionListener {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
-        // Create an Account object with the entered username and password
-        Account newAccount = new Account(username, password);
-        saveAccount(newAccount);
+     // Insert new child account into the database
+        DatabaseOperations.insertAccount(username, password, "Child");
 
-        // Perform registration process (e.g., save the account details to a database)
-        // For simplicity, let's just print the account details for now
-        System.out.println("New Account Registered:");
-        System.out.println("Username: " + newAccount.getUsername());
-        System.out.println("Password: " + newAccount.getPassword());
+        // Display success message
+        JOptionPane.showMessageDialog(this, "Child account registered successfully!");
+
+        // Redirect to login page
+        new ChildLoginPage();
         
-        new ChildLoginPage(); 
+       
         dispose();
 
     }
     
-    private void saveAccount(Account account) {
+  /*  private void saveAccount(Account account) {
         try {
             FileWriter writer = new FileWriter("childAccounts.txt", true); // append mode
             writer.write(account.getUsername() + ":" + account.getPassword()+ "\n");
@@ -113,6 +113,6 @@ public class ChildRegistration extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         new ChildRegistration();
-    }
+    }*/
 
 }
