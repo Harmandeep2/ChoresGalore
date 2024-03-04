@@ -91,12 +91,12 @@ public class ChildRegistration extends JFrame implements ActionListener {
         // Redirect to login page
         new ChildLoginPage();
         
-       saveAccount(username,password);
+       
         dispose();
 
     }
     
-    private void saveAccount(Account account) {
+   /* private void saveAccount(Account account) {
         try {
             FileWriter writer = new FileWriter("childAccounts.txt", true); // append mode
             writer.write(account.getUsername() + ":" + account.getPassword()+ "\n");
@@ -108,6 +108,6 @@ public class ChildRegistration extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         new ChildRegistration();
-    }
+    }*/
 
 }

@@ -67,6 +67,5 @@ public class MainPage extends JFrame implements ActionListener{
         new MainPage();
     }
 	
-		     
-
+		   
 }
