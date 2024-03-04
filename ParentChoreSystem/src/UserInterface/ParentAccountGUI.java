@@ -172,16 +172,16 @@ public class ParentAccountGUI extends JFrame{
 	        double choreTime = Double.parseDouble(choreTimeField.getText());
 	        double chorePayment = Double.parseDouble(chorePaymentField.getText());
 
-	        ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+	        //ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
 	        
 	        // Insert new chore into the database
 	        DatabaseOperations.insertChore(new Chore(choreName, choreCategory, choreTime, chorePayment));
 
 	        // Assign the chore to the selected child
-	        parentAccount.assignChore(selectedChild, new Chore(choreName, choreCategory, choreTime, chorePayment));
+	        //parentAccount.assignChore(selectedChild, new Chore(choreName, choreCategory, choreTime, chorePayment));
 
 	        // Display success message
-	        JOptionPane.showMessageDialog(this, "Chore created and assigned successfully!");
+	        JOptionPane.showMessageDialog(this, "Chore created successfully!");
 	    
 	    }
 	    

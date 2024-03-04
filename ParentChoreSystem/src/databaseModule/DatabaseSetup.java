@@ -11,10 +11,19 @@ public class DatabaseSetup {
     private static final String USE_DATABASE_SQL = "USE " + DB_NAME;
 
     private static final String CREATE_ACCOUNTS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS Accounts ("
-            + "id INT AUTO_INCREMENT PRIMARY KEY,"
-            + "username VARCHAR(255) NOT NULL,"
+            + "username VARCHAR(255) PRIMARY KEY,"
             + "password VARCHAR(255) NOT NULL,"
             + "accountType ENUM('Parent', 'Child') NOT NULL)";
+    
+    private static final String CREATE_CHILD_ACCOUNTS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChildAccounts ("
+            + "childUsername VARCHAR(255) PRIMARY KEY,"
+            + "parentUsername VARCHAR(255) DEFAULT NULL,"
+            + "balance DOUBLE DEFAULT 0.0,"
+            + "hoursWorked DOUBLE DEFAULT 0.0,"
+            + "FOREIGN KEY (childUsername) REFERENCES Accounts(username),"
+            + "FOREIGN KEY (parentUsername) REFERENCES Accounts(username) ON DELETE SET NULL)";
+
+
 
     private static final String CREATE_CHORES_TABLE_SQL = "CREATE TABLE IF NOT EXISTS Chores ("
             + "id INT AUTO_INCREMENT PRIMARY KEY,"
@@ -26,24 +35,25 @@ public class DatabaseSetup {
             + "isCompleted BOOLEAN NOT NULL)";
 
     private static final String CREATE_PARENT_CHILD_RELATIONSHIP_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ParentChildRelationship ("
-            + "parentID INT,"
-            + "childID INT,"
-            + "PRIMARY KEY (parentID, childID),"
-            + "FOREIGN KEY (parentID) REFERENCES Accounts(id),"
-            + "FOREIGN KEY (childID) REFERENCES Accounts(id))";
+            + "parentUsername VARCHAR(255),"
+            + "childUsername VARCHAR(255),"
+            + "PRIMARY KEY (parentUsername, childUsername),"
+            + "FOREIGN KEY (parentUsername) REFERENCES Accounts(username),"
+            + "FOREIGN KEY (childUsername) REFERENCES Accounts(username))";
 
     private static final String CREATE_CHORE_ASSIGNMENT_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChoreAssignment ("
             + "choreID INT,"
-            + "childID INT,"
-            + "PRIMARY KEY (choreID, childID),"
+            + "childUsername VARCHAR(255),"
+            + "PRIMARY KEY (choreID, childUsername),"
             + "FOREIGN KEY (choreID) REFERENCES Chores(id),"
-            + "FOREIGN KEY (childID) REFERENCES Accounts(id))";
+            + "FOREIGN KEY (childUsername) REFERENCES Accounts(username))";
 
     public static void setupDatabase() {
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement createDatabaseStatement = connection.prepareStatement(CREATE_DATABASE_SQL);
              PreparedStatement useDatabaseStatement = connection.prepareStatement(USE_DATABASE_SQL);
              PreparedStatement createAccountsTableStatement = connection.prepareStatement(CREATE_ACCOUNTS_TABLE_SQL);
+			 PreparedStatement createChildAccountsTableStatement = connection.prepareStatement(CREATE_CHILD_ACCOUNTS_TABLE_SQL);
              PreparedStatement createChoresTableStatement = connection.prepareStatement(CREATE_CHORES_TABLE_SQL);
              PreparedStatement createParentChildRelationshipTableStatement = connection.prepareStatement(CREATE_PARENT_CHILD_RELATIONSHIP_TABLE_SQL);
              PreparedStatement createChoreAssignmentTableStatement = connection.prepareStatement(CREATE_CHORE_ASSIGNMENT_TABLE_SQL)) {
@@ -56,6 +66,9 @@ public class DatabaseSetup {
 
             // Create the 'Accounts' table if not exists
             createAccountsTableStatement.executeUpdate();
+            
+			// Create the 'ChildAccounts' table if not exists
+			createChildAccountsTableStatement.executeUpdate();
 
             // Create the 'Chores' table if not exists
             createChoresTableStatement.executeUpdate();

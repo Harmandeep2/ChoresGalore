@@ -1,9 +1,9 @@
 package choresModule;
 
-import accountsModule.ChildAccount;
 
 public class Chore {
-
+	
+	private int id;
 	private String name;				//case sensitive
 	private String category;			//case sensitive
 	private double time;			//in minutes
@@ -22,6 +22,12 @@ public class Chore {
 	}
 	
 	//Getters and Setters
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
