@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.*;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -23,6 +24,8 @@ import javax.swing.JTextField;
 import accountsModule.ChildAccount;
 import accountsModule.ParentAccount;
 import choresModule.Chore;
+import databaseModule.DatabaseConnector;
+import databaseModule.DatabaseOperations;
 
 public class ParentAccountGUI extends JFrame{
 
@@ -33,11 +36,12 @@ public class ParentAccountGUI extends JFrame{
 	    private DefaultListModel<Chore> choreListModel;
 	    private JList<Chore> choreList;
 	    private JButton logoutButton;
-
+	    private Connection connection;
 
 	    public ParentAccountGUI(ParentAccount parentAccount) {
 	        this.parentAccount = parentAccount;
 	        initialize();
+	       
 	    }
 
 	    private void initialize() {
@@ -172,7 +176,18 @@ public class ParentAccountGUI extends JFrame{
 	        Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
 	        parentAccount.assignChore(selectedChild, newChore);
 	        choreListModel.addElement(newChore);
+	        
+	        // Insert new chore into the database
+	        DatabaseOperations.insertChore(new Chore(choreName, choreCategory, choreTime, chorePayment));
+
+	        // Assign the chore to the selected child
+	        parentAccount.assignChore(selectedChild, new Chore(choreName, choreCategory, choreTime, chorePayment));
+
+	        // Display success message
+	        JOptionPane.showMessageDialog(this, "Chore created and assigned successfully!");
+	    
 	    }
+	    
 	    
 	 // Define a method to handle chore assignment
 	    private void assignChore() {
@@ -210,8 +225,8 @@ public class ParentAccountGUI extends JFrame{
 	    public static void main(String[] args) {
 	        
 	        ParentAccount parentAccount = new ParentAccount("parentUsername", "parentPassword");
-	        ParentAccountGUI parentAccountGUI = new ParentAccountGUI(parentAccount);
-	        //new ParentAccount(title, title);
+	        new ParentAccountGUI(parentAccount);
+	        
 	    }
 	
 	
