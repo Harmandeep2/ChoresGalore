@@ -173,9 +173,6 @@ public class ParentAccountGUI extends JFrame{
 	        double chorePayment = Double.parseDouble(chorePaymentField.getText());
 
 	        ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
-	        Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
-	        parentAccount.assignChore(selectedChild, newChore);
-	        choreListModel.addElement(newChore);
 	        
 	        // Insert new chore into the database
 	        DatabaseOperations.insertChore(new Chore(choreName, choreCategory, choreTime, chorePayment));

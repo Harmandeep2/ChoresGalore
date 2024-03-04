@@ -86,12 +86,6 @@ public class ParentRegistration extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
-
-        // Create an Account object with the entered username and password
-        ParentAccount newAccount = new ParentAccount(username, password);
-        saveAccount(newAccount);
-    
-        
         String accountType = "Parent"; // Assuming all registered accounts are parents
 
         // Insert new parent account into the database
@@ -99,19 +93,12 @@ public class ParentRegistration extends JFrame implements ActionListener {
 
         // Display success message
         JOptionPane.showMessageDialog(this, "Parent account registered successfully!");
-
-
-        // Perform registration process (e.g., save the account details to a database)
-        // For simplicity, let's just print the account details for now
-        System.out.println("New Account Registered:");
-        System.out.println("Username: " + newAccount.getUsername());
-        System.out.println("Password: " + newAccount.getPassword());
         
         new ParentLoginPage(); 
         dispose();
     }
     
-    private void saveAccount(ParentAccount account) {
+   /* private void saveAccount(ParentAccount account) {
         try {
             FileWriter writer = new FileWriter("parentAccounts.txt", true); // append mode
             writer.write(account.getUsername() + ":" + account.getPassword() + "\n" );
@@ -119,21 +106,10 @@ public class ParentRegistration extends JFrame implements ActionListener {
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Failed to save account!");}
-        }
+        }*/
     
-    private boolean insertParentAccountIntoDatabase(ParentAccount account) {
-        try (Connection connection = DatabaseConnector.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO Accounts (username, password, accountType) VALUES (?, ?, 'Parent')")) {
-            statement.setString(1, account.getUsername());
-            statement.setString(2, account.getPassword());
-            // Set other parameters if necessary
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+  
+   
     public static void main(String[] args) {
         new ParentRegistration();
     }
