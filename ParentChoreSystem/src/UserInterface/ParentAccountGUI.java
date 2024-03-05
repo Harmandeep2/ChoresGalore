@@ -156,14 +156,17 @@ public class ParentAccountGUI extends JFrame{
 	    ///////////////
 	    
 	    private void addChild() {
-	        String childUserName = JOptionPane.showInputDialog("Enter child's username:");
+	    	String childUserName = JOptionPane.showInputDialog("Enter child's username:");
 	        if (childUserName != null && !childUserName.isEmpty()) {
 	            if(DatabaseOperations.checkIfChildExists(childUserName)) {
-		            DatabaseOperations.addParentToChild(this.parentAccount.getUsername(), childUserName);
-		            childDropdown = new JComboBox<>(DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername()).toArray(new ChildAccount[0]));
-		            JOptionPane.showMessageDialog(this, "Child added successfully!");
+	                DatabaseOperations.addParentToChild(this.parentAccount.getUsername(), childUserName);
+	                childDropdown = new JComboBox<>(DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername()).toArray(new ChildAccount[0]));
+	                JOptionPane.showMessageDialog(this, "Child added successfully!");
+	            } else {
+	                JOptionPane.showMessageDialog(this, "Child does not exist!");
 	            }
-	       
+	        } else {
+	            JOptionPane.showMessageDialog(this, "Please enter a valid child username!");
 	        }
 	    }
 
@@ -202,7 +205,7 @@ public class ParentAccountGUI extends JFrame{
 	        JOptionPane.showMessageDialog(this, "Chore assigned to " + selectedChild.getUsername());
 	    }
 	    
-	    private void saveChild(String childName) {
+	   /* private void saveChild(String childName) {
 	        try {
 	            FileWriter writer = new FileWriter("childNames.txt", true); // append mode
 	            writer.write(childName+ "\n" );
@@ -210,7 +213,7 @@ public class ParentAccountGUI extends JFrame{
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(this, "Failed to save name!");}
-	        }
+	        }*/
 	    
 	  
 

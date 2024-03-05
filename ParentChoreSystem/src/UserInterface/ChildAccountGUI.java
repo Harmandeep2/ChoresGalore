@@ -120,7 +120,7 @@ public class ChildAccountGUI extends JFrame{
 	    public static void main(String[] args) {
 	        
 	        ChildAccount childAccount = new ChildAccount("childUsername", "childPassword");
-	        ChildAccountGUI childAccountGUI = new ChildAccountGUI(childAccount);
+	        new ChildAccountGUI(childAccount);
 	    }
 
 }

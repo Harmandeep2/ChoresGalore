@@ -103,7 +103,7 @@ public class ChildLoginPage extends JFrame implements ActionListener {
     private boolean authenticate(String username, String password) {
     	try (Connection connection = DatabaseConnector.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT * FROM Accounts WHERE username = ? AND password = ? AND accountType = 'Parent'")) {
+                        "SELECT * FROM Accounts WHERE username = ? AND password = ? AND accountType = 'Child'")) {
                preparedStatement.setString(1, username);
                preparedStatement.setString(2, password);
                try (ResultSet resultSet = preparedStatement.executeQuery()) {
