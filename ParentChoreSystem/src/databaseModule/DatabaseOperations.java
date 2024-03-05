@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import accountsModule.*;
+import accountsModule.Account;
 import choresModule.Chore;
 
 public class DatabaseOperations {
@@ -45,92 +45,24 @@ public class DatabaseOperations {
 	    }
 	}
 
-	public static void addParentToChild(String parentUsername, String childUsername) {
-	    try (Connection connection = DatabaseConnector.getConnection();
-	         PreparedStatement preparedStatement = connection.prepareStatement(
-	                 "UPDATE ChildAccounts SET parentUsername = ? WHERE childUsername = ?")) {
-
-	        preparedStatement.setString(1, parentUsername);
-	        preparedStatement.setString(2, childUsername);
-	        preparedStatement.executeUpdate();
-
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	}
-	
-	public static boolean checkIfChildExists(String childUsername) {
-		try(Connection connection = DatabaseConnector.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ChildAccounts WHERE childUsername = ?")) {
-			preparedStatement.setString(1, childUsername);
-			try(ResultSet resultSet = preparedStatement.executeQuery()) {
-				return resultSet.next();
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-	public static boolean checkIfParentExists(String parentUsername) {
-		try(Connection connection = DatabaseConnector.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Accounts WHERE username = ? AND accountType = 'Parent'")) {
-			preparedStatement.setString(1, parentUsername);
-			try(ResultSet resultSet = preparedStatement.executeQuery()) {
-				return resultSet.next();
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-	public static List<ChildAccount> getAllChildrenofParent(String parentUsername) {
-		try(Connection connection = DatabaseConnector.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ChildAccounts WHERE parentUsername = ?")) {
-			preparedStatement.setString(1, parentUsername);
-			try(ResultSet resultSet = preparedStatement.executeQuery()) {
-				List<ChildAccount> children = new ArrayList<>();
-				while(resultSet.next()) {
-					ChildAccount child = new ChildAccount(resultSet.getString("childUsername"),
-							resultSet.getString("password"));
-					child.setBalance(resultSet.getDouble("balance"));
-					child.setHoursWorked(resultSet.getDouble("hoursWorked"));
-					
-					children.add(child);
-				}
-				return children;
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	
-    public static List<Account> getAllAccounts() {
+    /*public static List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Accounts");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
-            	Account account;
-            	if ("child".equalsIgnoreCase(resultSet.getString("accountType"))) {
-					account = new ChildAccount(resultSet.getString("username"),
-							resultSet.getString("password"));
-				}
-            	else {
-            		account = new ParentAccount(resultSet.getString("username"),
-							resultSet.getString("password"));
-            	}
-            	
+                Account account = new Account();
+                account.setId(resultSet.getInt("id"));
+                account.setUsername(resultSet.getString("username"));
+                account.setPassword(resultSet.getString("password"));
+                account.setAccountType(resultSet.getString("accountType"));
                 accounts.add(account);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return accounts;
-    }
+    }*/
 
     // CHORES TABLE OPERATIONS
 
@@ -174,6 +106,20 @@ public class DatabaseOperations {
             e.printStackTrace();
         }
         return chores;
+    }
+
+    // PARENT CHILD RELATIONSHIP TABLE OPERATIONS
+
+    public static void insertParentChildRelationship(String parentUsername, String childUsername) {
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO ParentChildRelationship (parentUsername, childUsername) VALUES (?, ?)")) {
+            preparedStatement.setString(1, parentUsername);
+            preparedStatement.setString(2, childUsername);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // CHORE ASSIGNMENT TABLE OPERATIONS
