@@ -150,6 +150,42 @@ public class DatabaseOperations {
         }
     }
 
+    public static List<Chore> getAllChoresofChild(String childUsername) {
+        List<Chore> chores = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT c.* FROM Chores c " +
+                     "JOIN ChoreAssignment ca ON c.id = ca.choreID " +
+                     "WHERE ca.childUsername = ?")) {
+
+            preparedStatement.setString(1, childUsername);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            	while (resultSet.next()) {
+                    Chore chore = new Chore(resultSet.getString("name"),
+                    		resultSet.getString("category"),
+                    		resultSet.getDouble("time"),
+                    		resultSet.getDouble("payment"));
+                    chore.setId(resultSet.getInt("id"));
+                    if(resultSet.getBoolean("isPaid")) {
+    					chore.markPaid();
+    				}
+                    if(resultSet.getBoolean("isCompleted")) {
+                    	chore.markCompleted();
+                    }
+                    
+                    chores.add(chore);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return chores;
+    }
+
     public static List<Chore> getAllChores() {
         List<Chore> chores = new ArrayList<>();
         try (Connection connection = DatabaseConnector.getConnection();
