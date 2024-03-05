@@ -58,15 +58,23 @@ private Chore chore;
 //	} 
 
 
-    public ChildAccount getWinner() {
-    	if ((child1.getHoursWorked() - CHILD1_HOURS_TILL_NOW) > 
-    	(child2.getHoursWorked() - CHILD2_HOURS_TILL_NOW)) {
-    		return child1;
-    	}
-    	else {
-    		return child2;
-    	}
-    }
+public ChildAccount getWinner() {
+	ChildAccount winner = children.get(0);
+	for (int i = 0;i<children.size();i++) {
+		for (int j = i+1;j<children.size();j++) {
+			if (children.get(j).getHoursWorked() > winner.getHoursWorked()) {
+				winner = children.get(i);
+			} else if (children.get(i).getHoursWorked() == winner.getHoursWorked()){
+				//to implement if its a tie (both have same time)
+				winner = children.get(i);
+				continue;
+			} else {
+				winner = children.get(j);
+			}
+		}
+	}
+	return winner;
+}
     
 	
 	
