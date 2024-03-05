@@ -92,8 +92,7 @@ public class DatabaseOperations {
 			try(ResultSet resultSet = preparedStatement.executeQuery()) {
 				List<ChildAccount> children = new ArrayList<>();
 				while(resultSet.next()) {
-					ChildAccount child = new ChildAccount(resultSet.getString("childUsername"),
-							resultSet.getString("password"));
+					ChildAccount child = new ChildAccount(resultSet.getString("childUsername"),"");
 					child.setBalance(resultSet.getDouble("balance"));
 					child.setHoursWorked(resultSet.getDouble("hoursWorked"));
 					
@@ -134,16 +133,18 @@ public class DatabaseOperations {
 
     // CHORES TABLE OPERATIONS
 
-    public static void insertChore(Chore chore) {
+    public static void insertChore(Chore chore, String parentUsername) {
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Chores (name, category, time, payment, isPaid, isCompleted) VALUES (?, ?, ?, ?, ?, ?)")) {
+                     "INSERT INTO Chores (name, category, time, payment, parentUsername, isPaid, isCompleted) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
             preparedStatement.setString(1, chore.getName());
             preparedStatement.setString(2, chore.getCategory());
             preparedStatement.setDouble(3, chore.getTime());
             preparedStatement.setDouble(4, chore.getPayment());
-            preparedStatement.setBoolean(5, chore.isPaid());
-            preparedStatement.setBoolean(6, chore.isCompleted());
+            preparedStatement.setString(5, parentUsername);
+            preparedStatement.setBoolean(6, chore.isPaid());
+            preparedStatement.setBoolean(7, chore.isCompleted());
+            
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -225,4 +226,36 @@ public class DatabaseOperations {
             e.printStackTrace();
         }
     }
+
+	public static List<Chore> getAllChoresofParent(String parentUsername) {
+		 List<Chore> chores = new ArrayList<>();
+
+		    try (Connection connection = DatabaseConnector.getConnection();
+		         PreparedStatement preparedStatement = connection.prepareStatement(
+		                 "SELECT * FROM Chores WHERE parentUsername = ?")) {
+
+		        preparedStatement.setString(1, parentUsername);
+
+		        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+		        	while (resultSet.next()) {
+		                Chore chore = new Chore(resultSet.getString("name"),
+		                		resultSet.getString("category"),
+		                		resultSet.getDouble("time"),
+		                		resultSet.getDouble("payment"));
+		                chore.setId(resultSet.getInt("id"));
+		                if(resultSet.getBoolean("isPaid")) {
+							chore.markPaid();
+						}
+		                if(resultSet.getBoolean("isCompleted")) {
+		                	chore.markCompleted();
+		                }
+		        	}
+		        }
+
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+
+		    return chores;
+	}
 }

@@ -31,8 +31,10 @@ public class DatabaseSetup {
             + "category VARCHAR(255) NOT NULL,"
             + "time DOUBLE NOT NULL,"
             + "payment DOUBLE NOT NULL,"
+            + "parentUsername VARCHAR(255),"
             + "isPaid BOOLEAN NOT NULL,"
-            + "isCompleted BOOLEAN NOT NULL)";
+            + "isCompleted BOOLEAN NOT NULL,"
+    		+ "FOREIGN KEY (parentUsername) REFERENCES Accounts(username))";
 
     private static final String CREATE_CHORE_ASSIGNMENT_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChoreAssignment ("
             + "choreID INT,"

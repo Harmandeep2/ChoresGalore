@@ -8,6 +8,7 @@ public class Chore {
 	private String category;			//case sensitive
 	private double time;			//in minutes
 	private double payment;
+	private String parentUsername;
 	private boolean completed;			//status of chore, true = completed, false = incomplete
 	private boolean paid;				//status of payment, true = paid, false = unpaid
 	
@@ -53,6 +54,14 @@ public class Chore {
 	    this.payment = payment;
 	}
 	
+	public String getParentUsername() {
+		return parentUsername;
+	}
+
+	public void setParentUsername(String parentUsername) {
+		this.parentUsername = parentUsername;
+	}
+	
 	public boolean isCompleted() {
 		return completed;
 	}
@@ -73,6 +82,8 @@ public class Chore {
 	public String toString() {
 		return "Chore [name=" + name + ", category=" + category + ", time=" + time + ", payment=" + payment + "]";
 	}
+
+	
 
 	
 	
