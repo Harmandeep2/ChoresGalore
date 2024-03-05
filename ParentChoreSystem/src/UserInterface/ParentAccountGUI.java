@@ -53,7 +53,7 @@ public class ParentAccountGUI extends JFrame{
 	        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
 	        // Child Dropdown
-	        List<ChildAccount> children = parentAccount.getChildren();
+	        List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
 	        childDropdown = new JComboBox<>(children.toArray(new ChildAccount[0]));
 	        mainPanel.add(childDropdown);
 	        
@@ -156,12 +156,13 @@ public class ParentAccountGUI extends JFrame{
 	    ///////////////
 	    
 	    private void addChild() {
-	        String childName = JOptionPane.showInputDialog("Enter child's name:");
-	        if (childName != null && !childName.isEmpty()) {
-	            ChildAccount newChild = new ChildAccount(childName, childName);
-	            parentAccount.addChildAccount(newChild);
-	            childDropdown.addItem(newChild);
-	            saveChild(childName);
+	        String childUserName = JOptionPane.showInputDialog("Enter child's username:");
+	        if (childUserName != null && !childUserName.isEmpty()) {
+	            if(DatabaseOperations.checkIfChildExists(childUserName)) {
+		            DatabaseOperations.addParentToChild(this.parentAccount.getUsername(), childUserName);
+		            childDropdown = new JComboBox<>(DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername()).toArray(new ChildAccount[0]));
+		            JOptionPane.showMessageDialog(this, "Child added successfully!");
+	            }
 	       
 	        }
 	    }

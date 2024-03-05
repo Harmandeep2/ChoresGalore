@@ -44,9 +44,17 @@ public class ChildAccount extends Account {
 	public double getBalance() {
 		return balance;
 	}
+	
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
 
 	public double getHoursWorked() {
 		return hoursWorked;
+	}
+	
+	public void setHoursWorked(double hoursWorked) {
+		this.hoursWorked = hoursWorked;
 	}
 	
 	@Override
