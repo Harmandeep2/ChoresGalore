@@ -25,6 +25,7 @@ import accountsModule.ChildAccount;
 import accountsModule.ParentAccount;
 import choresModule.Chore;
 import choresModule.ChoresUtils;
+import databaseModule.DatabaseOperations;
 
 
 public class ChildAccountGUI extends JFrame{
@@ -109,8 +110,9 @@ public class ChildAccountGUI extends JFrame{
 	    
     
 	    private void checkBalance() {
-	        ChildAccount selectedChild = (ChildAccount) this.childAccount;
-	        double balance = parentAccount.checkChildBalance(selectedChild);
+	        ChildAccount selectedChild = (ChildAccount) childAccount;
+	        double balance = DatabaseOperations.getChildBalance(null, selectedChild.getUsername());
+
 	        JOptionPane.showMessageDialog(this, "Your Balance: $" + balance);
 	    }
 
