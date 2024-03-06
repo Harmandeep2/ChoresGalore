@@ -188,6 +188,7 @@ public class ParentAccountGUI extends JFrame{
 
 		// Insert new chore into the database using DatabaseOperations class
 		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
+		
 		DatabaseOperations.insertChore(newChore, parentAccount.getUsername());
 
 		// Update the table model with the new chore data
