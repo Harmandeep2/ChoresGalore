@@ -243,6 +243,7 @@ public class DatabaseOperations {
 		                		resultSet.getDouble("time"),
 		                		resultSet.getDouble("payment"));
 		                chore.setId(resultSet.getInt("id"));
+		                chore.setParentUsername(resultSet.getString("parentUsername"));
 		                if(resultSet.getBoolean("isPaid")) {
 							chore.markPaid();
 						}
