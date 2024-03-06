@@ -31,7 +31,7 @@ import databaseModule.DatabaseOperations;
 public class ChildAccountGUI extends JFrame{
 
 	    private JTextField chores;
-	    private JButton checkBalanceButton;
+	    private JButton checkBalanceButton, exportChoresButton;
 	    private JButton logoutButton;
 	    private JButton markAsCompletedButton, hoursWorkedButton;
 		private ChildAccount childAccount;
@@ -107,6 +107,9 @@ public class ChildAccountGUI extends JFrame{
 			hoursWorkedButton = new JButton("Hours Worked");
 			mainPanel.add(hoursWorkedButton);
 			
+			exportChoresButton = new JButton("Export Chores as CSV");
+			mainPanel.add(exportChoresButton);
+			
 			markAsCompletedButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -119,6 +122,13 @@ public class ChildAccountGUI extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					getHoursWorked();
+				}
+			});
+			
+			exportChoresButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					exportChores();
 				}
 			});
 
@@ -168,6 +178,11 @@ public class ChildAccountGUI extends JFrame{
 	    private void getHoursWorked() {
 		    double hoursWorked = Math.round(DatabaseOperations.getHoursWorkedByChild(childAccount.getUsername()) * 100.0) / 100.0;
 		    JOptionPane.showMessageDialog(this, "You worked " + hoursWorked + " hours!");
+	    }
+	    
+	    private void exportChores() {
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    ChoresUtils.createExcelSheet(childChores);
 	    }
 
 	    public static void main(String[] args) {
