@@ -25,6 +25,7 @@ import accountsModule.ChildAccount;
 import accountsModule.ParentAccount;
 import choresModule.Chore;
 import choresModule.ChoresUtils;
+import databaseModule.DatabaseOperations;
 
 
 public class ChildAccountGUI extends JFrame{
@@ -32,14 +33,16 @@ public class ChildAccountGUI extends JFrame{
 	    private JTextField chores;
 	    private JButton checkBalanceButton;
 	    private JButton logoutButton;
+	    private JButton markAsCompletedButton, hoursWorkedButton;
 		private ChildAccount childAccount;
 	 	private ParentAccount parentAccount;
-
+	 	private JTable choreTable;
 
 
 	    public ChildAccountGUI(ChildAccount childAccount) {
 	        this.childAccount = childAccount;
 	        initialize();
+	        displayChildChores();
 	    }
 
 	    private void initialize() {
@@ -83,39 +86,89 @@ public class ChildAccountGUI extends JFrame{
 	            }
 	        });
 	        
-	        String[] columnNames = {"Chore", "Category", "Time(min)", "Payment"};
-	        Object[][] data = {{"Data 1", "Data 2", "Data 3", "Data 4"}};
-	        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-	        JTable table = new JTable(model);
-	        JScrollPane scrollPane = new JScrollPane(table);
-	        mainPanel.add(scrollPane);
-	        
-	     // Populate the table with assigned chores
-	        List<Chore> assignedChores = childAccount.getChores();
-	        for (Chore chore : assignedChores) {
-	            Object[] rowData = {chore.getName(), chore.getCategory(), chore.getTime(), chore.getPayment()};
-	            model.addRow(rowData);
-	        }
+	    	// Create a table model
+			DefaultTableModel tableModel = new DefaultTableModel();
+			tableModel.addColumn("Chore ID");
+			tableModel.addColumn("Name");
+			tableModel.addColumn("Category");
+			tableModel.addColumn("Time");
+			tableModel.addColumn("Payment");
+			tableModel.addColumn("isCompleted");
+			tableModel.addColumn("isPaid");
 
-	        
-	        
+			// Create the chore table using the table model
+			choreTable = new JTable(tableModel);
+			JScrollPane scrollPane = new JScrollPane(choreTable);
+			mainPanel.add(scrollPane);
+			
+			markAsCompletedButton = new JButton("Mark as Completed");
+			mainPanel.add(markAsCompletedButton);
+			
+			hoursWorkedButton = new JButton("Hours Worked");
+			mainPanel.add(hoursWorkedButton);
+			
+			markAsCompletedButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					markAsCompleted();
+					displayChildChores();
+				}
+			});
+			
+			hoursWorkedButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getHoursWorked();
+				}
+			});
+
 	        getContentPane().add(mainPanel);
 	        setVisible(true);
-
-
-
 
 	    }
 	    
     
 	    private void checkBalance() {
-	        ChildAccount selectedChild = (ChildAccount) this.childAccount;
-	        double balance = parentAccount.checkChildBalance(selectedChild);
+	        double balance = DatabaseOperations.getChildBalance(childAccount.getUsername());
 	        JOptionPane.showMessageDialog(this, "Your Balance: $" + balance);
 	    }
+	    
+	    private void displayChildChores() {
+			// Clear existing data from the chore table
+			DefaultTableModel tableModel = (DefaultTableModel) choreTable.getModel();
+			tableModel.setRowCount(0); // Remove all rows from the table
+			
+			// Fetch and display chores associated with the parent account
+			List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+			for (Chore chore : childChores) {
+				Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
+						chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
+						chore.isPaid() ? "Yes" : "No"};
+				tableModel.addRow(rowData);
+			}
+		}
+	    
+	    private void markAsCompleted() {
+	    	int selectedRow = choreTable.getSelectedRow();
+			if (selectedRow == -1) {
+				JOptionPane.showMessageDialog(this, "Please select a chore to mark as completed");
+			}
+			
+			int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+			
+			if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
+				DatabaseOperations.markChoreAsCompleted(choreId, childAccount.getUsername());
+				JOptionPane.showMessageDialog(this, "Chore recorded as completed successfully!");
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Chore already completed!");
+			}
+	    }
 
-
-
+	    private void getHoursWorked() {
+		    double hoursWorked = Math.round(DatabaseOperations.getHoursWorkedByChild(childAccount.getUsername()) * 100.0) / 100.0;
+		    JOptionPane.showMessageDialog(this, "You worked " + hoursWorked + " hours!");
+	    }
 
 	    public static void main(String[] args) {
 	        

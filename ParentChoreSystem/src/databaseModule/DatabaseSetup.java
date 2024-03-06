@@ -34,6 +34,8 @@ public class DatabaseSetup {
             + "parentUsername VARCHAR(255),"
             + "isPaid BOOLEAN NOT NULL,"
             + "isCompleted BOOLEAN NOT NULL,"
+            + "completedBy VARCHAR(255) DEFAULT NULL,"
+			+ "FOREIGN KEY (completedBy) REFERENCES ChildAccounts(childUsername) ON DELETE SET NULL,"
     		+ "FOREIGN KEY (parentUsername) REFERENCES Accounts(username))";
 
     private static final String CREATE_CHORE_ASSIGNMENT_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChoreAssignment ("

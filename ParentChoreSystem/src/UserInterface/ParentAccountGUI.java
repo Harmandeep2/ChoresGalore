@@ -34,7 +34,7 @@ public class ParentAccountGUI extends JFrame{
 	private ParentAccount parentAccount;
 	private JComboBox<ChildAccount> childDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
-	private JButton createChoreButton, checkBalanceButton, addChildButton;
+	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton;
 	private JTable choreTable;
 
@@ -75,14 +75,27 @@ public class ParentAccountGUI extends JFrame{
 		createChoreButton = new JButton("Create Chore");
 
 		//Assign Chore Button
-		JButton assignChoreButton = new JButton("Assign Chore");
+		assignChoreButton = new JButton("Assign Chore");
 		mainPanel.add(assignChoreButton);
+		
+		//Pay Chore Button
+		payChoreButton = new JButton("Pay Chore");
+		mainPanel.add(payChoreButton);
 
 		// Add action listener for the assign chore button
 		assignChoreButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				assignChore();
+			}
+		});
+		
+		// Add action listener for the pay chore button
+		payChoreButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				payChore();
+				displayParentChores();
 			}
 		});
 
@@ -203,7 +216,32 @@ public class ParentAccountGUI extends JFrame{
 		JOptionPane.showMessageDialog(this, "Chore created successfully!");
 	}
 
-
+	private void payChore() {
+		
+		ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+		int selectedRow = choreTable.getSelectedRow();
+		if (selectedRow == -1) {
+			JOptionPane.showMessageDialog(this, "Please select a chore to pay to selected child");
+		}
+		
+		int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+		
+		String childWhoCompletedChore = DatabaseOperations.getChoreCompletingChildUsername(choreId);
+		
+		if(choreTable.getValueAt(selectedRow, 5).equals("Yes") && choreTable.getValueAt(selectedRow, 6).equals("No")) {
+			if(selectedChild.getUsername().equals(childWhoCompletedChore)) {
+				DatabaseOperations.markChoreAsPaid(choreId, selectedChild.getUsername());
+				JOptionPane.showMessageDialog(this, "Chore paid to " + selectedChild.getUsername());	
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Chore is not completed by " + selectedChild.getUsername() +
+						" instead completed by " + childWhoCompletedChore);
+			}
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Either chore is not completed or chore is already paid!");
+		}
+	}
 
 
 	// Define a method to handle chore assignment
@@ -212,7 +250,7 @@ public class ParentAccountGUI extends JFrame{
 		ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
 		int selectedRow = choreTable.getSelectedRow();
 		if (selectedRow == -1) {
-			JOptionPane.showMessageDialog(this, "Please select a chore to assign");
+			JOptionPane.showMessageDialog(this, "Please select a chore to assign to selected child");
 		}
 		
 		int choreId = (int) choreTable.getValueAt(selectedRow, 0);
@@ -243,7 +281,7 @@ public class ParentAccountGUI extends JFrame{
 
 	private void checkBalance() {
 		ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
-		double balance = DatabaseOperations.getChildBalance(this.parentAccount.getUsername(), selectedChild.getUsername());
+		double balance = DatabaseOperations.getChildBalance(selectedChild.getUsername());
 		JOptionPane.showMessageDialog(this, selectedChild+ "'s Balance: $" + balance);
 	}
 

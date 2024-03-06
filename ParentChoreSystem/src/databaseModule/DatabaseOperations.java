@@ -107,11 +107,10 @@ public class DatabaseOperations {
 		return null;
 	}
 
-	public static double getChildBalance(String parentUsername, String childUsername) {
+	public static double getChildBalance(String childUsername) {
 		try(Connection connection = DatabaseConnector.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ChildAccounts WHERE parentUsername = ? AND childUsername = ?")) {
-			preparedStatement.setString(1, parentUsername);
-			preparedStatement.setString(2, childUsername);
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ChildAccounts WHERE childUsername = ?")) {
+			preparedStatement.setString(1, childUsername);
 			try(ResultSet resultSet = preparedStatement.executeQuery()) {
 				if(resultSet.next())
 					return resultSet.getDouble("balance");
@@ -124,6 +123,25 @@ public class DatabaseOperations {
 		}
 		
 		return 0.0;
+	}
+	
+	public static double getHoursWorkedByChild(String childUsername) {
+		try(Connection connection = DatabaseConnector.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ChildAccounts WHERE childUsername = ?")) {
+			preparedStatement.setString(1, childUsername);
+			try(ResultSet resultSet = preparedStatement.executeQuery()) {
+				if(resultSet.next())
+					return resultSet.getDouble("hoursWorked");
+				else
+					return 0.0;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return 0.0;
+		
 	}
 	
     public static List<Account> getAllAccounts() {
@@ -240,6 +258,24 @@ public class DatabaseOperations {
 
 		    return chores;
 	}
+    
+    public static String getChoreCompletingChildUsername(int choreID) {
+		try(Connection connection = DatabaseConnector.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Chores WHERE id = ?")) {
+			preparedStatement.setInt(1, choreID);
+			try(ResultSet resultSet = preparedStatement.executeQuery()) {
+				if(resultSet.next())
+					return resultSet.getString("completedBy");
+				else
+					return null;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+    }
 
     public static List<Chore> getAllChores() {
         List<Chore> chores = new ArrayList<>();
@@ -280,5 +316,54 @@ public class DatabaseOperations {
             e.printStackTrace();
         }
     }
+    
+    public static void markChoreAsCompleted(int choreID, String childUsername) {
+        try (Connection connection = DatabaseConnector.getConnection()) {
+            // Update Chores table
+            try (PreparedStatement updateChores = connection.prepareStatement(
+                    "UPDATE Chores SET isCompleted = true, completedBy = ? WHERE id = ?")) {
+                updateChores.setString(1, childUsername);
+            	updateChores.setInt(2, choreID);
+                updateChores.executeUpdate();
+            }
 
+            // Update ChildAccounts table
+            try (PreparedStatement updateChildAccounts = connection.prepareStatement(
+                    "UPDATE ChildAccounts " +
+                            "SET hoursWorked = hoursWorked + (SELECT time/60 FROM Chores WHERE id = ?) " +
+                            "WHERE childUsername = ?")) {
+                updateChildAccounts.setInt(1, choreID);
+                updateChildAccounts.setString(2, childUsername);
+                updateChildAccounts.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+	
+    public static void markChoreAsPaid(int choreID, String childUsername) {
+        try (Connection connection = DatabaseConnector.getConnection()) {
+            // Update Chores table
+            try (PreparedStatement updateChores = connection.prepareStatement(
+                    "UPDATE Chores SET isPaid = true WHERE id = ?")) {
+                updateChores.setInt(1, choreID);
+                updateChores.executeUpdate();
+            }
+
+            // Update ChildAccounts table
+            try (PreparedStatement updateChildAccounts = connection.prepareStatement(
+                    "UPDATE ChildAccounts " +
+                            "SET balance = balance + (SELECT payment FROM Chores WHERE id = ?) " +
+                            "WHERE childUsername = ?")) {
+                updateChildAccounts.setInt(1, choreID);
+                updateChildAccounts.setString(2, childUsername);
+                updateChildAccounts.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+	
 }
