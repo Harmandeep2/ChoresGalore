@@ -81,7 +81,10 @@ public class ChildRegistration extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
-
+        String confirmPassword = new String(confirmPasswordField.getPassword());
+        
+        if(password.equals(confirmPassword )) //Check if password and confirm password are the same
+		{
      // Insert new child account into the database
         DatabaseOperations.insertAccount(username, password, "Child");
 
@@ -90,9 +93,13 @@ public class ChildRegistration extends JFrame implements ActionListener {
 
         // Redirect to login page
         new ChildLoginPage();
-        
-       
         dispose();
+		}
+        
+        else
+		{
+			JOptionPane.showMessageDialog(this, "Check that Password's are entered correctly");
+		}
 
     }
     
@@ -105,9 +112,10 @@ public class ChildRegistration extends JFrame implements ActionListener {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Failed to save account!");}
         }
+        */
 
     public static void main(String[] args) {
         new ChildRegistration();
-    }*/
+    }
 
 }
