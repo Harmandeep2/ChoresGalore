@@ -39,13 +39,13 @@ public class ParentRegistration extends JFrame implements ActionListener {
         
         usernameField = new JTextField();
         passwordField = new JPasswordField();
-        confirmPasswordField = new JPasswordField();
- 
-        
+        confirmPasswordField = new JPasswordField();  
 
+        //Register new Parent Account
         registerButton = new JButton("Register");
         registerButton.addActionListener(this);
         
+        //Return to main page
         backButton = new JButton("Return");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -75,8 +75,12 @@ public class ParentRegistration extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
+        String confirmPassword = new String(confirmPasswordField.getPassword());
         String accountType = "Parent"; // Assuming all registered accounts are parents
+        
 
+		if(password.equals(confirmPassword )) //Check if password and confirm password are the same
+		{
         // Insert new parent account into the database
         DatabaseOperations.insertAccount(username, password, accountType);
 
@@ -85,6 +89,11 @@ public class ParentRegistration extends JFrame implements ActionListener {
         
         new ParentLoginPage(); 
         dispose();
+        }
+		else
+		{
+			JOptionPane.showMessageDialog(this, "Check that Password's are entered correctly");
+		}
     }
     
    
