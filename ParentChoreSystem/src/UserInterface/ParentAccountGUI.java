@@ -99,11 +99,6 @@ public class ParentAccountGUI extends JFrame{
 			}
 		});
 
-		// Add Chore List Panel
-		JPanel choreListPanel = new JPanel();
-		choreListPanel.setBorder(BorderFactory.createTitledBorder("Chore List"));
-		mainPanel.add(choreListPanel);
-
 		//Add logout button
 		logoutButton = new JButton("Log Out");
 		logoutButton.addActionListener(new ActionListener() {

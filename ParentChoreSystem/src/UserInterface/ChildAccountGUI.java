@@ -33,6 +33,9 @@ public class ChildAccountGUI extends JFrame{
 	    private JTextField chores;
 	    private JButton checkBalanceButton, exportChoresButton;
 	    private JButton logoutButton;
+	    private JButton sortByNameButton, filterByCategoryButton, sortByTimeButton, sortByPaymentButton, filterByIsCompletedButton, filterByIsPaidButton;
+	    private JButton filterByIsNotCompletedButton, filterByIsNotPaidButton;
+	    private JButton defaultSortButton;
 	    private JButton markAsCompletedButton, hoursWorkedButton;
 		private ChildAccount childAccount;
 	 	private ParentAccount parentAccount;
@@ -53,41 +56,7 @@ public class ChildAccountGUI extends JFrame{
 	        JPanel mainPanel = new JPanel();
 	        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 	        
-
-
-	        // Chore Creation Panel
-	        
-	        logoutButton = new JButton("Log Out");
-	        logoutButton.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	    	        JOptionPane.showMessageDialog(null, "Logged Out Successfully");
-	            	MainPage mainPage = new MainPage();
-					mainPage.setVisible(true);
-	            	dispose(); // Close login window
-	            }
-	        });
-
-	        
-	        // Check Balance Button
-	        checkBalanceButton = new JButton("Check Balance");
-	        //mainPanel.add(checkBalanceButton);
-        	add(checkBalanceButton,BorderLayout.NORTH);
-
-	        // Log Out Button
-        	add(logoutButton,BorderLayout.PAGE_END);
-	        //mainPanel.add(logoutButton);
-
-
-	        checkBalanceButton.addActionListener(new ActionListener() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
-	                checkBalance();
-	            }
-	        });
-	        
-	    	// Create a table model
-			DefaultTableModel tableModel = new DefaultTableModel();
+	        DefaultTableModel tableModel = new DefaultTableModel();
 			tableModel.addColumn("Chore ID");
 			tableModel.addColumn("Name");
 			tableModel.addColumn("Category");
@@ -101,15 +70,131 @@ public class ChildAccountGUI extends JFrame{
 			JScrollPane scrollPane = new JScrollPane(choreTable);
 			mainPanel.add(scrollPane);
 			
-			markAsCompletedButton = new JButton("Mark as Completed");
-			mainPanel.add(markAsCompletedButton);
+			JPanel sortButtonPanel = new JPanel();
+			sortButtonPanel.setBorder(BorderFactory.createTitledBorder("Sort and filter by"));
+			sortButtonPanel.setLayout(new BoxLayout(sortButtonPanel, BoxLayout.X_AXIS));
+			
+			sortByNameButton = new JButton("Sort by Name");
+			sortButtonPanel.add(sortByNameButton);
+			
+			filterByCategoryButton = new JButton("Sort by Category");
+			sortButtonPanel.add(filterByCategoryButton);
+			
+			sortByTimeButton = new JButton("Sort by Time");
+			sortButtonPanel.add(sortByTimeButton);
+			
+			sortByPaymentButton = new JButton("Sort by Payment");
+			sortButtonPanel.add(sortByPaymentButton);
+			
+			filterByIsCompletedButton = new JButton("Filter by isCompleted");
+			sortButtonPanel.add(filterByIsCompletedButton);
+			
+			filterByIsPaidButton = new JButton("Filter by isPaid");
+			sortButtonPanel.add(filterByIsPaidButton);
+			
+			filterByIsNotCompletedButton = new JButton("Filter by isNotCompleted");
+			sortButtonPanel.add(filterByIsNotCompletedButton);
+			
+			filterByIsNotPaidButton = new JButton("Filter by isNotPaid");
+			sortButtonPanel.add(filterByIsNotPaidButton);
+			
+			defaultSortButton = new JButton("Default");
+			sortButtonPanel.add(defaultSortButton);
+			
+			sortByNameButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					sortByName();
+				}
+			});
+			
+			filterByCategoryButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					filterByCategory();
+				}
+			});
+			
+			sortByTimeButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					sortByTime();
+				}
+			});
+			
+			sortByPaymentButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					sortByPayment();
+				}
+			});
+			
+			filterByIsCompletedButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					filterByIsCompleted();
+				}
+			});
+			
+			filterByIsPaidButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					filterByIsPaid();
+				}
+			});
+			
+			filterByIsNotCompletedButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					filterByIsNotCompleted();
+				}
+			});
+			
+			filterByIsNotPaidButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					filterByIsNotPaid();
+				}
+				
+			});
+			defaultSortButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					displayChildChores();
+				}
+			});
+			mainPanel.add(sortButtonPanel);
+			
+			//Add some gap
+			mainPanel.add(new JLabel(" "));
+			
+			JPanel buttonPanel = new JPanel();
+	        
+	        // Check Balance Button
+	        checkBalanceButton = new JButton("Check Balance");
+	        buttonPanel.add(checkBalanceButton);
+	        
+	        markAsCompletedButton = new JButton("Mark as Completed");
+			buttonPanel.add(markAsCompletedButton);
 			
 			hoursWorkedButton = new JButton("Hours Worked");
-			mainPanel.add(hoursWorkedButton);
+			buttonPanel.add(hoursWorkedButton);
 			
 			exportChoresButton = new JButton("Export Chores as CSV");
-			mainPanel.add(exportChoresButton);
+			buttonPanel.add(exportChoresButton);
 			
+	        // Log Out Button
+	        logoutButton = new JButton("Log Out");
+	        buttonPanel.add(logoutButton);
+
+
+	        checkBalanceButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                checkBalance();
+	            }
+	        });
+	       
 			markAsCompletedButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -117,6 +202,16 @@ public class ChildAccountGUI extends JFrame{
 					displayChildChores();
 				}
 			});
+			
+			logoutButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	    	        JOptionPane.showMessageDialog(null, "Logged Out Successfully");
+	            	MainPage mainPage = new MainPage();
+					mainPage.setVisible(true);
+	            	dispose(); // Close login window
+	            }
+	        });
 			
 			hoursWorkedButton.addActionListener(new ActionListener() {
 				@Override
@@ -132,6 +227,7 @@ public class ChildAccountGUI extends JFrame{
 				}
 			});
 
+	        mainPanel.add(buttonPanel);
 	        getContentPane().add(mainPanel);
 	        setVisible(true);
 
@@ -185,6 +281,69 @@ public class ChildAccountGUI extends JFrame{
 		    ChoresUtils.createExcelSheet(childChores);
 	    }
 
+	    private void sortByName() {
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    List<Chore> sortedChores = ChoresUtils.sortAlphabetically(childChores);
+		    displayListOnTable(sortedChores);
+		    
+	    }
+	    
+	    private void filterByCategory() {
+		    String category = JOptionPane.showInputDialog(this, "Enter the category:");
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    List<Chore> sortedChores = ChoresUtils.filterCategory(category, childChores);
+		    displayListOnTable(sortedChores);
+	    }
+	    
+	    private void sortByTime() {
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    List<Chore> sortedChores = ChoresUtils.sortByTime(childChores);
+		    displayListOnTable(sortedChores);
+	    }
+	    
+	    private void sortByPayment() {
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    List<Chore> sortedChores = ChoresUtils.sortByPayment(childChores);
+		    displayListOnTable(sortedChores);
+		    
+	    }
+	    
+	    private void filterByIsCompleted() {
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    List<Chore> sortedChores = ChoresUtils.filterCompleted(childChores);
+		    displayListOnTable(sortedChores);
+	    }
+	    
+	    private void filterByIsPaid() {
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    List<Chore> sortedChores = ChoresUtils.filterPaid(childChores);
+		    displayListOnTable(sortedChores);
+	    }
+	    
+	    private void filterByIsNotCompleted() {
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    List<Chore> sortedChores = ChoresUtils.filterNotCompleted(childChores);
+		    displayListOnTable(sortedChores);
+	    }
+	    
+	    private void filterByIsNotPaid() {
+		    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+		    List<Chore> sortedChores = ChoresUtils.filterNotPaid(childChores);
+		    displayListOnTable(sortedChores);
+	    }
+	    private void displayListOnTable(List<Chore> chores) {
+	    	DefaultTableModel tableModel = (DefaultTableModel) choreTable.getModel();
+			tableModel.setRowCount(0);
+			
+			for (Chore chore : chores) {
+				Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
+						chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
+						chore.isPaid() ? "Yes" : "No"};
+				tableModel.addRow(rowData);
+			}
+			
+			
+	    }
 	    public static void main(String[] args) {
 	        
 	        ChildAccount childAccount = new ChildAccount("childUsername", "childPassword");
