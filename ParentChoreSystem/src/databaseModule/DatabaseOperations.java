@@ -100,12 +100,31 @@ public class DatabaseOperations {
 				}
 				return children;
 			}
-		} catch(SQLException e) {
+		}
+		catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
+	public static double getChildBalance(String parentUsername, String childUsername) {
+		try(Connection connection = DatabaseConnector.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ChildAccounts WHERE parentUsername = ? AND childUsername = ?")) {
+			preparedStatement.setString(1, parentUsername);
+			preparedStatement.setString(2, childUsername);
+			try(ResultSet resultSet = preparedStatement.executeQuery()) {
+				if(resultSet.next())
+					return resultSet.getDouble("balance");
+				else
+					return 0.0;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return 0.0;
+	}
 	
     public static List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
@@ -186,6 +205,41 @@ public class DatabaseOperations {
 
         return chores;
     }
+    
+    public static List<Chore> getAllChoresofParent(String parentUsername) {
+		 List<Chore> chores = new ArrayList<>();
+
+		    try (Connection connection = DatabaseConnector.getConnection();
+		         PreparedStatement preparedStatement = connection.prepareStatement(
+		                 "SELECT * FROM Chores WHERE parentUsername = ?")) {
+
+		        preparedStatement.setString(1, parentUsername);
+
+		        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+		        	while (resultSet.next()) {
+		                Chore chore = new Chore(resultSet.getString("name"),
+		                		resultSet.getString("category"),
+		                		resultSet.getDouble("time"),
+		                		resultSet.getDouble("payment"));
+		                chore.setId(resultSet.getInt("id"));
+		                chore.setParentUsername(resultSet.getString("parentUsername"));
+		                if(resultSet.getBoolean("isPaid")) {
+							chore.markPaid();
+						}
+		                if(resultSet.getBoolean("isCompleted")) {
+		                	chore.markCompleted();
+		                }
+		                
+		                chores.add(chore);
+		        	}
+		        }
+
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+
+		    return chores;
+	}
 
     public static List<Chore> getAllChores() {
         List<Chore> chores = new ArrayList<>();
@@ -227,36 +281,4 @@ public class DatabaseOperations {
         }
     }
 
-	public static List<Chore> getAllChoresofParent(String parentUsername) {
-		 List<Chore> chores = new ArrayList<>();
-
-		    try (Connection connection = DatabaseConnector.getConnection();
-		         PreparedStatement preparedStatement = connection.prepareStatement(
-		                 "SELECT * FROM Chores WHERE parentUsername = ?")) {
-
-		        preparedStatement.setString(1, parentUsername);
-
-		        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-		        	while (resultSet.next()) {
-		                Chore chore = new Chore(resultSet.getString("name"),
-		                		resultSet.getString("category"),
-		                		resultSet.getDouble("time"),
-		                		resultSet.getDouble("payment"));
-		                chore.setId(resultSet.getInt("id"));
-		                chore.setParentUsername(resultSet.getString("parentUsername"));
-		                if(resultSet.getBoolean("isPaid")) {
-							chore.markPaid();
-						}
-		                if(resultSet.getBoolean("isCompleted")) {
-		                	chore.markCompleted();
-		                }
-		        	}
-		        }
-
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
-
-		    return chores;
-	}
 }

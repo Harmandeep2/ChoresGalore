@@ -105,10 +105,13 @@ public class ParentAccountGUI extends JFrame{
 
 		// Create a table model
 		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.addColumn("Chore ID");
 		tableModel.addColumn("Name");
 		tableModel.addColumn("Category");
 		tableModel.addColumn("Time");
 		tableModel.addColumn("Payment");
+		tableModel.addColumn("isCompleted");
+		tableModel.addColumn("isPaid");
 
 		// Create the chore table using the table model
 		choreTable = new JTable(tableModel);
@@ -192,16 +195,12 @@ public class ParentAccountGUI extends JFrame{
 		DatabaseOperations.insertChore(newChore, parentAccount.getUsername());
 
 		// Update the table model with the new chore data
-		DefaultTableModel tableModel = (DefaultTableModel) choreTable.getModel();
-		Object[] rowData = {choreName, choreCategory, choreTime, chorePayment};
-		tableModel.addRow(rowData);
+		displayParentChores();
 
 
 
 		// Display success message
 		JOptionPane.showMessageDialog(this, "Chore created successfully!");
-
-		 displayParentChores();
 	}
 
 
@@ -209,35 +208,42 @@ public class ParentAccountGUI extends JFrame{
 
 	// Define a method to handle chore assignment
 	private void assignChore() {
-		String choreName = choreNameField.getText();
-		String choreCategory = choreCategoryField.getText();
-		double choreTime = Double.parseDouble(choreTimeField.getText());
-		double chorePayment = Double.parseDouble(chorePaymentField.getText());
-
+	
 		ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
-		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
-		parentAccount.assignChore(selectedChild, newChore);
-
-		// Optionally, provide feedback to the user
-		JOptionPane.showMessageDialog(this, "Chore assigned to " + selectedChild.getUsername());
+		int selectedRow = choreTable.getSelectedRow();
+		if (selectedRow == -1) {
+			JOptionPane.showMessageDialog(this, "Please select a chore to assign");
+		}
+		
+		int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+		
+		if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
+			DatabaseOperations.insertChoreAssignment(choreId, selectedChild.getUsername());
+			JOptionPane.showMessageDialog(this, "Chore assigned to " + selectedChild.getUsername());
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Chore already completed!");
+		}
 	}
 
 	private void displayParentChores() {
 		// Clear existing data from the chore table
 		DefaultTableModel tableModel = (DefaultTableModel) choreTable.getModel();
-		//tableModel.setRowCount(0); // Remove all rows from the table
-
+		tableModel.setRowCount(0); // Remove all rows from the table
+		
 		// Fetch and display chores associated with the parent account
 		List<Chore> parentChores = DatabaseOperations.getAllChoresofParent(parentAccount.getUsername());
 		for (Chore chore : parentChores) {
-			Object[] rowData = {chore.getName(), chore.getCategory(), chore.getTime(), chore.getPayment()};
+			Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
+					chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
+					chore.isPaid() ? "Yes" : "No"};
 			tableModel.addRow(rowData);
 		}
 	}
 
 	private void checkBalance() {
 		ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
-		double balance = parentAccount.checkChildBalance(selectedChild);
+		double balance = DatabaseOperations.getChildBalance(this.parentAccount.getUsername(), selectedChild.getUsername());
 		JOptionPane.showMessageDialog(this, selectedChild+ "'s Balance: $" + balance);
 	}
 
