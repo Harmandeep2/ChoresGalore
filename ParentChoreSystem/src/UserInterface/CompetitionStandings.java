@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -47,25 +48,19 @@ public class CompetitionStandings extends JFrame implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Will add a return to parent account/child account home page later
+				
 			}
 			
 		});
 		if (!childList.isEmpty() && parent.getChildren()!=null) {
-			parent.addChildAccount(child);
-			int n = parent.getChildren().size();
-			ArrayList<String>childNames = new ArrayList<String>();
-			String[][] children = {{"name","balance"},{"name","balance"}};
-			for (int i=0;i<n;i++) {
-				childNames.add(parent.getChildren().toString());
-				children[i][0] = parent.getChildren().toString();
-				children[i][1] = String.valueOf(parent.checkChildBalance(child));
-			}
-			String[] ColumnNames = {"Name","Balance"};
-			 DefaultTableModel model = new DefaultTableModel(children,ColumnNames);
-			  JTable table = new JTable(model);
-			  JScrollPane pane = new JScrollPane(table);
-			  panel.add(pane);
-			  add(panel);
+			DefaultTableModel tableModel = new DefaultTableModel();
+			tableModel.addColumn("Competition Name");
+			tableModel.addColumn("Winner");
+			// Create the chore table using the table model
+			table = new JTable(tableModel);
+			JScrollPane scrollPane = new JScrollPane(table);
+			panel.add(scrollPane);
+
 		} else {
 			goBack = new JButton("No Registered Parents with children");
 		}
