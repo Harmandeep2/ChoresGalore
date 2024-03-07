@@ -2,7 +2,9 @@ package databaseModule;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import accountsModule.*;
 import choresModule.Chore;
@@ -365,5 +367,101 @@ public class DatabaseOperations {
         }
     }
 
-	
+    // COMPETITIONS TABLE OPERATIONS
+    public static void addCompetition(String competitionName, ParentAccount parent, List<ChildAccount> children, int choreId) {
+        try (Connection connection = DatabaseConnector.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement competitionStatement = connection.prepareStatement(
+                    "INSERT INTO Competitions (competitionName, parentUsername, childUsername, choreID) VALUES (?, ?, ?, ?)")) {
+
+                for (ChildAccount child : children) {
+                    competitionStatement.setString(1, competitionName);
+                    competitionStatement.setString(2, parent.getUsername());
+                    competitionStatement.setString(3, child.getUsername());
+                    competitionStatement.setInt(4, choreId);
+                    competitionStatement.addBatch();
+                }
+
+                competitionStatement.executeBatch();
+            }
+
+            // Insert records into the ChoreAssignment table for each child and chore
+            try (PreparedStatement choreAssignmentStatement = connection.prepareStatement(
+                    "INSERT INTO ChoreAssignment (choreID, childUsername) VALUES (?, ?)")) {
+
+                for (ChildAccount child : children) {
+                    choreAssignmentStatement.setInt(1, choreId);
+                    choreAssignmentStatement.setString(2, child.getUsername());
+                    choreAssignmentStatement.addBatch();
+                }
+
+                choreAssignmentStatement.executeBatch();
+            }
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static boolean checkCompetitionAlreadyExists(String competitionName) {
+	    try(Connection connection = DatabaseConnector.getConnection();
+	    		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Competitions WHERE competitionName = ?")) {
+	    	preparedStatement.setString(1, competitionName);
+	    	try(ResultSet resultSet = preparedStatement.executeQuery()) {
+	    		return resultSet.next();
+	    	}
+	    } catch(SQLException e) {
+	    	e.printStackTrace();
+	    }
+	    return false;
+	}
+    
+    public static Map<String, String> getCompetitionWinners() {
+        Map<String, String> competitionWinners = new HashMap<>();
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT c.competitionName, c.choreID, ch.completedBy FROM Competitions c " +
+                     "LEFT JOIN Chores ch ON c.choreID = ch.id")) {
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String competitionName = resultSet.getString("competitionName");
+                    String winner = resultSet.getString("completedBy");
+
+                    if (winner != null && !winner.isEmpty()) {
+                        competitionWinners.put(competitionName, winner);
+                    } else {
+                        competitionWinners.put(competitionName, "Not completed by anyone yet");
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return competitionWinners;
+    }
+    
+    public static List<String> getParticipantsOfCompetition(String competitionName) {
+	    try(Connection connection = DatabaseConnector.getConnection();
+	    		PreparedStatement preparedStatement = connection.prepareStatement(
+	    		"SELECT childUsername FROM Competitions WHERE competitionName = ?")) {
+	    	preparedStatement.setString(1, competitionName);
+	    	try(ResultSet resultSet = preparedStatement.executeQuery()) {
+	    		List<String> participants = new ArrayList<>();
+	    		while(resultSet.next()) {
+	    			participants.add(resultSet.getString("childUsername"));
+	    		}
+	    		return participants;
+	    	}
+	    } catch(SQLException e) {
+	    	e.printStackTrace();
+	    }
+	    return null;
+    }
 }

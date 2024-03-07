@@ -44,6 +44,17 @@ public class DatabaseSetup {
             + "PRIMARY KEY (choreID, childUsername),"
             + "FOREIGN KEY (choreID) REFERENCES Chores(id),"
             + "FOREIGN KEY (childUsername) REFERENCES Accounts(username))";
+    
+    private static final String CREATE_COMPETITIONS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS Competitions ("
+    		+ "competitionName VARCHAR(255) NOT NULL,"
+    		+ "parentUsername VARCHAR(255) NOT NULL,"
+    		+ "childUsername VARCHAR(255) NOT NULL,"
+    		+ "choreID INT NOT NULL,"
+    		+ "PRIMARY KEY (competitionName, parentUsername, childUsername, choreID),"
+    		+ "FOREIGN KEY (parentUsername) REFERENCES Accounts(username),"
+    		+ "FOREIGN KEY (childUsername) REFERENCES ChildAccounts(childUsername),"
+    		+ "FOREIGN KEY (choreID) REFERENCES Chores(id))";
+
 
     public static void setupDatabase() {
         try (Connection connection = DatabaseConnector.getConnection();
@@ -53,7 +64,8 @@ public class DatabaseSetup {
 			 PreparedStatement createChildAccountsTableStatement = connection.prepareStatement(CREATE_CHILD_ACCOUNTS_TABLE_SQL);
              PreparedStatement createChoresTableStatement = connection.prepareStatement(CREATE_CHORES_TABLE_SQL);
              PreparedStatement createChoreAssignmentTableStatement = connection.prepareStatement(CREATE_CHORE_ASSIGNMENT_TABLE_SQL)) {
-
+        	 PreparedStatement createCompetitionsTableStatement = connection.prepareStatement(CREATE_COMPETITIONS_TABLE_SQL);
+        	
             // Create the database if not exists
             createDatabaseStatement.executeUpdate();
 
@@ -72,6 +84,9 @@ public class DatabaseSetup {
             // Create the 'ChoreAssignment' table if not exists
             createChoreAssignmentTableStatement.executeUpdate();
 
+			// Create the 'Competitions' table if not exists
+			createCompetitionsTableStatement.executeUpdate();
+			
             System.out.println("Database setup completed successfully.");
 
         } catch (SQLException e) {

@@ -2,6 +2,7 @@ package Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -50,7 +51,7 @@ class CompetitionTest {
 
 	@Test
     public void testGetWinner_Child1Wins() {
-		Competition competition = new Competition(parent, child1, child2, chore);
+		Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
         child1.markChoreCompleted(chore);
         assertEquals(child1, competition.getWinner());
     }
@@ -58,7 +59,7 @@ class CompetitionTest {
 	
 	@Test
     public void testGetWinner_Child2Wins() {
-		Competition competition = new Competition(parent, child1, child2, chore);
+		Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
         child2.markChoreCompleted(chore);
         assertEquals(child2, competition.getWinner());
     }

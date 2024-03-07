@@ -4,38 +4,22 @@ package UserInterface;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
-import accountsModule.ChildAccount;
-import accountsModule.ParentAccount;
-import choresModule.Chore;
-import databaseModule.DatabaseConnector;
-import databaseModule.DatabaseOperations;
+import accountsModule.*;
+import choresModule.*;
+import databaseModule.*;
 
 public class ParentAccountGUI extends JFrame{
 
 	private ParentAccount parentAccount;
 	private JComboBox<ChildAccount> childDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
-	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton, addCompetitionButton;
-	private JButton logoutButton;
+	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
+	private JButton logoutButton, competitionStandingsButton, addCompetitionButton;
 	private JTable choreTable;
 
 	public ParentAccountGUI(ParentAccount parentAccount) {
@@ -60,30 +44,35 @@ public class ParentAccountGUI extends JFrame{
 		List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
 		childDropdown = new JComboBox<>(children.toArray(new ChildAccount[0]));
 		mainPanel.add(childDropdown);
-
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(new JLabel(" "));
+		
+		JPanel topButtonsPanel = new JPanel();
+		topButtonsPanel.setLayout(new BoxLayout(topButtonsPanel, BoxLayout.X_AXIS));
+		
 		// Add Child Button
 		addChildButton = new JButton("Add Child"); // Added button
-		mainPanel.add(addChildButton); // Added button
-
-		// Chore Creation Panel
-		JPanel chorePanel = new JPanel();
-		chorePanel.setBorder(BorderFactory.createTitledBorder("Chore Creation"));
-
-		choreNameField = new JTextField(15);
-		choreCategoryField = new JTextField(15);
-		choreTimeField = new JTextField(5);
-		chorePaymentField = new JTextField(5);
-		createChoreButton = new JButton("Create Chore");
-		addCompetitionButton = new JButton("Create Competition");
+		topButtonsPanel.add(addChildButton); // Added button
 
 		//Assign Chore Button
 		assignChoreButton = new JButton("Assign Chore");
-		mainPanel.add(assignChoreButton);
+		topButtonsPanel.add(assignChoreButton);
 		
 		//Pay Chore Button
 		payChoreButton = new JButton("Pay Chore");
-		mainPanel.add(payChoreButton);
+		topButtonsPanel.add(payChoreButton);
 
+		addChildButton.addActionListener(new ActionListener() { // Add action listener for add child button
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addChild();
+			}
+		});
+		
 		// Add action listener for the assign chore button
 		assignChoreButton.addActionListener(new ActionListener() {
 			@Override
@@ -100,18 +89,10 @@ public class ParentAccountGUI extends JFrame{
 				displayParentChores();
 			}
 		});
-
-		//Add logout button
-		logoutButton = new JButton("Log Out");
-		logoutButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Logged Out Successfully");
-				MainPage mainPage = new MainPage();
-				mainPage.setVisible(true);
-				dispose(); // Close login window
-			}
-		});
+		
+		mainPanel.add(topButtonsPanel);	
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(new JLabel(" "));
 
 		// Create a table model
 		DefaultTableModel tableModel = new DefaultTableModel();
@@ -128,8 +109,15 @@ public class ParentAccountGUI extends JFrame{
 		JScrollPane scrollPane = new JScrollPane(choreTable);
 		mainPanel.add(scrollPane);
 
+		// Chore Creation Panel
+		JPanel chorePanel = new JPanel();
+		chorePanel.setBorder(BorderFactory.createTitledBorder("Chore Creation"));
 
-
+		choreNameField = new JTextField(15);
+		choreCategoryField = new JTextField(15);
+		choreTimeField = new JTextField(5);
+		chorePaymentField = new JTextField(5);
+		createChoreButton = new JButton("Create Chore");
 
 		chorePanel.add(new JLabel("Name: "));
 		chorePanel.add(choreNameField);
@@ -142,15 +130,25 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(createChoreButton);
 
 		mainPanel.add(chorePanel);
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(new JLabel(" "));
 
+		JPanel bottomButtonsPanel = new JPanel();
+		bottomButtonsPanel.setLayout(new BoxLayout(bottomButtonsPanel, BoxLayout.X_AXIS));
+		
 		// Check Balance Button
 		checkBalanceButton = new JButton("Check Balance");
-		mainPanel.add(checkBalanceButton);
+		bottomButtonsPanel.add(checkBalanceButton);
 
-		// Log Out Button
-		mainPanel.add(logoutButton);
-		mainPanel.add(addCompetitionButton);
+		//Add logout button
+		logoutButton = new JButton("Log Out");
+		bottomButtonsPanel.add(logoutButton);
+		
+		addCompetitionButton = new JButton("Create Competition");
+		bottomButtonsPanel.add(addCompetitionButton);
 
+		competitionStandingsButton = new JButton("Competition Standings");
+		bottomButtonsPanel.add(competitionStandingsButton);
 
 		createChoreButton.addActionListener((ActionListener) new ActionListener() {
 			@Override
@@ -165,23 +163,35 @@ public class ParentAccountGUI extends JFrame{
 				checkBalance();
 			}
 		});
-
-		addChildButton.addActionListener(new ActionListener() { // Add action listener for add child button
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				addChild();
-			}
-		});
 		
 		addCompetitionButton.addActionListener(new ActionListener() { // Add action listener for add child button
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				createCompetition();
+				setVisible(false);
 			}
 		});
 		
+		competitionStandingsButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				showCompetitionStandings();
+			}
+		});
+	
+		logoutButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Logged Out Successfully");
+				MainPage mainPage = new MainPage();
+				mainPage.setVisible(true);
+				dispose(); // Close login window
+			}
+		});
 		
-
+		mainPanel.add(bottomButtonsPanel);
+		
 		getContentPane().add(mainPanel);
 		setVisible(true);
 	}
@@ -293,9 +303,13 @@ public class ParentAccountGUI extends JFrame{
 	}
 	
 	private void createCompetition() {
-		CompetitionGUI comp = new CompetitionGUI(this);
+		new CompetitionGUI(this.parentAccount, this);
 	}
 
+	private void showCompetitionStandings() {
+		new CompetitionStandings(this);
+	}
+	
 	public static void main(String[] args) {
 
 		ParentAccount parentAccount = new ParentAccount("parentUsername", "parentPassword");

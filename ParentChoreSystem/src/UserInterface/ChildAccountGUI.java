@@ -1,44 +1,27 @@
 package UserInterface;
 
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
-import accountsModule.ChildAccount;
-import accountsModule.ParentAccount;
-import choresModule.Chore;
-import choresModule.ChoresUtils;
-import databaseModule.DatabaseOperations;
+import accountsModule.*;
+import choresModule.*;
+import databaseModule.*;
 
 
 public class ChildAccountGUI extends JFrame{
 
-	    private JTextField chores;
-	    private JButton checkBalanceButton, exportChoresButton;
+	    private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton;
 	    private JButton logoutButton;
 	    private JButton sortByNameButton, filterByCategoryButton, sortByTimeButton, sortByPaymentButton, filterByIsCompletedButton, filterByIsPaidButton;
 	    private JButton filterByIsNotCompletedButton, filterByIsNotPaidButton;
 	    private JButton defaultSortButton;
 	    private JButton markAsCompletedButton, hoursWorkedButton;
 		private ChildAccount childAccount;
-	 	private ParentAccount parentAccount;
 	 	private JTable choreTable;
 
 
@@ -53,6 +36,7 @@ public class ChildAccountGUI extends JFrame{
 	        setSize(1200, 800);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        setLocationRelativeTo(null); // Center the frame on the screen
+			setResizable(true);
 
 	        JPanel mainPanel = new JPanel();
 	        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -184,6 +168,9 @@ public class ChildAccountGUI extends JFrame{
 			exportChoresButton = new JButton("Export Chores as CSV");
 			buttonPanel.add(exportChoresButton);
 			
+			competitionStandingsButton = new JButton("Competition Standings");
+			buttonPanel.add(competitionStandingsButton);
+			
 	        // Log Out Button
 	        logoutButton = new JButton("Log Out");
 	        buttonPanel.add(logoutButton);
@@ -225,6 +212,14 @@ public class ChildAccountGUI extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					exportChores();
+				}
+			});
+			
+			competitionStandingsButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					setVisible(false);
+					showCompetitionStandings();
 				}
 			});
 
@@ -342,9 +337,12 @@ public class ChildAccountGUI extends JFrame{
 						chore.isPaid() ? "Yes" : "No"};
 				tableModel.addRow(rowData);
 			}
-			
-			
 	    }
+	    
+	    private void showCompetitionStandings() {
+		    new CompetitionStandings(this);
+	    }
+	    
 	    public static void main(String[] args) {
 	        
 	        ChildAccount childAccount = new ChildAccount("childUsername", "childPassword");

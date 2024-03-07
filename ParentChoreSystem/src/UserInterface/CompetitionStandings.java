@@ -4,83 +4,137 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import accountsModule.*;
+import databaseModule.DatabaseOperations;
 
 
-public class CompetitionStandings extends JFrame implements ActionListener{
+public class CompetitionStandings extends JFrame{
 	private JButton back;
-	private JButton goBack;
-	private ParentAccount parent;
-	private ChildAccount child;
-	private ArrayList<ChildAccount> childList;
+	private JFrame prev;
 	private JTable table;
+	private JLabel participantLabel;
+	private JList<String> jList;
 	
-	public CompetitionStandings(ParentAccount parent,
-			ArrayList<ChildAccount> childList, ChildAccount child) throws HeadlessException {
-		super();
-		this.parent = parent;
-		this.childList = childList;
-		this.child=child;
-		competition();
+	public CompetitionStandings(JFrame prev) throws HeadlessException {
+		this.prev = prev;
+		initialize();
+		populateTable();
+		setupTableSelectionListener();
 	}
 
-	public void competition() {
+	public void initialize() {
 		
 		setTitle("Competition Standings");
-		setSize(300,150);
+		setSize(600, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocationRelativeTo(null); // Center the frame on the screen
+		setResizable(true);
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		back = new JButton("Return");
+		
 		back.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Will add a return to parent account/child account home page later
-				
-			}
-			
+				prev.setVisible(true);
+				dispose();
+			}	
 		});
-		if (!childList.isEmpty() && parent.getChildren()!=null) {
-			DefaultTableModel tableModel = new DefaultTableModel();
-			tableModel.addColumn("Competition Name");
-			tableModel.addColumn("Winner");
-			// Create the chore table using the table model
-			table = new JTable(tableModel);
-			JScrollPane scrollPane = new JScrollPane(table);
-			panel.add(scrollPane);
+		
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.addColumn("Competition Name");
+		tableModel.addColumn("Winner");
+		table = new JTable(tableModel);
+		JScrollPane scrollPane = new JScrollPane(table);
+		panel.add(scrollPane);
+		
+		panel.add(new JLabel(" "));
+		panel.add(new JLabel(" "));
+		
+		participantLabel = new JLabel("Select Competition to View Participants");
+		panel.add(participantLabel);
+		
+		DefaultListModel<String> model = new DefaultListModel<>();
+		jList = new JList<>(model);
+		jList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		JScrollPane scrollPaneList = new JScrollPane(jList);
+		panel.add(scrollPaneList);
 
-		} else {
-			goBack = new JButton("No Registered Parents with children");
-		}
+		back.setAlignmentX(CENTER_ALIGNMENT);
 		panel.add(back);
 		add(panel);
 		setVisible(true);
 	}
-	//
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	
+	private void populateTable() {
+		Map<String, String> standings = DatabaseOperations.getCompetitionWinners();
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setRowCount(0);
+		
+		for (Map.Entry<String, String> entry : standings.entrySet()) {
+			model.addRow(new Object[] {entry.getKey(), entry.getValue()});
+		}
 		
 	}
 	
+	private void setupTableSelectionListener() {
+        ListSelectionModel selectionModel = table.getSelectionModel();
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    handleTableSelection();
+                }
+            }
+        });
+    }
+
+    private void handleTableSelection() {
+        int selectedRow = table.getSelectedRow();
+
+        if (selectedRow >= 0) {
+            String selectedCompetition = (String) table.getValueAt(selectedRow, 0);
+
+            // Check if more than one competition is selected
+            if (table.getSelectedRowCount() > 1) {
+                participantLabel.setText("<html><font color='red'><b>Please select only one competition</b></font></html>");
+                jList.setModel(new DefaultListModel<>()); // Clear the JList
+            } else {
+                participantLabel.setText("Participants of " + selectedCompetition);
+                updateParticipantList(selectedCompetition);
+            }
+        }
+    }
+
+    private void updateParticipantList(String competitionName) {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        List<String> participants = DatabaseOperations.getParticipantsOfCompetition(competitionName);
+
+        for (String participant : participants) {
+            model.addElement(participant);
+        }
+
+        jList.setModel(model);
+    }
 	public static void main(String[] args) {
-		ArrayList<ChildAccount> childList = new ArrayList<ChildAccount>();
-		ChildAccount child = new ChildAccount("username","password");
-		ParentAccount parent = new ParentAccount("username","password");
-		childList.add(child);
-		parent.addChildAccount(child);
-		new CompetitionStandings(parent,childList,child);
+		new CompetitionStandings(new JFrame());
 	}
 }

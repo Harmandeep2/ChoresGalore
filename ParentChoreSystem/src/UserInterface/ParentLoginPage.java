@@ -56,13 +56,21 @@ public class ParentLoginPage extends JFrame implements ActionListener{
             }
         });
 
-        panel.add(usernameLabel);
-        panel.add(usernameField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(loginButton);
-        panel.add(backButton);
-
+        JPanel usernamePanel = new JPanel();
+		usernamePanel.add(usernameLabel);
+		usernamePanel.add(usernameField);
+		
+		JPanel passwordPanel = new JPanel();
+		passwordPanel.add(passwordLabel);
+		passwordPanel.add(passwordField);
+		panel.add(usernamePanel);
+		panel.add(passwordPanel);
+        
+        JPanel buttonPanel = new JPanel();
+		buttonPanel.add(loginButton);
+		buttonPanel.add(backButton);
+		
+		panel.add(buttonPanel);
         add(panel);
         setVisible(true);
     }
