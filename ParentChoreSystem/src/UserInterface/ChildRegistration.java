@@ -1,11 +1,13 @@
 package UserInterface;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,10 +31,13 @@ public class ChildRegistration extends JFrame implements ActionListener {
     public ChildRegistration() {
         setTitle("Child Registration Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 300);
+        setSize(500, 200);
+        setLocationRelativeTo(null); // Center the frame on the screen
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 2));
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add some padding
+        
+        JPanel panel = new JPanel(new GridLayout(4, 1));
 
         
         JLabel usernameLabel = new JLabel("Username:");
@@ -73,7 +78,9 @@ public class ChildRegistration extends JFrame implements ActionListener {
         panel.add(registerButton);
         panel.add(backButton);
 
-        add(panel);
+        mainPanel.add(panel, BorderLayout.CENTER);
+        
+        add(mainPanel);
         setVisible(true);
     }
 

@@ -31,16 +31,17 @@ public class ParentLoginPage extends JFrame implements ActionListener{
     public ParentLoginPage() {
         setTitle("Parent Login");
         setSize(300, 200);
+        setLocationRelativeTo(null); // Center the frame on the screen
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel usernameLabel = new JLabel("Username:");
-        usernameField = new JTextField(15);
+        usernameField = new JTextField(20);
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordField = new JPasswordField(15);
+        passwordField = new JPasswordField(20);
 
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);

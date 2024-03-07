@@ -50,8 +50,9 @@ public class ChildAccountGUI extends JFrame{
 
 	    private void initialize() {
 	        setTitle("Child Account");
-	        setSize(550, 400);
+	        setSize(1200, 800);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        setLocationRelativeTo(null); // Center the frame on the screen
 
 	        JPanel mainPanel = new JPanel();
 	        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));

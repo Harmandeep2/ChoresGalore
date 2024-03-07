@@ -1,9 +1,11 @@
 package UserInterface;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,12 +19,16 @@ public class MainPage extends JFrame implements ActionListener{
     
 
     public MainPage() {
-        setTitle("Registration or Login");
+        setTitle("Main Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(450, 300);
+        setSize(800, 600);
+        setLocationRelativeTo(null); // Center the frame on the screen
+        
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100)); // Add some padding
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 1));
+        JPanel centerPanel = new JPanel(new GridLayout(4, 1));
+   
         
         parentLoginButton = new JButton("Parent Login");
         parentLoginButton.addActionListener(this);
@@ -37,12 +43,14 @@ public class MainPage extends JFrame implements ActionListener{
         childRegisterButton.addActionListener(this);    
 
 
-        panel.add(parentLoginButton);
-        panel.add(childLoginButton);
-        panel.add(parentRegisterButton);
-        panel.add(childRegisterButton);
+        centerPanel.add(parentLoginButton);
+        centerPanel.add(childLoginButton);
+        centerPanel.add(parentRegisterButton);
+        centerPanel.add(childRegisterButton);
 
-        add(panel);
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        
+        add(mainPanel);
         setVisible(true);
     }
 

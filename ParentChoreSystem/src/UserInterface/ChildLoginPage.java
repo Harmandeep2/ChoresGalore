@@ -31,6 +31,7 @@ public class ChildLoginPage extends JFrame implements ActionListener {
     public ChildLoginPage() {
         setTitle("Child Login");
         setSize(300, 200);
+        setLocationRelativeTo(null); // Center the frame on the screen
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
