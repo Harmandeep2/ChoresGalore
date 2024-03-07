@@ -1,9 +1,19 @@
 package UserInterface;
 
+import java.util.List;
+import java.awt.event.*;
+import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
-public class CompetitionGUI {
+import accountsModule.ParentAccount;
+import choresModule.Chore;
+import accountsModule.ChildAccount;
+
+public class CompetitionGUI extends JFrame implements ActionListener {
 	private JFrame prev;
+	private JTable table;
+	private DefaultTableModel model;
 	public CompetitionGUI(JFrame prev) {
 		this.prev = prev;
 		initialize();
@@ -17,5 +27,26 @@ public class CompetitionGUI {
 		//add a start button
 		//upon start all chosen children are assigned the chosen tasks
 		//upon start parent is taken back to their gui
+	
+		setTitle("Competition");
+		setSize(1000, 500);
+		setLocationRelativeTo(null); // Center the frame on the screen
+		setResizable(true);
+
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		getContentPane().add(mainPanel);
+		setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void main(String[] args) {
+		ParentAccount p = new ParentAccount ("name","pass");
+		ParentAccountGUI parent = new ParentAccountGUI(p);
+		new CompetitionGUI(parent);
 	}
 }
