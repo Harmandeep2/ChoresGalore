@@ -39,20 +39,17 @@ public class CompetitionGUI extends JFrame implements ActionListener {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		
-		choreNameField = new JTextField(15);
-		choreCategoryField = new JTextField(15);
-		choreTimeField = new JTextField(5);
-		chorePaymentField = new JTextField(5);
-		
-		mainPanel.add(new JLabel("Name: "));
-		mainPanel.add(choreNameField);
-		mainPanel.add(new JLabel("Category: "));
-		mainPanel.add(choreCategoryField);
-		mainPanel.add(new JLabel("Time: "));
-		mainPanel.add(choreTimeField);
-		mainPanel.add(new JLabel("Payment: "));
-		mainPanel.add(chorePaymentField);
-		
+		DefaultTableModel tableModel = new DefaultTableModel();
+		tableModel.addColumn("Chore ID");
+		tableModel.addColumn("Name");
+		tableModel.addColumn("Category");
+		tableModel.addColumn("Time");
+		tableModel.addColumn("Payment");
+		tableModel.addColumn("isCompleted");
+		tableModel.addColumn("isPaid");
+		table = new JTable(tableModel);
+		JScrollPane scrollPane = new JScrollPane(table);
+		mainPanel.add(scrollPane);
 		getContentPane().add(mainPanel);
 		setVisible(true);
 	}
