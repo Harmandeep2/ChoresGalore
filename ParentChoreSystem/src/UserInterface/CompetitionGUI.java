@@ -10,10 +10,13 @@ import accountsModule.ParentAccount;
 import choresModule.Chore;
 import accountsModule.ChildAccount;
 
+
+
 public class CompetitionGUI extends JFrame implements ActionListener {
 	private JFrame prev;
 	private JTable table;
 	private DefaultTableModel model;
+	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
 	public CompetitionGUI(JFrame prev) {
 		this.prev = prev;
 		initialize();
@@ -35,9 +38,25 @@ public class CompetitionGUI extends JFrame implements ActionListener {
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		
+		choreNameField = new JTextField(15);
+		choreCategoryField = new JTextField(15);
+		choreTimeField = new JTextField(5);
+		chorePaymentField = new JTextField(5);
+		
+		mainPanel.add(new JLabel("Name: "));
+		mainPanel.add(choreNameField);
+		mainPanel.add(new JLabel("Category: "));
+		mainPanel.add(choreCategoryField);
+		mainPanel.add(new JLabel("Time: "));
+		mainPanel.add(choreTimeField);
+		mainPanel.add(new JLabel("Payment: "));
+		mainPanel.add(chorePaymentField);
+		
 		getContentPane().add(mainPanel);
 		setVisible(true);
 	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

@@ -34,7 +34,7 @@ public class ParentAccountGUI extends JFrame{
 	private ParentAccount parentAccount;
 	private JComboBox<ChildAccount> childDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
-	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
+	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton, addCompetitionButton;
 	private JButton logoutButton;
 	private JTable choreTable;
 
@@ -74,6 +74,7 @@ public class ParentAccountGUI extends JFrame{
 		choreTimeField = new JTextField(5);
 		chorePaymentField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
+		addCompetitionButton = new JButton("Create Competition");
 
 		//Assign Chore Button
 		assignChoreButton = new JButton("Assign Chore");
@@ -148,6 +149,7 @@ public class ParentAccountGUI extends JFrame{
 
 		// Log Out Button
 		mainPanel.add(logoutButton);
+		mainPanel.add(addCompetitionButton);
 
 
 		createChoreButton.addActionListener((ActionListener) new ActionListener() {
@@ -170,6 +172,15 @@ public class ParentAccountGUI extends JFrame{
 				addChild();
 			}
 		});
+		
+		addCompetitionButton.addActionListener(new ActionListener() { // Add action listener for add child button
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				createCompetition();
+			}
+		});
+		
+		
 
 		getContentPane().add(mainPanel);
 		setVisible(true);
@@ -280,6 +291,10 @@ public class ParentAccountGUI extends JFrame{
 		double balance = DatabaseOperations.getChildBalance(selectedChild.getUsername());
 		JOptionPane.showMessageDialog(this, selectedChild+ "'s Balance: $" + balance);
 	}
+	
+	private void createCompetition() {
+		CompetitionGUI comp = new CompetitionGUI(this);
+	}
 
 	public static void main(String[] args) {
 
@@ -287,7 +302,6 @@ public class ParentAccountGUI extends JFrame{
 		new ParentAccountGUI(parentAccount);
 
 	}
-
 
 
 }
