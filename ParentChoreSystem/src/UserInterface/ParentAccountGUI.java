@@ -198,20 +198,27 @@ public class ParentAccountGUI extends JFrame{
 	///////////////
 
 	private void addChild() {
-		String childUserName = JOptionPane.showInputDialog("Enter child's username:");
-		if (childUserName != null && !childUserName.isEmpty()) {
-			if(DatabaseOperations.checkIfChildExists(childUserName)) {
-				DatabaseOperations.addParentToChild(this.parentAccount.getUsername(), childUserName);
-				List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
-				childDropdown.setModel(new DefaultComboBoxModel<>(children.toArray(new ChildAccount[0])));
-				JOptionPane.showMessageDialog(this, "Child added successfully!");
-			} else {
-				JOptionPane.showMessageDialog(this, "Child does not exist!");
-			}
-		} else {
-			JOptionPane.showMessageDialog(this, "Please enter a valid child username!");
-		}
+	    String childUserName = JOptionPane.showInputDialog("Enter child's username:");
+
+	    if (childUserName != null && !childUserName.isEmpty()) {
+	        if (DatabaseOperations.checkIfChildExists(childUserName)) {
+	            boolean addedSuccessfully = DatabaseOperations.addParentToChild(parentAccount.getUsername(), childUserName);
+
+	            if (addedSuccessfully) {
+	                List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
+	                childDropdown.setModel(new DefaultComboBoxModel<>(children.toArray(new ChildAccount[0])));
+	                JOptionPane.showMessageDialog(this, "Child added successfully!");
+	            } else {
+	                JOptionPane.showMessageDialog(this, "Failed to add child. The child may already have a parent.");
+	            }
+	        } else {
+	            JOptionPane.showMessageDialog(this, "Child does not exist!");
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Please enter a valid child username!");
+	    }
 	}
+
 
 	private void createChore() {
 		String choreName = choreNameField.getText();
@@ -307,7 +314,7 @@ public class ParentAccountGUI extends JFrame{
 	}
 
 	private void showCompetitionStandings() {
-		new CompetitionStandings(this);
+		new CompetitionStandings(this.parentAccount, this);
 	}
 	
 	public static void main(String[] args) {

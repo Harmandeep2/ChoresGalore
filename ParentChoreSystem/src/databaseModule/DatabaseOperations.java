@@ -47,19 +47,26 @@ public class DatabaseOperations {
 	    }
 	}
 
-	public static void addParentToChild(String parentUsername, String childUsername) {
+	public static boolean addParentToChild(String parentUsername, String childUsername) {
 	    try (Connection connection = DatabaseConnector.getConnection();
 	         PreparedStatement preparedStatement = connection.prepareStatement(
-	                 "UPDATE ChildAccounts SET parentUsername = ? WHERE childUsername = ?")) {
+	                 "UPDATE ChildAccounts SET parentUsername = ? WHERE childUsername = ? AND parentUsername IS NULL")) {
 
 	        preparedStatement.setString(1, parentUsername);
 	        preparedStatement.setString(2, childUsername);
-	        preparedStatement.executeUpdate();
+
+	        int rowsAffected = preparedStatement.executeUpdate();
+	        
+	        // Check if any rows were affected (update was successful)
+	        return rowsAffected > 0;
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	        // Return false in case of an exception
+	        return false;
 	    }
 	}
+
 	
 	public static boolean checkIfChildExists(String childUsername) {
 		try(Connection connection = DatabaseConnector.getConnection();
@@ -419,14 +426,15 @@ public class DatabaseOperations {
 	    return false;
 	}
     
-    public static Map<String, String> getCompetitionWinners() {
+    public static Map<String, String> getCompetitionWinnersForParent(String parentUsername) {
         Map<String, String> competitionWinners = new HashMap<>();
 
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT c.competitionName, c.choreID, ch.completedBy FROM Competitions c " +
-                     "LEFT JOIN Chores ch ON c.choreID = ch.id")) {
-
+                     "LEFT JOIN Chores ch ON c.choreID = ch.id" +
+					 " WHERE c.parentUsername = ?")) {
+        	preparedStatement.setString(1, parentUsername);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     String competitionName = resultSet.getString("competitionName");
@@ -447,11 +455,42 @@ public class DatabaseOperations {
         return competitionWinners;
     }
     
-    public static List<String> getParticipantsOfCompetition(String competitionName) {
+    public static Map<String, String> getCompetitionWinnersForChild(String childUsername) {
+        Map<String, String> competitionWinners = new HashMap<>();
+
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT c.competitionName, c.choreID, ch.completedBy FROM Competitions c " +
+                             "LEFT JOIN Chores ch ON c.choreID = ch.id" +
+                             " WHERE c.childUsername = ?")) {
+            preparedStatement.setString(1, childUsername);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String competitionName = resultSet.getString("competitionName");
+                    String winner = resultSet.getString("completedBy");
+
+                    if (winner != null && !winner.isEmpty()) {
+                        competitionWinners.put(competitionName, winner);
+                    } else {
+                        competitionWinners.put(competitionName, "Not completed by anyone yet");
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return competitionWinners;
+    }
+
+    
+    public static List<String> getParticipantsOfCompetitionForChild(String competitionName, String childUsername) {
 	    try(Connection connection = DatabaseConnector.getConnection();
 	    		PreparedStatement preparedStatement = connection.prepareStatement(
-	    		"SELECT childUsername FROM Competitions WHERE competitionName = ?")) {
-	    	preparedStatement.setString(1, competitionName);
+	    		"SELECT * FROM Competitions WHERE choreId IN (SELECT choreId FROM Competitions WHERE childUsername = ?) AND competitionName = ?")) {
+	    	preparedStatement.setString(1, childUsername);
+	    	preparedStatement.setString(2, competitionName);
 	    	try(ResultSet resultSet = preparedStatement.executeQuery()) {
 	    		List<String> participants = new ArrayList<>();
 	    		while(resultSet.next()) {
@@ -464,4 +503,24 @@ public class DatabaseOperations {
 	    }
 	    return null;
     }
+    
+    public static List<String> getParticipantsOfCompetitionForParent(String competitionName, String parentUsername) {
+	    try(Connection connection = DatabaseConnector.getConnection();
+	    		PreparedStatement preparedStatement = connection.prepareStatement(
+	    		"SELECT * FROM Competitions WHERE competitionName = ? AND parentUsername = ?")) {
+	    	preparedStatement.setString(1, competitionName);
+	    	preparedStatement.setString(2, parentUsername);
+	    	try(ResultSet resultSet = preparedStatement.executeQuery()) {
+	    		List<String> participants = new ArrayList<>();
+	    		while(resultSet.next()) {
+	    			participants.add(resultSet.getString("childUsername"));
+	    		}
+	    		return participants;
+	    	}
+	    } catch(SQLException e) {
+	    	e.printStackTrace();
+	    }
+	    return null;
+    }
+   
 }

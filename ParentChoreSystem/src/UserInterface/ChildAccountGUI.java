@@ -340,7 +340,7 @@ public class ChildAccountGUI extends JFrame{
 	    }
 	    
 	    private void showCompetitionStandings() {
-		    new CompetitionStandings(this);
+		    new CompetitionStandings(this.childAccount, this);
 	    }
 	    
 	    public static void main(String[] args) {

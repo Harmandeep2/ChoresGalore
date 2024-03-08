@@ -27,16 +27,27 @@ import databaseModule.DatabaseOperations;
 
 public class CompetitionStandings extends JFrame{
 	private JButton back;
+	private ChildAccount child;
+	private ParentAccount parent;
 	private JFrame prev;
 	private JTable table;
 	private JLabel participantLabel;
 	private JList<String> jList;
 	
-	public CompetitionStandings(JFrame prev) throws HeadlessException {
+	public CompetitionStandings(ChildAccount account, JFrame prev) throws HeadlessException {
 		this.prev = prev;
+		this.child = account;
 		initialize();
-		populateTable();
-		setupTableSelectionListener();
+		populateTableChild();
+		setupTableSelectionListenerChild();
+	}
+	
+	public CompetitionStandings(ParentAccount account, JFrame prev) throws HeadlessException {
+		this.prev = prev;
+		this.parent = account;
+		initialize();
+		populateTableParent();
+		setupTableSelectionListenerParent();
 	}
 
 	public void initialize() {
@@ -84,30 +95,39 @@ public class CompetitionStandings extends JFrame{
 		setVisible(true);
 	}
 	
-	private void populateTable() {
-		Map<String, String> standings = DatabaseOperations.getCompetitionWinners();
+	private void populateTableParent() {
+		Map<String, String> standings = DatabaseOperations.getCompetitionWinnersForParent(parent.getUsername());
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setRowCount(0);
 		
 		for (Map.Entry<String, String> entry : standings.entrySet()) {
 			model.addRow(new Object[] {entry.getKey(), entry.getValue()});
 		}
-		
 	}
 	
-	private void setupTableSelectionListener() {
+	private void populateTableChild() {
+		Map<String, String> standings = DatabaseOperations.getCompetitionWinnersForChild(child.getUsername());
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setRowCount(0);
+		
+		for (Map.Entry<String, String> entry : standings.entrySet()) {
+			model.addRow(new Object[] {entry.getKey(), entry.getValue()});
+		}
+	}
+	
+	private void setupTableSelectionListenerParent() {
         ListSelectionModel selectionModel = table.getSelectionModel();
         selectionModel.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    handleTableSelection();
+                    handleTableSelectionParent();
                 }
             }
         });
     }
 
-    private void handleTableSelection() {
+    private void handleTableSelectionParent() {
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow >= 0) {
@@ -119,14 +139,14 @@ public class CompetitionStandings extends JFrame{
                 jList.setModel(new DefaultListModel<>()); // Clear the JList
             } else {
                 participantLabel.setText("Participants of " + selectedCompetition);
-                updateParticipantList(selectedCompetition);
+                updateParticipantListParent(selectedCompetition);
             }
         }
     }
 
-    private void updateParticipantList(String competitionName) {
+    private void updateParticipantListParent(String competitionName) {
         DefaultListModel<String> model = new DefaultListModel<>();
-        List<String> participants = DatabaseOperations.getParticipantsOfCompetition(competitionName);
+        List<String> participants = DatabaseOperations.getParticipantsOfCompetitionForParent(competitionName, parent.getUsername());
 
         for (String participant : participants) {
             model.addElement(participant);
@@ -134,7 +154,48 @@ public class CompetitionStandings extends JFrame{
 
         jList.setModel(model);
     }
+    
+    private void setupTableSelectionListenerChild() {
+        ListSelectionModel selectionModel = table.getSelectionModel();
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    handleTableSelectionChild();
+                }
+            }
+        });
+    }
+
+    private void handleTableSelectionChild() {
+        int selectedRow = table.getSelectedRow();
+
+        if (selectedRow >= 0) {
+            String selectedCompetition = (String) table.getValueAt(selectedRow, 0);
+
+            // Check if more than one competition is selected
+            if (table.getSelectedRowCount() > 1) {
+                participantLabel.setText("<html><font color='red'><b>Please select only one competition</b></font></html>");
+                jList.setModel(new DefaultListModel<>()); // Clear the JList
+            } else {
+                participantLabel.setText("Participants of " + selectedCompetition);
+                updateParticipantListChild(selectedCompetition);
+            }
+        }
+    }
+
+    private void updateParticipantListChild(String competitionName) {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        List<String> participants = DatabaseOperations.getParticipantsOfCompetitionForChild(competitionName, child.getUsername());
+
+        for (String participant : participants) {
+            model.addElement(participant);
+        }
+
+        jList.setModel(model);
+    }
+    
 	public static void main(String[] args) {
-		new CompetitionStandings(new JFrame());
+		new CompetitionStandings(new ChildAccount("test", "test"), new JFrame());
 	}
 }
