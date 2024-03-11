@@ -62,7 +62,7 @@ public class ChildAccountGUI extends JFrame{
 			sortByNameButton = new JButton("Sort by Name");
 			sortButtonPanel.add(sortByNameButton);
 			
-			filterByCategoryButton = new JButton("Sort by Category");
+			filterByCategoryButton = new JButton("Filter by Category");
 			sortButtonPanel.add(filterByCategoryButton);
 			
 			sortByTimeButton = new JButton("Sort by Time");

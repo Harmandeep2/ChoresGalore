@@ -66,7 +66,20 @@ public class DatabaseOperations {
 	        return false;
 	    }
 	}
-
+	
+	public static boolean removeParentFromChild(String parentUsername, String childUsername) {
+		try(Connection connection = DatabaseConnector.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(
+						"UPDATE ChildAccounts SET parentUsername = NULL WHERE childUsername = ? AND parentUsername = ?")) {
+			preparedStatement.setString(1, childUsername);
+			preparedStatement.setString(2, parentUsername);
+			int rowsAffected = preparedStatement.executeUpdate();
+			return rowsAffected > 0;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 	public static boolean checkIfChildExists(String childUsername) {
 		try(Connection connection = DatabaseConnector.getConnection();

@@ -19,7 +19,7 @@ public class ParentAccountGUI extends JFrame{
 	private JComboBox<ChildAccount> childDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
-	private JButton logoutButton, competitionStandingsButton, addCompetitionButton;
+	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
 	private JTable choreTable;
 
 	public ParentAccountGUI(ParentAccount parentAccount) {
@@ -57,6 +57,9 @@ public class ParentAccountGUI extends JFrame{
 		// Add Child Button
 		addChildButton = new JButton("Add Child"); // Added button
 		topButtonsPanel.add(addChildButton); // Added button
+		
+		removeChildButton = new JButton("Remove Child");
+		topButtonsPanel.add(removeChildButton);
 
 		//Assign Chore Button
 		assignChoreButton = new JButton("Assign Chore");
@@ -73,6 +76,12 @@ public class ParentAccountGUI extends JFrame{
 			}
 		});
 		
+		removeChildButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeChild();
+			}
+		});
 		// Add action listener for the assign chore button
 		assignChoreButton.addActionListener(new ActionListener() {
 			@Override
@@ -216,6 +225,26 @@ public class ParentAccountGUI extends JFrame{
 	        }
 	    } else {
 	        JOptionPane.showMessageDialog(this, "Please enter a valid child username!");
+	    }
+	}
+
+	private void removeChild() {
+	    ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+
+	    int option = JOptionPane.showConfirmDialog(this,
+	            "<html>Are you sure you want to remove <font color='blue'><b>" + selectedChild.getUsername() + "</b></font>?</html>", "Confirmation", JOptionPane.YES_NO_OPTION);
+
+	    if (option == JOptionPane.YES_OPTION) {
+	        boolean removed = DatabaseOperations.removeParentFromChild(this.parentAccount.getUsername(), selectedChild.getUsername());
+
+	        if (removed) {
+	            // Child successfully removed from the parent account
+	            childDropdown.removeItem(selectedChild);
+	            JOptionPane.showMessageDialog(this, "Child removed successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+	        } else {
+	            // Removal failed
+	            JOptionPane.showMessageDialog(this, "Failed to remove the child.", "Error", JOptionPane.ERROR_MESSAGE);
+	        }
 	    }
 	}
 
