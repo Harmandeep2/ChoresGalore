@@ -1,4 +1,5 @@
-package Tests;
+package Tests.Unit;
+
 
 import accountsModule.*;
 import choresModule.*;
