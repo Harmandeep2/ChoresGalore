@@ -56,6 +56,45 @@ class choresSortTestCases {
         assertEquals("Vacuum", sortedChores.get(1).getName());
         assertEquals("Mow Lawn", sortedChores.get(2).getName());
     }
+    
+    @Test
+    public void testSortAlphabetically2() {
+        List<Chore> chores = new ArrayList<>();
+        chores.add(new Chore("Z", "Education", 60, 5.0));
+        chores.add(new Chore("A", "Household", 30, 3.0));
+        chores.add(new Chore("C", "Education", 45, 4.0));
+
+        List<Chore> sortedChores = ChoresUtils.sortAlphabetically(chores);
+        assertEquals("A", sortedChores.get(0).getName());
+        assertEquals("C", sortedChores.get(1).getName());
+        assertEquals("Z", sortedChores.get(2).getName());
+    }
+
+    @Test
+    public void testSortByTime2() {
+        List<Chore> chores = new ArrayList<>();
+        chores.add(new Chore("Do homework", "Education", 60, 5.0)); // 1 hour chore
+        chores.add(new Chore("Clean room", "Household", 30, 3.0)); // 30-minute chore
+        chores.add(new Chore("Mow lawn", "Outdoor", 120, 10.0)); // 2 hour chore
+
+        List<Chore> sortedChores = ChoresUtils.sortByTime(chores);
+        assertEquals("Clean room", sortedChores.get(0).getName());
+        assertEquals("Do homework", sortedChores.get(1).getName());
+        assertEquals("Mow lawn", sortedChores.get(2).getName());
+    }
+
+    @Test
+    public void testSortByPayment2() {
+        List<Chore> chores = new ArrayList<>();
+        chores.add(new Chore("Do homework", "Education", 60, 5.0)); // $5 payment
+        chores.add(new Chore("Clean room", "Household", 30, 3.0)); // $3 payment
+        chores.add(new Chore("Mow lawn", "Outdoor", 120, 10.0)); // $10 payment
+
+        List<Chore> sortedChores = ChoresUtils.sortByPayment(chores);
+        assertEquals("Clean room", sortedChores.get(0).getName());
+        assertEquals("Do homework", sortedChores.get(1).getName());
+        assertEquals("Mow lawn", sortedChores.get(2).getName());
+    }
 
 
 }

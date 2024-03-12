@@ -8,6 +8,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import accountsModule.ChildAccount;
+import accountsModule.ParentAccount;
+import choresModule.Chore;
+import choresModule.ChoresUtils;
+
 class accountsAndChoresTest {
 	
 	ParentAccount parentAccount;
@@ -79,5 +88,49 @@ class accountsAndChoresTest {
 		assertTrue(!chore4.isPaid());
 		
 	}
-		
+	
+	@Test
+    public void testAddChore() {
+        ChoresList choresList = new ChoresList();
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        choresList.addChore(chore);
+        assertTrue(choresList.getChores().contains(chore));
+    }
+
+    @Test
+    public void testRemoveChore() {
+        ChoresList choresList = new ChoresList();
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        choresList.addChore(chore);
+        choresList.removeChore(chore);
+        assertFalse(choresList.getChores().contains(chore));
+    }
+    
+
+    @Test
+    public void testRemoveChoreNonexistent() {
+        ChoresList choresList = new ChoresList();
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        choresList.addChore(chore);
+        Chore nonExistentChore = new Chore("Clean room", "Household", 30, 3.0); // Nonexistent chore
+        choresList.removeChore(nonExistentChore);
+        assertEquals(1, choresList.getNumberOfChores()); // Number of chores should remain unchanged
+    }
+
+    @Test
+    public void testGetNumberOfChoresEmptyList() {
+        ChoresList choresList = new ChoresList();
+        assertEquals(0, choresList.getNumberOfChores()); // Number of chores should be zero initially
+    }
+
+    @Test
+    public void testGetNumberOfChores() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
+    
 }
