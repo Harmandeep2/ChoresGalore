@@ -21,6 +21,8 @@ public class CompetitionGUI extends JFrame{
 	private JList<ChildAccount> jList;
 	private JButton startCompetitionButton, backButton;
 	private JTextField competitionNameField;
+	
+	
 	public CompetitionGUI(ParentAccount parent, JFrame prev) {
 		this.parentAccount = parent;
 		this.prev = prev;
