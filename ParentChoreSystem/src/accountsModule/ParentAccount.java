@@ -1,6 +1,8 @@
 package accountsModule;
 import choresModule.*;
 import java.util.*;
+import competitionModule.*;
+
 
 /*All the methods are in accordance of our project INFORMATION ACCESS rules described in our
 user stories, for example, parents can view child's balance, only parent can add/remove chores
@@ -9,6 +11,8 @@ and make payments, etc.*/
 public class ParentAccount extends Account {
 
 	private List<ChildAccount> childAccounts;
+	
+	
     
 	public ParentAccount(String username, String password) {
 		super(username, password);
@@ -104,4 +108,6 @@ public class ParentAccount extends Account {
 			}
 		}
 	}
+	
+	//create instance of createCompetition here
 }
