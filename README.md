@@ -23,7 +23,7 @@ For a detailed breakdown of the project structure and major components, refer to
 
 Please click the following link to view the video:
 
-https://youtu.be/edRkbj_j44c
+[Customer Video]https://youtu.be/edRkbj_j44c
 
 ## Getting Started
 
@@ -31,6 +31,7 @@ https://youtu.be/edRkbj_j44c
 
 - Java Development Kit (JDK) installed.
 - IDE with Java support (e.g., IntelliJ, Eclipse).
+- MySQL installed.
 
 ### Installation
 
@@ -38,14 +39,16 @@ https://youtu.be/edRkbj_j44c
 
    ```bash
    git clone https://github.com/Harmandeep2/ChoresGalore.git
+   
+2. Copy the `config.properties.sample` file as `config.properties` located in the `DatabaseModule` package. Update the your MySQL `username` and `password` in the `config.properties` file.
+
+3. Open MySQL and create a database named 'ParentChoreSystem'.
+
+4. Run the `DatabaseSetup.java` file to set up the database schema.
 
 ## Usage
 
-1. **Open the Project in Your Preferred IDE:**
-   - Clone the repository to your local machine:
-     ```bash
-     git clone https://github.com/Harmandeep2/ChoresGalore.git
-     ```
+1. *Follow the **Installation** steps above.
    - Open the project in your preferred Integrated Development Environment (IDE).
 
 2. **Build and Run the Application:**
@@ -60,11 +63,4 @@ https://youtu.be/edRkbj_j44c
 5. **For Detailed Instructions:**
    - Refer to your project's documentation for detailed instructions on using the system.
 
-
-
-///FOR TA'S AND PROFESSOR 
-
-Please add Apache POI as well as this file for the code to run without errors.
-
-https://toolsqa.com/blogs/download-apache-poi/
 
