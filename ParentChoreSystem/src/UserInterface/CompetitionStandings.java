@@ -33,7 +33,10 @@ public class CompetitionStandings extends JFrame{
 	private JTable table;
 	private JLabel participantLabel;
 	private JList<String> jList;
-	
+	/**
+	 * @param ChildAccount and JFrame
+	 * @exception Headless Exception
+	 * */
 	public CompetitionStandings(ChildAccount account, JFrame prev) throws HeadlessException {
 		this.prev = prev;
 		this.child = account;
