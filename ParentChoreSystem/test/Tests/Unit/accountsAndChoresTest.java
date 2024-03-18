@@ -89,21 +89,44 @@ class accountsAndChoresTest {
 		
 	}
 	
+	/**
+	 * Series of tests used to check the functioning of chore edit and deletion.
+	 * Multiple tests used in order to test the scalability of each function.
+	 */
+	
 	@Test
-    public void testAddChore() {
+    public void testAddChore1() {
         ChoresList choresList = new ChoresList();
-        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
-        choresList.addChore(chore);
-        assertTrue(choresList.getChores().contains(chore));
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        choresList.addChore(chore1);
+        assertTrue(choresList.getChores().contains(chore1));
     }
+	
+	@Test
+    public void testAddChore2() {
+        ChoresList choresList2 = new ChoresList();
+        Chore chore2 = new Chore("Make bed sheets", "Household", 30, 3.0); // 1 hour chore
+        choresList2.addChore(chore2);
+        assertTrue(choresList2.getChores().contains(chore2));
+    }
+
 
     @Test
     public void testRemoveChore() {
         ChoresList choresList = new ChoresList();
-        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
-        choresList.addChore(chore);
-        choresList.removeChore(chore);
-        assertFalse(choresList.getChores().contains(chore));
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        choresList.addChore(chore1);
+        choresList.removeChore(chore1);
+        assertFalse(choresList.getChores().contains(chore1));
+    }
+    
+    @Test
+    public void testRemoveChore2() {
+        ChoresList choresList2 = new ChoresList();
+        Chore chore2 = new Chore("Dusting Shelves", "Household", 60, 10.0); // 1 hour chore
+        choresList2.addChore(chore2);
+        choresList2.removeChore(chore2);
+        assertFalse(choresList2.getChores().contains(chore2));
     }
     
 
@@ -115,6 +138,16 @@ class accountsAndChoresTest {
         Chore nonExistentChore = new Chore("Clean room", "Household", 30, 3.0); // Nonexistent chore
         choresList.removeChore(nonExistentChore);
         assertEquals(1, choresList.getNumberOfChores()); // Number of chores should remain unchanged
+    }
+    
+    @Test
+    public void testRemoveChoreNonexistent2() {
+        ChoresList choresList2 = new ChoresList();
+        Chore chore = new Chore("Laundry", "Bedroom", 60, 5.0); // 1 hour chore
+        choresList2.addChore(chore);
+        Chore nonpresentChore = new Chore("Clean room", "Household", 60, 8.0); // Nonexistent chore as well
+        choresList2.removeChore(nonpresentChore);
+        assertEquals(1, choresList2.getNumberOfChores()); // Number of chores should remain unchanged
     }
 
     @Test
@@ -133,4 +166,13 @@ class accountsAndChoresTest {
         assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
     }
     
+    @Test
+    public void testGetNumberOfChores2() {
+        ChoresList choresList2 = new ChoresList();
+        Chore chore1 = new Chore("Mop the floor", "Household", 40, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("stack the pantry", "Household", 30, 3.0); // 30-minute chore
+        choresList2.addChore(chore1);
+        choresList2.addChore(chore2);
+        assertEquals(2, choresList2.getNumberOfChores()); // Number of chores should be two
+    }
 }
