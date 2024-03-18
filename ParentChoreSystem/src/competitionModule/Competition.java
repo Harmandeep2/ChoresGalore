@@ -1,7 +1,9 @@
 package competitionModule;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import accountsModule.ChildAccount;
 import accountsModule.ParentAccount;
@@ -18,7 +20,8 @@ public class Competition {
 //private final double CHILD1_HOURS_TILL_NOW;
 //private final double CHILD2_HOURS_TILL_NOW;
 private Chore chore;
-private ArrayList<ChildAccount> children =  new ArrayList<ChildAccount>();
+private List<ChildAccount> children =  new ArrayList<ChildAccount>();
+private final Map<ChildAccount, Double> hoursWorkedBeforeCompetition = new HashMap<>();
 
 
     
@@ -30,9 +33,10 @@ private ArrayList<ChildAccount> children =  new ArrayList<ChildAccount>();
 	 public Competition(ParentAccount parent, ArrayList<ChildAccount> children, Chore chore) {
 		 //this.parent = parent;
 		 this.children = children;
-		 for (int i = 0; i<children.size();i++) {
+		 for (int i = 0; i<this.children.size();i++) {
 			 //this.CHILD_HOURS_TILL_NOW = children.get(i).getHoursWorked();
-			 parent.assignChore(children.get(i), chore);  //initializing 
+			 hoursWorkedBeforeCompetition.put(this.children.get(i), this.children.get(i).getHoursWorked());
+			 parent.assignChore(this.children.get(i), chore);  //initializing 
 		 }
 		 this.chore = chore;
 	 	}
@@ -71,22 +75,17 @@ private ArrayList<ChildAccount> children =  new ArrayList<ChildAccount>();
 //	} 
 
 
+	 /**
+	  * Method used to get the winner of the competition
+	  * @return ChildAccount object representing the winner or null if no winner yet
+	  */
 public ChildAccount getWinner() {
-	ChildAccount winner = children.get(0);
 	for (int i = 0;i<children.size();i++) {
-		for (int j = i+1;j<children.size();j++) {
-			if (children.get(j).getHoursWorked() > winner.getHoursWorked()) {
-				winner = children.get(i);
-			} else if (children.get(i).getHoursWorked() == winner.getHoursWorked()){
-				//to implement if its a tie (both have same time)
-				winner = children.get(i);
-				continue;
-			} else {
-				winner = children.get(j);
-			}
+		if (hoursWorkedBeforeCompetition.get(children.get(i)) < children.get(i).getHoursWorked()) {
+			return children.get(i);
 		}
 	}
-	return winner;
+	return null;
 }
     
 	
