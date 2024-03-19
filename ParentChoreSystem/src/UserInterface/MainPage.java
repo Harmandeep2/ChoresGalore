@@ -10,25 +10,39 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+
+//Class for Main Page GUI
 public class MainPage extends JFrame implements ActionListener{
 	
+	// Buttons for parent and child registration and login
 	private JButton parentRegisterButton;
 	private JButton childRegisterButton;
 	private JButton parentLoginButton;
     private JButton childLoginButton;
     
 
+    // Constructor created for Main Page GUI
     public MainPage() {
-        setTitle("Main Page");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setLocationRelativeTo(null); // Center the frame on the screen
+    	// Set the title of the frame
+    	setTitle("Main Page"); 
+    	// Set default close operation
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        // Set the size of the frame
+        setSize(800, 600); 
+        // Center the frame on the screen
+        setLocationRelativeTo(null); 
         
+        // Create a main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100)); // Add some padding
+        // Added some padding
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100)); 
 
+        // Creating a panel with 4 rows and 1 column
         JPanel centerPanel = new JPanel(new GridLayout(4, 1));
    
+        /**
+         *  Initialization of buttons for parent and child login and registration
+         */
         
         parentLoginButton = new JButton("Parent Login");
         parentLoginButton.addActionListener(this);
@@ -43,35 +57,52 @@ public class MainPage extends JFrame implements ActionListener{
         childRegisterButton.addActionListener(this);    
 
 
+        /**
+         *  Add buttons to the center panel
+         */
         centerPanel.add(parentLoginButton);
         centerPanel.add(childLoginButton);
         centerPanel.add(parentRegisterButton);
         centerPanel.add(childRegisterButton);
 
+        // Adding a center panel to main panel
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         
+        // Adding main panel to content pane
         add(mainPanel);
+        // Setting frame visibility to true
         setVisible(true);
     }
 
+    /**
+     * Method created to handle button actions
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
+    	// Check which button is clicked and perform appropriate action
         if (e.getSource() == parentRegisterButton) {
-            new ParentRegistration();
+        	// Open parent registration page
+            new ParentRegistration(); 
         } 
         else if (e.getSource() == childRegisterButton) {
-            new ChildRegistration();
+        	// Open child registration page
+            new ChildRegistration(); 
         } 
         else if (e.getSource() == parentLoginButton) {
-            new ParentLoginPage();
+        	// Open parent login page
+            new ParentLoginPage(); 
         }
         else if (e.getSource() == childLoginButton) {
-            new ChildLoginPage();
+        	// Open child login page
+            new ChildLoginPage(); 
         }
-        setVisible(false);
+        // Used to Hide the main page after button is clicked 
+        setVisible(false); 
     }
 
+    // Main method to start the application
     public static void main(String[] args) {
+    	// Create instance of MainPage to start the application
         new MainPage();
     }
 	
