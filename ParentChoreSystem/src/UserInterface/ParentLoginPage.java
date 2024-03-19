@@ -21,74 +21,120 @@ import javax.swing.JTextField;
 import accountsModule.ParentAccount;
 import databaseModule.DatabaseConnector;
 
+/**
+ * The ParentLoginPage class represents the graphical user interface for parent login.
+ * It allows parents to enter their username and password to log in.
+ * Upon successful login, it opens the ParentAccountGUI.
+ */
+
 public class ParentLoginPage extends JFrame implements ActionListener{
 	
+	// Components for the login page
 	private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton backButton;
 
+    /**
+     * Constructor for the ParentLoginPage class.
+     * Sets up the GUI components for parent login.
+     */
     public ParentLoginPage() {
-        setTitle("Parent Login");
-        setSize(300, 200);
-        setLocationRelativeTo(null); // Center the frame on the screen
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    	 // Set the title of the window
+    	 setTitle("Parent Login"); 
+    	 // Set the size of the window
+         setSize(300, 200); 
+         // Center the frame on the screen
+         setLocationRelativeTo(null); 
+         // Close the application when the window is closed
+         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        // Create a panel to hold the components
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        // Username field and label to take in login info
         JLabel usernameLabel = new JLabel("Username:");
         usernameField = new JTextField(20);
 
+        // Password field and label for login authentication
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField(20);
 
+        // Login button with action listener
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);
         
+        // Back button created to return to the main page
         backButton = new JButton("Return");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	// Create a new instance of the MainPage and display it
             	MainPage mainPage = new MainPage();
 				mainPage.setVisible(true);
             	dispose(); // Close login window
             }
         });
 
+        /**
+         *  Panel for username input
+         */
         JPanel usernamePanel = new JPanel();
 		usernamePanel.add(usernameLabel);
 		usernamePanel.add(usernameField);
 		
+		/**
+		 *  Panel for password input
+		 */
 		JPanel passwordPanel = new JPanel();
 		passwordPanel.add(passwordLabel);
 		passwordPanel.add(passwordField);
 		panel.add(usernamePanel);
 		panel.add(passwordPanel);
         
+		/**
+		 *  Panel for buttons
+		 */
         JPanel buttonPanel = new JPanel();
 		buttonPanel.add(loginButton);
 		buttonPanel.add(backButton);
 		
-		panel.add(buttonPanel);
-        add(panel);
-        setVisible(true);
+		// Adding the button panel to the main panel
+		panel.add(buttonPanel); 
+		// Adding the main panel to the frame
+        add(panel); 
+        // Making the frame visible to parent 
+        setVisible(true); 
     }
 
+    /**
+     * ActionListener implementation for handling button clicks.
+     */
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
 
+        // Authentication of username and password
         if (authenticate(username, password)) {
             JOptionPane.showMessageDialog(this, "Login successful!");
-            openParentAccountGUI();
+            // Open the parent account GUI
+            openParentAccountGUI(); 
+            // Close the login window
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Invalid username or password. Please try again.");
         }
     }
 
+    /**
+     * Authenticate the parent's username and password.
+     * @param username
+     * @param password
+     * @return true if authentication is successful, false otherwise
+     */
     private boolean authenticate(String username, String password) {
     	try (Connection connection = DatabaseConnector.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
@@ -96,20 +142,32 @@ public class ParentLoginPage extends JFrame implements ActionListener{
                preparedStatement.setString(1, username);
                preparedStatement.setString(2, password);
                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                   return resultSet.next();
+            	   // Return true if a matching record is found
+                   return resultSet.next(); 
                }
            } catch (SQLException ex) {
                ex.printStackTrace();
            }
+    	   // Return false if an exception occurs or no matching record is found
            return false;
     }
 
+    /**
+     * Opening ParentAccountGUI after successful login.
+     */
     private void openParentAccountGUI() {
+    	// Create a new ParentAccount instance with the entered username and password
         ParentAccount parentAccount = new ParentAccount(usernameField.getText(),new String(passwordField.getPassword()));
+        // Open the ParentAccountGUI with the created ParentAccount instance
         new ParentAccountGUI(parentAccount);
     }
 
+    /**
+     * Main method used to create an instance of 
+     * ParentLoginPage and display the login page.
+     */
     public static void main(String[] args) {
+    	// Creating an instance of ParentLoginPage
         new ParentLoginPage();
     }
 
