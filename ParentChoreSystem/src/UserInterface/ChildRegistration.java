@@ -19,56 +19,60 @@ import javax.swing.JTextField;
 import accountsModule.Account;
 import databaseModule.DatabaseOperations;
 
+//Class for Child Registration page
 public class ChildRegistration extends JFrame implements ActionListener {
 	
-	
+	 // child registration GUI components
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
     private JButton registerButton;
     private JButton backButton;
 
+    // Constructor for Child Registration page
     public ChildRegistration() {
         setTitle("Child Registration Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 200);
-        setLocationRelativeTo(null); // Center the frame on the screen
+        setLocationRelativeTo(null); // Center the frame on displayed screen
 
+        // Create main panel with border layout and padding
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add some padding
         
+        // Create panel with grid layout for components
         JPanel panel = new JPanel(new GridLayout(4, 1));
 
-        
+        // Labels for username, password, and confirm password fields
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
         JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
    
 
-        
+        // Text fields for username, password, and confirm password
         usernameField = new JTextField();
         passwordField = new JPasswordField();
         confirmPasswordField = new JPasswordField();
         
         
-
+        // Registration button
         registerButton = new JButton("Register");
         registerButton.addActionListener(this);
 
 
-        
+        // Back button to return to the main page
         backButton = new JButton("Return");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	MainPage mainPage = new MainPage();
 				mainPage.setVisible(true);
-            	dispose(); // Close login window
+            	dispose(); // Close registration window
             }
         });
 
 
-        
+        // Adding components to the panel
         panel.add(usernameLabel);
         panel.add(usernameField);
         panel.add(passwordLabel);
@@ -78,12 +82,18 @@ public class ChildRegistration extends JFrame implements ActionListener {
         panel.add(registerButton);
         panel.add(backButton);
 
+        // Add panel to the main panel
         mainPanel.add(panel, BorderLayout.CENTER);
         
+        // Add main panel to the frame
         add(mainPanel);
         setVisible(true);
     }
-
+    
+    /**
+     *  ActionListener method for handling button clicks
+     */
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         String username = usernameField.getText();
@@ -92,7 +102,7 @@ public class ChildRegistration extends JFrame implements ActionListener {
         
         if(password.equals(confirmPassword )) //Check if password and confirm password are the same
 		{
-     // Insert new child account into the database
+        // Insert new child account into the database
         DatabaseOperations.insertAccount(username, password, "Child");
 
         // Display success message
@@ -100,11 +110,12 @@ public class ChildRegistration extends JFrame implements ActionListener {
 
         // Redirect to login page
         new ChildLoginPage();
-        dispose();
+        dispose(); // Close registration window
 		}
         
         else
 		{
+        	 // Display error message if passwords do not match
 			JOptionPane.showMessageDialog(this, "Check that Password's are entered correctly");
 		}
 
@@ -120,7 +131,8 @@ public class ChildRegistration extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Failed to save account!");}
         }
         */
-
+    
+    // Main method to start the application
     public static void main(String[] args) {
         new ChildRegistration();
     }
