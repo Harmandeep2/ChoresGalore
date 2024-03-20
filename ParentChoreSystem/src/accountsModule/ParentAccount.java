@@ -13,42 +13,76 @@ public class ParentAccount extends Account {
 	private List<ChildAccount> childAccounts;
 	
 	
-    
+    /**
+     * Constructor for parent account class
+     * @param username
+     * @param password
+     */
 	public ParentAccount(String username, String password) {
 		super(username, password);
 		childAccounts = new ArrayList<>();
 	}
 	
+	/**
+	 * AddChildAccount method to add childaccount to arraylist named "childAccounts" under said parent
+	 * @param childAccount
+	 */
 	public void addChildAccount(ChildAccount childAccount) {
 		childAccounts.add(childAccount);
 	}
 	
+	/**
+	 * deletes said child under said parent
+	 * @param childAccount
+	 */
 	public void deleteChildAccount(ChildAccount childAccount) {
 		childAccounts.remove(childAccount);
 	}
 
+	/**
+	 * assigns said chore to said child, if that chore isn't already assigned
+	 * @param childAccount
+	 * @param chore
+	 */
 	public void assignChore(ChildAccount childAccount, Chore chore) {
 		if (childAccounts.contains(childAccount)) {
 			childAccount.getChores().add(chore);
 		}
 	}
 
+	/**
+	 * deletes said chore from said child if child has that chore assigned
+	 * @param childAccount
+	 * @param chore
+	 */
 	public void deleteChore(ChildAccount childAccount, Chore chore) {
 		if (childAccounts.contains(childAccount)) {
 			childAccount.getChores().remove(chore);
 		}
 	}
 	
+	/**
+	 * getter method
+	 * @return childAccount
+	 */
 	public List<ChildAccount> getChildren() {
 		return childAccounts;
 	}
 	
+	/**
+	 * deopsitChorePayment method to deposit the money into the child account
+	 * @param childAccount
+	 * @param chore
+	 */
 	public void depositChorePayment(ChildAccount childAccount, Chore chore) {
 		if(childAccounts.contains(childAccount) && childAccount.getChores().contains(chore)) {
 			childAccount.setBalance(childAccount.getBalance() + chore.getPayment());
 		}
 	}
 	
+	/**
+	 * Verify chore method to make sure chore is completed and paid
+	 */
 	public void verifyChores() {
 		for(ChildAccount child : childAccounts) {
 			for(Chore chore : child.getChores()) {
@@ -61,6 +95,11 @@ public class ParentAccount extends Account {
 		}
 	}
 	
+	/**
+	 * checks the child account balance
+	 * @param childAccount
+	 * @return
+	 */
 	public double checkChildBalance(ChildAccount childAccount) {
 		return childAccount.getBalance();
 	}
