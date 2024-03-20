@@ -298,6 +298,11 @@ public class ParentAccountGUI extends JFrame{
 	private void removeChild() {
 		// Getting the selected child from the dropdown
 	    ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+	    
+	    if (selectedChild == null) {
+	        JOptionPane.showMessageDialog(this, "Please select a child to remove.", "Error", JOptionPane.ERROR_MESSAGE);
+	        return; // Exit the method
+	    }
 
 	    // Prompt for confirmation to remove the child
 	    int option = JOptionPane.showConfirmDialog(this,
