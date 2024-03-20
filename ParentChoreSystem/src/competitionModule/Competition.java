@@ -25,7 +25,7 @@ private final Map<ChildAccount, Double> hoursWorkedBeforeCompetition = new HashM
 
 
     
-    /*
+    /**
      * Competition constructor for this class
      * @param child1 ChildAccount object representing child 1
      * @param child2 ChildAccount object representing child 2
@@ -57,7 +57,7 @@ private final Map<ChildAccount, Double> hoursWorkedBeforeCompetition = new HashM
 	//rewardPoints1 = 0
 	//rewardPoints2 = 0
 	
-	/* 
+	/** 
 	 * Method used to calculate competition points for list of chores 
 	 * @param chores List of chores for which points need to be calculated
 	 * @return total rewardPoints for the given list of chores
