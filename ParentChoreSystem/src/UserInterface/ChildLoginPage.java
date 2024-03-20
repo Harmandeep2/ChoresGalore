@@ -51,6 +51,18 @@ public class ChildLoginPage extends JFrame implements ActionListener {
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField(15);
         
+        passwordField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // Check if the Enter key is pressed (key code 10)
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    // Simulate a click on the login button
+                    loginButton.doClick();
+                }
+            }
+        });
+
+        
         // Login button to review login details 
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);

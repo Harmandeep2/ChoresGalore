@@ -60,6 +60,17 @@ public class ParentLoginPage extends JFrame implements ActionListener{
         // Password field and label for login authentication
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField(20);
+        
+        passwordField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // Check if the Enter key is pressed (key code 10)
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    // Simulate a click on the login button
+                    loginButton.doClick();
+                }
+            }
+        });
 
         // Login button with action listener
         loginButton = new JButton("Login");
@@ -161,6 +172,9 @@ public class ParentLoginPage extends JFrame implements ActionListener{
         // Open the ParentAccountGUI with the created ParentAccount instance
         new ParentAccountGUI(parentAccount);
     }
+    
+    
+    
 
     /**
      * Main method used to create an instance of 
