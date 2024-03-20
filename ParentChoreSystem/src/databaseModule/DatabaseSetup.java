@@ -5,6 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseSetup {
+	
+	/**
+	 * Creating strings that allow interactions with the database 
+	 * 
+	 */
 
 	private static final String DB_NAME = "ParentChoreSystem";
     private static final String CREATE_DATABASE_SQL = "CREATE DATABASE IF NOT EXISTS " + DB_NAME;
@@ -55,6 +60,10 @@ public class DatabaseSetup {
     		+ "FOREIGN KEY (childUsername) REFERENCES ChildAccounts(childUsername),"
     		+ "FOREIGN KEY (choreID) REFERENCES Chores(id))";
 
+    
+    /**
+     * Preparing and executing database
+     */
 
     public static void setupDatabase() {
         try (Connection connection = DatabaseConnector.getConnection();
@@ -93,6 +102,13 @@ public class DatabaseSetup {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * 
+     * @param args
+     * 
+     * Main function to set up database
+     */
 
     public static void main(String[] args) {
         setupDatabase();
