@@ -1,6 +1,7 @@
 package UserInterface;
 
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -44,7 +45,7 @@ public class ChildAccountGUI extends JFrame{
 
 	    private void initialize() {
 	        setTitle("Child Account");
-	        setSize(1200, 800);
+	        setSize(900, 750);
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        setLocationRelativeTo(null); // Center the frame on the screen
 			setResizable(true);
@@ -67,8 +68,13 @@ public class ChildAccountGUI extends JFrame{
 			
 			// Panel for sorting and filtering buttons
 			JPanel sortButtonPanel = new JPanel();
-			sortButtonPanel.setBorder(BorderFactory.createTitledBorder("Sort and filter by"));
+			JPanel sortButtonPanel2 = new JPanel();
+			//sortButtonPanel.setBorder(BorderFactory.createTitledBorder("Sort and filter by"));
 			sortButtonPanel.setLayout(new BoxLayout(sortButtonPanel, BoxLayout.X_AXIS));
+			sortButtonPanel2.setLayout(new BoxLayout(sortButtonPanel2, BoxLayout.X_AXIS));
+			sortButtonPanel2.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // Add padding to separate rows
+			
+
 			
 			/**
 			 * Adding sorting and filtering features by use of buttons
@@ -96,19 +102,19 @@ public class ChildAccountGUI extends JFrame{
 			
 			//Button created to sort by payment already made
 			filterByIsPaidButton = new JButton("Filter by isPaid");
-			sortButtonPanel.add(filterByIsPaidButton);
+			sortButtonPanel2.add(filterByIsPaidButton);
 			
 			//Button created to sort by incomplete chores
 			filterByIsNotCompletedButton = new JButton("Filter by isNotCompleted");
-			sortButtonPanel.add(filterByIsNotCompletedButton);
+			sortButtonPanel2.add(filterByIsNotCompletedButton);
 			
 			//Button created to sort by unpaid chores
 			filterByIsNotPaidButton = new JButton("Filter by isNotPaid");
-			sortButtonPanel.add(filterByIsNotPaidButton);
+			sortButtonPanel2.add(filterByIsNotPaidButton);
 			
 			//Default sorting button
 			defaultSortButton = new JButton("Default");
-			sortButtonPanel.add(defaultSortButton);
+			sortButtonPanel2.add(defaultSortButton);
 			
 			/**
 			 * Adding action listeners for sorting and filtering buttons
@@ -186,7 +192,20 @@ public class ChildAccountGUI extends JFrame{
 					displayChildChores();
 				}
 			});
+			
+			JLabel sortFilterLabel = new JLabel("Sort and Filter");
+			sortFilterLabel.setAlignmentX(CENTER_ALIGNMENT);
+			mainPanel.add(sortFilterLabel);
+			//mainPanel.add(new JLabel("Sort and Filter"));
 			mainPanel.add(sortButtonPanel);
+			mainPanel.add(new JLabel(" "));
+			mainPanel.add(sortButtonPanel2);
+			
+			sortButtonPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), // Border around the panel itself
+		    sortButtonPanel.getBorder())); // Existing titled border for the first row panel
+			sortButtonPanel2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), // Border around the panel itself
+		    BorderFactory.createEmptyBorder(5, 5, 5, 5))); // Add padding to the panel
+
 			
 			//Add some gap
 			mainPanel.add(new JLabel(" "));
