@@ -20,51 +20,69 @@ import javax.swing.JTextField;
 
 import databaseModule.DatabaseOperations;
 
+/**
+ * This ParentRegistration class represents the graphical user interface for parent registration.
+ * It allows parents to create a new account by providing a username and password.
+ */
 public class ParentRegistration extends JFrame implements ActionListener {
 	
+	// Components for the parent registration page
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
     private JButton registerButton;
     private JButton backButton;
 
+    /**
+     * Constructor for the ParentRegistration class.
+     * Setting up the GUI components for parent registration.
+     */
     public ParentRegistration() {
+    	// Setting the title of the window
         setTitle("Parent Registration Page");
+        // Closing the application when the window is closed
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Setting the size of the window
         setSize(500, 200);
-        setLocationRelativeTo(null); // Center the frame on the screen
+        // Centering the frame on the screen
+        setLocationRelativeTo(null); 
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add some padding
         
-        JPanel panel = new JPanel(new GridLayout(4, 1));
+        // Creating a panel with a 4x1 grid layout
+        JPanel panel = new JPanel(new GridLayout(4, 1)); 
         
+        // Labels for username, password, and confirm password fields
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
         JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
         
+        // Text fields for username, password, and confirm password
         usernameField = new JTextField();
         passwordField = new JPasswordField();
         confirmPasswordField = new JPasswordField();  
    
 
-        //Register new Parent Account
+        // Registering button with action listener
         registerButton = new JButton("Register");
         registerButton.addActionListener(this);
         
-        //Return to main page
+        // Back button created to return to the main page
         backButton = new JButton("Return");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	// Creating a new instance of the MainPage and display it
             	MainPage mainPage = new MainPage();
 				mainPage.setVisible(true);
-            	dispose(); // Close login window
+				// Closing the registration window
+            	dispose(); 
             }
         });
 
         
-      
+        // Adding components to parent registration panel
         panel.add(usernameLabel);
         panel.add(usernameField);
         panel.add(passwordLabel);
@@ -74,12 +92,18 @@ public class ParentRegistration extends JFrame implements ActionListener {
         panel.add(registerButton);
         panel.add(backButton);
 
+        // Adding panel to the main panel
         mainPanel.add(panel, BorderLayout.CENTER);
         
+        // Add the main panel to the frame
         add(mainPanel);
+        // Make the frame visible
         setVisible(true);
     }
 
+    /**
+     * ActionListener implementation for handling button clicks.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String username = usernameField.getText();
@@ -96,7 +120,9 @@ public class ParentRegistration extends JFrame implements ActionListener {
         // Display success message
         JOptionPane.showMessageDialog(this, "Parent account registered successfully!");
         
+        // Open the ParentLoginPage
         new ParentLoginPage(); 
+        // Close the registration window
         dispose();
         }
 		else
@@ -106,7 +132,9 @@ public class ParentRegistration extends JFrame implements ActionListener {
     }
     
    
-   
+    /**
+     * Main method used to create an instance of ParentRegistration and display the registration page.
+     */
     public static void main(String[] args) {
         new ParentRegistration();
     }
