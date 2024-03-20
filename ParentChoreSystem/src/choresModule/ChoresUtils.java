@@ -35,6 +35,11 @@ public class ChoresUtils {
 	 * 
 	 */
 	
+	/**
+	 * creates a filter of 'Alphabetically' to sort all chores that are 'Alphabetically'
+	 * @param chores
+	 * @return secondaryList
+	 */
 	public static List<Chore> sortAlphabetically(List<Chore> chores) {
 	//	//making a string arrayList because collection sort only works on java made objects
 	//	ArrayList<String> choresString = new ArrayList<>();
@@ -50,6 +55,11 @@ public class ChoresUtils {
 		return secondaryList;
 	}
 	
+	/**
+	 * creates a filter of 'ByTime' to sort all chores that are 'ByTime'
+	 * @param chores
+	 * @return secondaryList
+	 */
 	public static List<Chore> sortByTime(List<Chore> chores) {
 		//chore.getTime();
 		
@@ -68,6 +78,11 @@ public class ChoresUtils {
 		
 	}
 	
+	/**
+	 * creates a filter of 'ByPayment' to sort all chores that are 'ByPayment'
+	 * @param chores
+	 * @return secondaryList
+	 */
 	public static List<Chore> sortByPayment(List<Chore> chores) {
 		//chore.getPayment();
 		
@@ -85,6 +100,11 @@ public class ChoresUtils {
 		return secondaryList;
 	}
 	
+	/**
+	 * creates a filter of 'Completed' to sort all chores that are 'Completed'
+	 * @param chores
+	 * @return secondaryList
+	 */
 	public static List<Chore> filterCompleted(List<Chore> chores) {
 		//chore.isCompleted();
 		
@@ -111,6 +131,11 @@ public class ChoresUtils {
 		return secondaryList;
 	}
 	
+	/**
+	 * creates a filter of 'NotCompleted' to sort all chores that are 'NotCompleted'
+	 * @param chores
+	 * @return secondaryList
+	 */
 	public static List<Chore> filterNotCompleted(List<Chore> chores) {
 		
 		List<Chore> secondaryList = new ArrayList<>();
@@ -122,6 +147,11 @@ public class ChoresUtils {
 		return secondaryList;
 	}
 	
+	/**
+	 * creates a filter of 'Paid' to sort all chores that are 'Paid'
+	 * @param chores
+	 * @return secondaryList
+	 */
 	public static List<Chore> filterPaid(List<Chore> chores) {
 		//chore.isPaid();
 		
@@ -147,6 +177,11 @@ public class ChoresUtils {
 		return secondaryList;
 	}
 	
+	/**
+	 * creates a filter of 'NotPaid' to sort all chores that are 'NotPaid'
+	 * @param chores
+	 * @return secondaryList, an arraylist of type 'Chore'
+	 */
 	public static List<Chore> filterNotPaid(List<Chore> chores) {
 		
 		List<Chore> secondaryList = new ArrayList<>();
@@ -158,6 +193,12 @@ public class ChoresUtils {
 		return secondaryList;
 	}
 	
+	/**
+	 * creates a filter of 'Category' to sort all chores that are 'Category'
+	 * @param category
+	 * @param chores
+	 * @return secondaryList
+	 */
 	public static List<Chore> filterCategory(String category, List<Chore> chores) {
 		//chore.getCatogory();
 		
@@ -183,6 +224,10 @@ public class ChoresUtils {
 		return secondaryList;
 	}
 	
+	/**
+	 * Creates and excel Sheet of all the chores
+	 * @param chores
+	 */
 	public static void createExcelSheet(List<Chore> chores) {
         try {
             // Prompt user to choose a file location
