@@ -299,11 +299,17 @@ public class ParentAccountGUI extends JFrame{
 		// Getting the selected child from the dropdown
 	    ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
 	    
+	    /**
+	     * Bug was present here as when no child is selected an error should pop up
+	     * however nothing was showing up. This is the BUG FIX
+	     */
+	   
 	    if (selectedChild == null) {
-	        JOptionPane.showMessageDialog(this, "Please select a child to remove.", "Error", JOptionPane.ERROR_MESSAGE);
+	        JOptionPane.showMessageDialog(this, "Please choose a child from the drop-down list you want to remove.", "Error", JOptionPane.ERROR_MESSAGE);
 	        return; // Exit the method
 	    }
-
+	    
+	    
 	    // Prompt for confirmation to remove the child
 	    int option = JOptionPane.showConfirmDialog(this,
 	            "<html>Are you sure you want to remove <font color='blue'><b>" + selectedChild.getUsername() + "</b></font>?</html>", "Confirmation", JOptionPane.YES_NO_OPTION);
