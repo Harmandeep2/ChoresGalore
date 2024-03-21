@@ -95,6 +95,20 @@ class choresSortTestCases {
         assertEquals("Do homework", sortedChores.get(1).getName());
         assertEquals("Mow lawn", sortedChores.get(2).getName());
     }
+    
+    @Test
+    public void ExcelCreation() {
+        List<Chore> chores = new ArrayList<>();
+        chores.add(new Chore("Do homework", "Education", 60, 5.0)); // 1 hour chore
+        chores.add(new Chore("Clean room", "Household", 30, 3.0)); // 30-minute chore
+        chores.add(new Chore("Mow lawn", "Outdoor", 120, 10.0)); // 2 hour chore
+
+//        List<Chore> sortedChores = ChoresUtils.sortByTime(chores);
+//        assertEquals("Clean room", sortedChores.get(0).getName());
+//        assertEquals("Do homework", sortedChores.get(1).getName());
+//        assertEquals("Mow lawn", sortedChores.get(2).getName());
+        ChoresUtils.createExcelSheet(chores);
+    }
 
 
 }
