@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +31,7 @@ public class ChildRegistration extends JFrame implements ActionListener {
     private JPasswordField confirmPasswordField;
     private JButton registerButton;
     private JButton backButton;
+    private JCheckBox showPasswordCheckbox;
 
     // Constructor for Child Registration page
     public ChildRegistration() {
@@ -42,8 +44,8 @@ public class ChildRegistration extends JFrame implements ActionListener {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add some padding
         
-        // Create panel with grid layout for components
-        JPanel panel = new JPanel(new GridLayout(4, 1));
+
+        JPanel panel = new JPanel(new GridLayout(5, 1));
 
         // Labels for username, password, and confirm password fields
         JLabel usernameLabel = new JLabel("Username:");
@@ -66,6 +68,9 @@ public class ChildRegistration extends JFrame implements ActionListener {
                 }
             }
         });
+
+        showPasswordCheckbox = new JCheckBox("Show Password");
+
         
   
         
@@ -84,6 +89,19 @@ public class ChildRegistration extends JFrame implements ActionListener {
             	dispose(); // Close registration window
             }
         });
+        
+        showPasswordCheckbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (showPasswordCheckbox.isSelected()) {
+					passwordField.setEchoChar((char) 0);
+					confirmPasswordField.setEchoChar((char) 0);
+				} else {
+					passwordField.setEchoChar('*');
+					confirmPasswordField.setEchoChar('*');
+				}
+			}
+		});
 
 
         // Adding components to the panel
@@ -93,6 +111,8 @@ public class ChildRegistration extends JFrame implements ActionListener {
         panel.add(passwordField);
         panel.add(confirmPasswordLabel);
         panel.add(confirmPasswordField);
+		panel.add(new JLabel(""));
+		panel.add(showPasswordCheckbox);
         panel.add(registerButton);
         panel.add(backButton);
 
@@ -113,6 +133,16 @@ public class ChildRegistration extends JFrame implements ActionListener {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
         String confirmPassword = new String(confirmPasswordField.getPassword());
+        
+        if(username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Please enter all fields!");
+	        return;
+        }
+        
+        if(DatabaseOperations.checkIfChildExists(username)) {
+	        JOptionPane.showMessageDialog(this, "Child account already exists with this username!");
+			return;
+        }
         
         if(password.equals(confirmPassword )) //Check if password and confirm password are the same
 		{

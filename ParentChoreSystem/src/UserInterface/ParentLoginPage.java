@@ -11,6 +11,7 @@ import java.sql.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,6 +35,7 @@ public class ParentLoginPage extends JFrame implements ActionListener{
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton backButton;
+    private JCheckBox showPasswordCheckbox;
 
     /**
      * Constructor for the ParentLoginPage class.
@@ -61,6 +63,7 @@ public class ParentLoginPage extends JFrame implements ActionListener{
         JLabel passwordLabel = new JLabel("Password:");
         passwordField = new JPasswordField(20);
         
+
         passwordField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -71,6 +74,9 @@ public class ParentLoginPage extends JFrame implements ActionListener{
                 }
             }
         });
+
+		showPasswordCheckbox = new JCheckBox("Show Password");
+
 
         // Login button with action listener
         loginButton = new JButton("Login");
@@ -87,6 +93,17 @@ public class ParentLoginPage extends JFrame implements ActionListener{
             	dispose(); // Close login window
             }
         });
+        
+        showPasswordCheckbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (showPasswordCheckbox.isSelected()) {
+					passwordField.setEchoChar((char) 0);
+				} else {
+					passwordField.setEchoChar('*');
+				}
+			}
+		});
 
         /**
          *  Panel for username input
@@ -101,6 +118,8 @@ public class ParentLoginPage extends JFrame implements ActionListener{
 		JPanel passwordPanel = new JPanel();
 		passwordPanel.add(passwordLabel);
 		passwordPanel.add(passwordField);
+		passwordPanel.add(showPasswordCheckbox);
+		
 		panel.add(usernamePanel);
 		panel.add(passwordPanel);
         

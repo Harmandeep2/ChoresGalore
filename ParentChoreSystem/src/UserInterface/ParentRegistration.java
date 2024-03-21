@@ -13,6 +13,7 @@ import java.sql.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,6 +35,7 @@ public class ParentRegistration extends JFrame implements ActionListener {
     private JPasswordField confirmPasswordField;
     private JButton registerButton;
     private JButton backButton;
+    private JCheckBox showPasswordCheckbox;
 
     /**
      * Constructor for the ParentRegistration class.
@@ -52,8 +54,9 @@ public class ParentRegistration extends JFrame implements ActionListener {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add some padding
         
-        // Creating a panel with a 4x1 grid layout
-        JPanel panel = new JPanel(new GridLayout(4, 1)); 
+
+        JPanel panel = new JPanel(new GridLayout(5, 1));
+
         
         // Labels for username, password, and confirm password fields
         JLabel usernameLabel = new JLabel("Username:");
@@ -64,6 +67,7 @@ public class ParentRegistration extends JFrame implements ActionListener {
         usernameField = new JTextField();
         passwordField = new JPasswordField();
         confirmPasswordField = new JPasswordField();  
+
         
         confirmPasswordField.addKeyListener(new KeyAdapter() {
             @Override
@@ -76,6 +80,9 @@ public class ParentRegistration extends JFrame implements ActionListener {
             }
         });
    
+
+        showPasswordCheckbox = new JCheckBox("Show Password");
+
 
         // Registering button with action listener
         registerButton = new JButton("Register");
@@ -93,6 +100,19 @@ public class ParentRegistration extends JFrame implements ActionListener {
             	dispose(); 
             }
         });
+        
+		showPasswordCheckbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (showPasswordCheckbox.isSelected()) {
+					passwordField.setEchoChar((char) 0);
+					confirmPasswordField.setEchoChar((char) 0);
+				} else {
+					passwordField.setEchoChar('*');
+					confirmPasswordField.setEchoChar('*');
+				}
+			}
+		});
 
         
         // Adding components to parent registration panel
@@ -102,6 +122,8 @@ public class ParentRegistration extends JFrame implements ActionListener {
         panel.add(passwordField);
         panel.add(confirmPasswordLabel);
         panel.add(confirmPasswordField);
+        panel.add(new JLabel(""));
+        panel.add(showPasswordCheckbox);
         panel.add(registerButton);
         panel.add(backButton);
 
@@ -124,6 +146,15 @@ public class ParentRegistration extends JFrame implements ActionListener {
         String confirmPassword = new String(confirmPasswordField.getPassword());
         String accountType = "Parent"; // Assuming all registered accounts are parents
         
+        if(username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Please enter all fields!");
+	        return;
+        }
+        
+        if(DatabaseOperations.checkIfParentExists(username)) {
+        	JOptionPane.showMessageDialog(this, "Parent account already exists with this username!");
+			return;
+        }
 
 		if(password.equals(confirmPassword )) //Check if password and confirm password are the same
 		{
