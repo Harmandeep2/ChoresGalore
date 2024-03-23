@@ -304,10 +304,10 @@ public class ParentAccountGUI extends JFrame{
 	     * however nothing was showing up. This is the BUG FIX
 	     */
 	   
-	    if (selectedChild == null) {
-	        JOptionPane.showMessageDialog(this, "Please choose a child from the drop-down list you want to remove.", "Error", JOptionPane.ERROR_MESSAGE);
-	        return; // Exit the method
-	    }
+//	    if (selectedChild == null) {
+//	        JOptionPane.showMessageDialog(this, "Please choose a child from the drop-down list you want to remove.", "Error", JOptionPane.ERROR_MESSAGE);
+//	        return; // Exit the method
+//	    }
 	    
 	    
 	    // Prompt for confirmation to remove the child
