@@ -339,6 +339,24 @@ public class DatabaseOperations {
         }
     }
     
+    public static boolean checkIfChoreAlreadyAssignedToChild(int choreID, String childUsername) {
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT * FROM ChoreAssignment WHERE choreID = ? AND childUsername = ?")) {
+            preparedStatement.setInt(1, choreID);
+            preparedStatement.setString(2, childUsername);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next())
+            	return true;
+            else
+            	return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public static void markChoreAsCompleted(int choreID, String childUsername) {
         try (Connection connection = DatabaseConnector.getConnection()) {
             // Update Chores table

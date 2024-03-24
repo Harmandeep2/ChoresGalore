@@ -2,6 +2,7 @@ package UserInterface;
 
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -28,6 +29,7 @@ public class ChildAccountGUI extends JFrame{
     private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton;
     private JButton logoutButton;
     private JButton markAsCompletedButton, hoursWorkedButton;
+    private JLabel welcomeLabel;
     private ChildAccount childAccount;
     private JTable choreTable;
     
@@ -52,6 +54,15 @@ public class ChildAccountGUI extends JFrame{
 
 	        JPanel mainPanel = new JPanel();
 	        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+			
+			JPanel welcomePanel = new JPanel();
+			welcomeLabel = new JLabel("Welcome, " + childAccount.getUsername());
+			welcomeLabel.setFont(new Font("Calibri", Font.BOLD, 18));
+			welcomeLabel.setForeground(Color.BLUE);
+			welcomeLabel.setAlignmentX(CENTER_ALIGNMENT);
+			welcomePanel.add(welcomeLabel);
+			
+			mainPanel.add(welcomePanel);
 	        
 	     // Initialize table model and chore table format
 	        DefaultTableModel tableModel = new DefaultTableModel();
@@ -326,6 +337,7 @@ public class ChildAccountGUI extends JFrame{
 	    	int selectedRow = choreTable.getSelectedRow();
 			if (selectedRow == -1) {
 				JOptionPane.showMessageDialog(this, "Please select a chore to mark as completed");
+				return;
 			}
 			
 			int choreId = (int) choreTable.getValueAt(selectedRow, 0);

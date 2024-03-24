@@ -2,6 +2,8 @@ package UserInterface;
 
 
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -18,6 +20,7 @@ public class ParentAccountGUI extends JFrame{
 
 	// Instance variables used
 	private ParentAccount parentAccount;
+	private JLabel welcomeLabel;
 	private JComboBox<ChildAccount> childDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
@@ -45,6 +48,15 @@ public class ParentAccountGUI extends JFrame{
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		
+		JPanel welcomePanel = new JPanel();
+		welcomeLabel = new JLabel("Welcome, " + parentAccount.getUsername());
+		welcomeLabel.setFont(new Font("Calibri", Font.BOLD, 18));
+		welcomeLabel.setForeground(Color.BLUE);
+		welcomeLabel.setAlignmentX(CENTER_ALIGNMENT);
+		welcomePanel.add(welcomeLabel);
+		
+		mainPanel.add(welcomePanel);
 
 		// Child Dropdown
 		List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
@@ -370,6 +382,7 @@ public class ParentAccountGUI extends JFrame{
 		// Checking if a chore is selected
 		if (selectedRow == -1) {
 			JOptionPane.showMessageDialog(this, "Please select a chore to pay to selected child");
+			return;
 		}
 		
 		// Getting the chore ID from the selected row
@@ -408,10 +421,16 @@ public class ParentAccountGUI extends JFrame{
 		// Checking if a chore is selected
 		if (selectedRow == -1) {
 			JOptionPane.showMessageDialog(this, "Please select a chore to assign to selected child");
+			return;
 		}
 		
 		// Get the chore ID from the selected row
 		int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+		
+		if(DatabaseOperations.checkIfChoreAlreadyAssignedToChild(choreId, selectedChild.getUsername())) {
+			JOptionPane.showMessageDialog(this, "<html> Chore <font color='blue'><b><u>already</u></b></font> assigned to <html>" + selectedChild.getUsername());
+			return;
+		}
 		
 		// Check if the chore is not completed
 		if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
