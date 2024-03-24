@@ -347,6 +347,12 @@ public class ParentAccountGUI extends JFrame{
 	 *  Method to create a chore
 	 */
 	private void createChore() {
+		
+		if(choreNameField.getText().isEmpty() || choreCategoryField.getText().isEmpty() ||
+				choreTimeField.getText().isEmpty()|| chorePaymentField.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Please fill all the details!");
+			return;
+		}
 		 // Retrieval of chore attributes from text fields
 		String choreName = choreNameField.getText();
 		String choreCategory = choreCategoryField.getText();
@@ -366,6 +372,10 @@ public class ParentAccountGUI extends JFrame{
 
 		// Display success message
 		JOptionPane.showMessageDialog(this, "Chore created successfully!");
+		choreNameField.setText("");
+		choreCategoryField.setText("");
+		choreTimeField.setText("");
+		chorePaymentField.setText("");
 	}
 
 	/**
