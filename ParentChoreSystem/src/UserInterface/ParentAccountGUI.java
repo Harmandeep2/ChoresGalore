@@ -377,7 +377,8 @@ public class ParentAccountGUI extends JFrame{
 		double chorePayment = Double.parseDouble(chorePaymentField.getText());
 		String chorePriority = "";
 		Date choreDate = null;
-		int choreRating = 0;
+		int choreRating = Integer.parseInt(choreRatingField.getText());;
+		
 		if (chorePriorityField.getText().equals("high")||chorePriorityField.getText().equals("mid")||chorePriorityField.getText().equals("low")) {
 			chorePriority = chorePriorityField.getText();
 		} else {
