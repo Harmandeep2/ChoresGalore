@@ -22,7 +22,7 @@ public class ParentAccountGUI extends JFrame{
 	private ParentAccount parentAccount;
 	private JLabel welcomeLabel;
 	private JComboBox<ChildAccount> childDropdown;
-	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField;
+	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
 	private JTable choreTable;
@@ -179,6 +179,7 @@ public class ParentAccountGUI extends JFrame{
 		choreCategoryField = new JTextField(15);
 		choreTimeField = new JTextField(5);
 		chorePaymentField = new JTextField(5);
+		chorePriorityField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
 
 		// Add labels and text fields to the chore panel
@@ -190,6 +191,8 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(choreTimeField);
 		chorePanel.add(new JLabel("Payment: "));
 		chorePanel.add(chorePaymentField);
+		chorePanel.add(new JLabel("Priority (high,mid,low): "));
+		chorePanel.add(chorePriorityField);
 		chorePanel.add(createChoreButton);
 
 		// Add the chore panel to the main panel
@@ -366,13 +369,18 @@ public class ParentAccountGUI extends JFrame{
 		String choreCategory = choreCategoryField.getText();
 		double choreTime = Double.parseDouble(choreTimeField.getText());
 		double chorePayment = Double.parseDouble(chorePaymentField.getText());
+		String chorePriority = "";
+		if (chorePriorityField.getText().equals("high")||chorePriorityField.getText().equals("mid")||chorePriorityField.getText().equals("low")) {
+			chorePriority = chorePriorityField.getText();
+		} else {
+			JOptionPane.showMessageDialog(this, "Please choose 'high', 'mid', 'low'!", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 
 		// Insert new chore into the database using DatabaseOperations class
 		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
-		
 		// Insert the chore into the database using DatabaseOperations class
 		DatabaseOperations.insertChore(newChore, parentAccount.getUsername());
-
+		DatabaseOperations.insertChoreDetails(chorePriority, newChore.getId());
 		// Update the table model with the new chore data
 		displayParentChores();
 
