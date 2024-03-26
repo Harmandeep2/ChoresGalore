@@ -209,6 +209,20 @@ public class DatabaseOperations {
             e.printStackTrace();
         }
     }
+    public static void insertChoreDetails(String desc, Date deadline, String priority, int ChoreID) {
+    	try (Connection connection = DatabaseConnector.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "INSERT INTO ChoreAdditionalDetails (id, priority, choreDescription, deadline) VALUES (?, ?, ?, ?)")) {
+               preparedStatement.setInt(1, ChoreID);
+               preparedStatement.setString(2, priority);
+               preparedStatement.setString(3, desc);
+               preparedStatement.setDate(4, deadline);
+               
+               preparedStatement.executeUpdate();
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+    }
 
     public static List<Chore> getAllChoresofChild(String childUsername) {
         List<Chore> chores = new ArrayList<>();
