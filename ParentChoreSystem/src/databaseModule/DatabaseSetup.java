@@ -60,6 +60,14 @@ public class DatabaseSetup {
     		+ "FOREIGN KEY (childUsername) REFERENCES ChildAccounts(childUsername),"
     		+ "FOREIGN KEY (choreID) REFERENCES Chores(id))";
 
+    //NEW TABLE CREATION
+    private static final String CREATE_CHOREADDITIONALDETAILS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChoreAdditionalDetails ("
+    		+ "id INT PRIMARY KEY,"
+    		+ "priority ENUM('high','mid','low') NOT NULL,"
+    		+ "choreDescription VARCHAR(255) NOT NULL,"
+    		+ "deadline DATE NOT NULL,"
+    		+ "FOREIGN KEY (id) REFERENCES Chores(id))";
+    		
     
     /**
      * Preparing and executing database
@@ -74,6 +82,7 @@ public class DatabaseSetup {
              PreparedStatement createChoresTableStatement = connection.prepareStatement(CREATE_CHORES_TABLE_SQL);
              PreparedStatement createChoreAssignmentTableStatement = connection.prepareStatement(CREATE_CHORE_ASSIGNMENT_TABLE_SQL)) {
         	 PreparedStatement createCompetitionsTableStatement = connection.prepareStatement(CREATE_COMPETITIONS_TABLE_SQL);
+        	 PreparedStatement createChoreAdditionalDetails = connection.prepareStatement(CREATE_CHOREADDITIONALDETAILS_TABLE_SQL);
         	
             // Create the database if not exists
             createDatabaseStatement.executeUpdate();
@@ -95,6 +104,9 @@ public class DatabaseSetup {
 
 			// Create the 'Competitions' table if not exists
 			createCompetitionsTableStatement.executeUpdate();
+			
+			//Create the 'ChoreAdditionalDetails' table if not exists
+			createChoreAdditionalDetails.executeUpdate();
 			
             System.out.println("Database setup completed successfully.");
 
