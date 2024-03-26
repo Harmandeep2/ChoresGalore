@@ -49,13 +49,21 @@ public class ParentAccountGUI extends JFrame{
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		
+		/**
+		 * Creating a welcome panel to display to user so they know which account is logged in
+		 */
 		JPanel welcomePanel = new JPanel();
-		welcomeLabel = new JLabel("Welcome, " + parentAccount.getUsername());
+		//will display "Welcome, [username]"
+		welcomeLabel = new JLabel("Welcome, " + parentAccount.getUsername() + "!");
+		//making the text bold and of the calibri font type, with size 18
 		welcomeLabel.setFont(new Font("Calibri", Font.BOLD, 18));
+		//making the text blue
 		welcomeLabel.setForeground(Color.BLUE);
+		//aligning the text to the top middle of the GUI
 		welcomeLabel.setAlignmentX(CENTER_ALIGNMENT);
+		//adding the label onto the panel
 		welcomePanel.add(welcomeLabel);
-		
+		//adding welcome panel onto main panel
 		mainPanel.add(welcomePanel);
 
 		// Child Dropdown
