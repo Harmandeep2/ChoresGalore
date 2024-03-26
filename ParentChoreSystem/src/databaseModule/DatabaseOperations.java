@@ -195,7 +195,7 @@ public class DatabaseOperations {
     public static void insertChore(Chore chore, String parentUsername) {
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Chores (name, category, time, payment, parentUsername, isPaid, isCompleted) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+                     "INSERT INTO Chores (name, category, time, payment, parentUsername, isPaid, isCompleted, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
             preparedStatement.setString(1, chore.getName());
             preparedStatement.setString(2, chore.getCategory());
             preparedStatement.setDouble(3, chore.getTime());
@@ -203,6 +203,7 @@ public class DatabaseOperations {
             preparedStatement.setString(5, parentUsername);
             preparedStatement.setBoolean(6, chore.isPaid());
             preparedStatement.setBoolean(7, chore.isCompleted());
+            preparedStatement.setInt(8, chore.getRating());
             
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -240,7 +241,8 @@ public class DatabaseOperations {
                     Chore chore = new Chore(resultSet.getString("name"),
                     		resultSet.getString("category"),
                     		resultSet.getDouble("time"),
-                    		resultSet.getDouble("payment"));
+                    		resultSet.getDouble("payment"),
+                    		resultSet.getInt("rating"));
                     chore.setId(resultSet.getInt("id"));
                     if(resultSet.getBoolean("isPaid")) {
     					chore.markPaid();
@@ -274,7 +276,8 @@ public class DatabaseOperations {
 		                Chore chore = new Chore(resultSet.getString("name"),
 		                		resultSet.getString("category"),
 		                		resultSet.getDouble("time"),
-		                		resultSet.getDouble("payment"));
+		                		resultSet.getDouble("payment"),
+		                		resultSet.getInt("rating"));
 		                chore.setId(resultSet.getInt("id"));
 		                chore.setParentUsername(resultSet.getString("parentUsername"));
 		                if(resultSet.getBoolean("isPaid")) {
@@ -322,7 +325,8 @@ public class DatabaseOperations {
                 Chore chore = new Chore(resultSet.getString("name"),
                 		resultSet.getString("category"),
                 		resultSet.getDouble("time"),
-                		resultSet.getDouble("payment"));
+                		resultSet.getDouble("payment"),
+                		resultSet.getInt("rating"));
                 chore.setId(resultSet.getInt("id"));
                 if(resultSet.getBoolean("isPaid")) {
 					chore.markPaid();
@@ -414,6 +418,20 @@ public class DatabaseOperations {
                 updateChildAccounts.setString(2, childUsername);
                 updateChildAccounts.executeUpdate();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void storeChoreRating(int choreID, int rating) {
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE Chores SET rating = ? WHERE id = ?")) {
+
+            preparedStatement.setInt(1, rating);
+            preparedStatement.setInt(2, choreID);
+            preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

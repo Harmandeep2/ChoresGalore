@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.List;
 
 import javax.swing.*;
@@ -22,7 +23,7 @@ public class ParentAccountGUI extends JFrame{
 	private ParentAccount parentAccount;
 	private JLabel welcomeLabel;
 	private JComboBox<ChildAccount> childDropdown;
-	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField;
+	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
 	private JTable choreTable;
@@ -161,6 +162,7 @@ public class ParentAccountGUI extends JFrame{
 		tableModel.addColumn("Payment");
 		tableModel.addColumn("isCompleted");
 		tableModel.addColumn("isPaid");
+		tableModel.addColumn("Rating");
 
 		// Creating the chore table using the table model
 		choreTable = new JTable(tableModel);
@@ -181,6 +183,7 @@ public class ParentAccountGUI extends JFrame{
 		chorePaymentField = new JTextField(5);
 		chorePriorityField = new JTextField(5);
 		choreDescriptionField = new JTextField(5);
+		choreRatingField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
 
 		// Add labels and text fields to the chore panel
@@ -373,6 +376,8 @@ public class ParentAccountGUI extends JFrame{
 		double choreTime = Double.parseDouble(choreTimeField.getText());
 		double chorePayment = Double.parseDouble(chorePaymentField.getText());
 		String chorePriority = "";
+		Date choreDate = null;
+		int choreRating = 0;
 		if (chorePriorityField.getText().equals("high")||chorePriorityField.getText().equals("mid")||chorePriorityField.getText().equals("low")) {
 			chorePriority = chorePriorityField.getText();
 		} else {
@@ -382,10 +387,11 @@ public class ParentAccountGUI extends JFrame{
 		String choreDescription = choreDescriptionField.getText();
 
 		// Insert new chore into the database using DatabaseOperations class
-		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
+		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment, choreRating);
 		// Insert the chore into the database using DatabaseOperations class
 		DatabaseOperations.insertChore(newChore, parentAccount.getUsername());
-		DatabaseOperations.insertChoreDetails(choreDescription, chorePriority, newChore.getId());
+		
+		DatabaseOperations.insertChoreDetails(choreDescription, choreDate, chorePriority, newChore.getId());
 		// Update the table model with the new chore data
 		displayParentChores();
 
@@ -426,8 +432,27 @@ public class ParentAccountGUI extends JFrame{
 		if(choreTable.getValueAt(selectedRow, 5).equals("Yes") && choreTable.getValueAt(selectedRow, 6).equals("No")) {
 			// If the selected child completed the chore, mark it as paid
 			if(selectedChild.getUsername().equals(childWhoCompletedChore)) {
-				DatabaseOperations.markChoreAsPaid(choreId, selectedChild.getUsername());
-				JOptionPane.showMessageDialog(this, "Chore paid to " + selectedChild.getUsername());	
+				
+				String ratingInput = JOptionPane.showInputDialog(this, "Please rate the chore completion (1-5):");
+	            // Validating the rating input
+	            if (ratingInput != null && !ratingInput.isEmpty()) {
+	                try {
+	                    int rating = Integer.parseInt(ratingInput);
+	                    if (rating >= 1 && rating <= 5) {
+	                        // Store the rating in the database or perform actions based on the rating
+	                        DatabaseOperations.storeChoreRating(choreId, rating);
+	                        // Mark the chore as paid
+	                        DatabaseOperations.markChoreAsPaid(choreId, selectedChild.getUsername());
+	                        JOptionPane.showMessageDialog(this, "Chore paid to " + selectedChild.getUsername());
+	                    } else {
+	                        JOptionPane.showMessageDialog(this, "Please enter a rating between 1 and 5.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    }
+	                } catch (NumberFormatException e) {
+	                    JOptionPane.showMessageDialog(this, "Invalid rating format. Please enter a number.", "Error", JOptionPane.ERROR_MESSAGE);
+	                }
+	            } else {
+	                JOptionPane.showMessageDialog(this, "Please enter a rating.", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
 			}
 			else {
 				// Shows error message if selected child hasn't complete the chore
@@ -486,10 +511,13 @@ public class ParentAccountGUI extends JFrame{
 		 // Fetching and displayal of chores associated with the parent account
 		List<Chore> parentChores = DatabaseOperations.getAllChoresofParent(parentAccount.getUsername());
 		for (Chore chore : parentChores) {
-			 // Adding each chore to the table model
+			// Determine the rating status
+	        String ratingStatus = chore.getRating() == 0 ? "Not rated yet" : String.valueOf(chore.getRating());
+			
+			// Adding each chore to the table model
 			Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
 					chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
-					chore.isPaid() ? "Yes" : "No"};
+					chore.isPaid() ? "Yes" : "No", ratingStatus};
 			tableModel.addRow(rowData);
 		}
 	}
