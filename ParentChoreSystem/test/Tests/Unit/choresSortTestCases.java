@@ -103,10 +103,17 @@ class choresSortTestCases {
         chores.add(new Chore("Clean room", "Household", 30, 3.0)); // 30-minute chore
         chores.add(new Chore("Mow lawn", "Outdoor", 120, 10.0)); // 2 hour chore
 
-//        List<Chore> sortedChores = ChoresUtils.sortByTime(chores);
-//        assertEquals("Clean room", sortedChores.get(0).getName());
-//        assertEquals("Do homework", sortedChores.get(1).getName());
-//        assertEquals("Mow lawn", sortedChores.get(2).getName());
+        ChoresUtils.createExcelSheet(chores);
+    }
+    
+    @Test
+    public void ExcelCreation2 () {
+        List<Chore> chores = new ArrayList<>();
+        chores.add(new Chore("Laundry", "Clothes", 180, 15.0));
+        chores.add(new Chore("Clean room", "Household", 30, 3.0));
+        chores.add(new Chore("Dishes", "Kitchen", 20, 5.0));
+        chores.add(new Chore("Mow lawn", "Outdoor", 120, 10.0));
+
         ChoresUtils.createExcelSheet(chores);
     }
 
