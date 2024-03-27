@@ -24,8 +24,8 @@ public class ParentAccountGUI extends JFrame{
 
 	// Instance variables used
 	private ParentAccount parentAccount;
-	private JLabel welcomeLabel, dateLabel, timeLabel;
-	private JComboBox<ChildAccount> childDropdown;
+	private JLabel welcomeLabel, dateLabel;
+	private JComboBox<ChildAccount> childDropdown, priorityDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField, choreDeadlineField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
@@ -222,12 +222,11 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(chorePaymentField);
 		chorePanel2.add(new JLabel("Chore Description: "));
 		chorePanel2.add(choreDescriptionField);	
-		chorePanel2.add(new JLabel("Priority (high,mid,low): "));
-		chorePanel2.add(chorePriorityField);
-		chorePanel2.add(createChoreButton);
+		chorePanel.add(new JLabel("Priority (high,mid,low): "));
+		chorePanel.add(chorePriorityField);
 		chorePanel.add(new JLabel("Set Deadline: "));
 		chorePanel.add(choreDeadlineField);
-		chorePanel.add(createChoreButton);
+		chorePanel2.add(createChoreButton);
 
 		// Add the chore panel to the main panel
 
