@@ -241,8 +241,7 @@ public class DatabaseOperations {
                     Chore chore = new Chore(resultSet.getString("name"),
                     		resultSet.getString("category"),
                     		resultSet.getDouble("time"),
-                    		resultSet.getDouble("payment"),
-                    		resultSet.getInt("rating"));
+                    		resultSet.getDouble("payment"));
                     chore.setId(resultSet.getInt("id"));
                     if(resultSet.getBoolean("isPaid")) {
     					chore.markPaid();
@@ -250,7 +249,9 @@ public class DatabaseOperations {
                     if(resultSet.getBoolean("isCompleted")) {
                     	chore.markCompleted();
                     }
-                    
+                    if(resultSet.getInt("rating") != -1) {
+						chore.setRating(resultSet.getInt("rating"));
+					}
                     chores.add(chore);
                 }
             }
@@ -276,8 +277,7 @@ public class DatabaseOperations {
 		                Chore chore = new Chore(resultSet.getString("name"),
 		                		resultSet.getString("category"),
 		                		resultSet.getDouble("time"),
-		                		resultSet.getDouble("payment"),
-		                		resultSet.getInt("rating"));
+		                		resultSet.getDouble("payment"));
 		                chore.setId(resultSet.getInt("id"));
 		                chore.setParentUsername(resultSet.getString("parentUsername"));
 		                if(resultSet.getBoolean("isPaid")) {
@@ -285,6 +285,9 @@ public class DatabaseOperations {
 						}
 		                if(resultSet.getBoolean("isCompleted")) {
 		                	chore.markCompleted();
+		                }
+		                if(resultSet.getInt("rating") != -1) {
+		                	chore.setRating(resultSet.getInt("rating"));
 		                }
 		                
 		                chores.add(chore);
@@ -325,8 +328,7 @@ public class DatabaseOperations {
                 Chore chore = new Chore(resultSet.getString("name"),
                 		resultSet.getString("category"),
                 		resultSet.getDouble("time"),
-                		resultSet.getDouble("payment"),
-                		resultSet.getInt("rating"));
+                		resultSet.getDouble("payment"));
                 chore.setId(resultSet.getInt("id"));
                 if(resultSet.getBoolean("isPaid")) {
 					chore.markPaid();
@@ -334,7 +336,9 @@ public class DatabaseOperations {
                 if(resultSet.getBoolean("isCompleted")) {
                 	chore.markCompleted();
                 }
-                
+                if(resultSet.getInt("rating") != -1) {
+					chore.setRating(resultSet.getInt("rating"));
+				}
                 chores.add(chore);
             }
         } catch (SQLException e) {

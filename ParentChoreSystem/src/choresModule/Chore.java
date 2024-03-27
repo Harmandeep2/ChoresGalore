@@ -11,7 +11,7 @@ public class Chore {
 	private String parentUsername;
 	private boolean completed;			//status of chore, true = completed, false = incomplete
 	private boolean paid;				//status of payment, true = paid, false = unpaid
-	private int rating;               //Rating of chore
+	private int rating;               //Rating of chore, default = -1, range 1-5
 	
 
 	/**
@@ -22,14 +22,14 @@ public class Chore {
 	 * @param payment
 	 * @param rating
 	 */
-	public Chore(String name, String category, double time, double payment, int rating) {
+	public Chore(String name, String category, double time, double payment) {
 		this.name = name;
 		this.category = category;
 		this.time = time;
 		this.payment = payment;
 		this.completed = false;
 		this.paid = false;
-		this.rating = rating;
+		//this.rating = rating;
 	}
 	
 	//Getters and Setters
