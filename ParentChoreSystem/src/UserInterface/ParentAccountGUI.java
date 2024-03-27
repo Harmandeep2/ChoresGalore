@@ -184,6 +184,8 @@ public class ParentAccountGUI extends JFrame{
 		tableModel.addColumn("isCompleted");
 		tableModel.addColumn("isPaid");
 		tableModel.addColumn("Rating");
+		tableModel.addColumn("Assigned to");
+
 
 		// Creating the chore table using the table model
 		choreTable = new JTable(tableModel);
