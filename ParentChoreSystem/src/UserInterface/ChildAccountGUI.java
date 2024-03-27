@@ -30,7 +30,7 @@ public class ChildAccountGUI extends JFrame{
     // Buttons for other functionalities
     private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton, choreHistoryButton;
     private JButton logoutButton, choreDetailButton;
-    private JButton markAsCompletedButton, hoursWorkedButton;
+    private JButton markAsCompletedButton, markAsNotCompletedButton, hoursWorkedButton;
     private JLabel welcomeLabel, dateLabel;
     private ChildAccount childAccount;
     private JTable choreTable;
@@ -262,6 +262,9 @@ public class ChildAccountGUI extends JFrame{
 	        markAsCompletedButton = new JButton("Mark as Completed");
 			buttonPanel.add(markAsCompletedButton);
 			
+			markAsNotCompletedButton = new JButton("Mark as Not Completed");
+			buttonPanel.add(markAsNotCompletedButton);
+			
 			//hours worked chore button
 			hoursWorkedButton = new JButton("Hours Worked");
 			buttonPanel.add(hoursWorkedButton);
@@ -303,6 +306,15 @@ public class ChildAccountGUI extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					markAsCompleted();
+					displayChildChores();
+				}
+			});
+			
+			 //Action Listener to mark not completed (accidently marked as completed) chore through markAsNotCompleted button
+			markAsNotCompletedButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					markAsNotCompleted();
 					displayChildChores();
 				}
 			});
@@ -420,6 +432,31 @@ public class ChildAccountGUI extends JFrame{
 			}
 			else {
 				JOptionPane.showMessageDialog(this, "Chore already completed!");
+			}
+	    }
+	    
+	    private void markAsNotCompleted() {
+	    	int selectedRow = choreTable.getSelectedRow();
+			if (selectedRow == -1) {
+				JOptionPane.showMessageDialog(this, "Please select a chore to mark as not completed if accidentally marked as completed");
+				return;
+			}
+			
+			int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+			
+			if(choreTable.getValueAt(selectedRow, 5).equals("Yes")) {
+				String choreCompletingChildUsername = DatabaseOperations.getChoreCompletingChildUsername(choreId);
+				if(choreCompletingChildUsername.equals(childAccount.getUsername())) {
+					DatabaseOperations.markChoreAsNotCompleted(choreId, childAccount.getUsername());
+					JOptionPane.showMessageDialog(this, "Chore updated as not completed successfully!");
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "Chore not yet marked as completed by you, it was marked by " + choreCompletingChildUsername + "!");
+				}
+				
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Chore not yet marked as completed!");
 			}
 	    }
 	    

@@ -402,6 +402,29 @@ public class DatabaseOperations {
         }
     }
 
+    public static void markChoreAsNotCompleted(int choreID, String childUsername) {
+        try (Connection connection = DatabaseConnector.getConnection()) {
+            // Update Chores table
+            try (PreparedStatement updateChores = connection.prepareStatement(
+                    "UPDATE Chores SET isCompleted = false, completedBy = ? WHERE id = ?")) {
+                updateChores.setString(1, childUsername);
+            	updateChores.setInt(2, choreID);
+                updateChores.executeUpdate();
+            }
+
+            // Update ChildAccounts table
+            try (PreparedStatement updateChildAccounts = connection.prepareStatement(
+                    "UPDATE ChildAccounts " +
+                            "SET hoursWorked = hoursWorked - (SELECT time/60 FROM Chores WHERE id = ?) " +
+                            "WHERE childUsername = ?")) {
+                updateChildAccounts.setInt(1, choreID);
+                updateChildAccounts.setString(2, childUsername);
+                updateChildAccounts.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 	
     public static void markChoreAsPaid(int choreID, String childUsername) {
         try (Connection connection = DatabaseConnector.getConnection()) {

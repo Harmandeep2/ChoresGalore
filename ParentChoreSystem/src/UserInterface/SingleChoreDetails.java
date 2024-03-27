@@ -50,6 +50,9 @@ public class SingleChoreDetails extends JFrame {
                 if(entry.getKey().equals("Completed By")) {
                 	rowData[index][1] = entry.getValue() == null || entry.getValue().toString().isEmpty() ? "<Not Yet Completed>" : entry.getValue();
                 }
+                if(entry.getKey().equals("Rating")) {
+					rowData[index][1] = (int) entry.getValue() == -1 || entry.getValue().toString().isEmpty() ? "<Not Yet Rated>" : entry.getValue();
+                }
                 index++;
             }
 
