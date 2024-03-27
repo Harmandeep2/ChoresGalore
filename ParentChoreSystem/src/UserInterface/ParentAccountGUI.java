@@ -529,6 +529,13 @@ public class ParentAccountGUI extends JFrame{
 	private void checkBalance() {
 		// Getting the selected child from the dropdown
 		ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+		
+		// Check if any child is selected
+	    if (selectedChild == null) {
+	        JOptionPane.showMessageDialog(this, "No child is selected. Please add a child first!", "Error", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+	    
 		// Retrieving and displaying the balance of the selected child
 		double balance = DatabaseOperations.getChildBalance(selectedChild.getUsername());
 		JOptionPane.showMessageDialog(this, selectedChild+ "'s Balance: $" + balance);
