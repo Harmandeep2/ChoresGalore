@@ -18,6 +18,9 @@ import javax.swing.table.*;
 import accountsModule.*;
 import choresModule.*;
 import databaseModule.*;
+import com.toedter.calendar.JDateChooser;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 //Class for Parent Account GUI
 public class ParentAccountGUI extends JFrame{
@@ -27,10 +30,11 @@ public class ParentAccountGUI extends JFrame{
 	private JLabel welcomeLabel, dateLabel;
 	private JComboBox<ChildAccount> childDropdown;
 	private JComboBox<String> priorityDropdown;
-	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField, choreDeadlineField;
+	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
 	private JTable choreTable;
+	private JDateChooser deadlineChooser;
 
 	 // Constructor created for ParentAccountGUI
 	public ParentAccountGUI(ParentAccount parentAccount) {
@@ -79,6 +83,7 @@ public class ParentAccountGUI extends JFrame{
 		
 		// Putting todays date in the label
 		dateLabel = new JLabel("Today's Date: " + dateObj);
+		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		datePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		// Adding it to the date panel and then the main panel.
@@ -206,9 +211,9 @@ public class ParentAccountGUI extends JFrame{
 		choreNameField = new JTextField(5);
 		choreCategoryField = new JTextField(5);
 		choreTimeField = new JTextField(5);
+		choreTimeField.setPreferredSize(new Dimension(20, 19));
 		chorePaymentField = new JTextField(5);
 		chorePriorityField = new JTextField(5);
-		choreDeadlineField = new JTextField(5);
 		choreDescriptionField = new JTextField(5);
 		choreRatingField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
@@ -225,7 +230,14 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel2.add(new JLabel("Chore Description: "));
 		chorePanel2.add(choreDescriptionField);	
 		chorePanel.add(new JLabel("Set Deadline: "));
-		chorePanel.add(choreDeadlineField);
+		
+		deadlineChooser = new JDateChooser();
+		deadlineChooser.setAutoscrolls(true);
+		deadlineChooser.setRequestFocusEnabled(false);
+		deadlineChooser.setPreferredSize(new Dimension(30, 19));
+		deadlineChooser.setVerifyInputWhenFocusTarget(false);
+		BorderLayout borderLayout = (BorderLayout) deadlineChooser.getLayout();
+		chorePanel.add(deadlineChooser);
 		chorePanel2.add(createChoreButton);
 		
 		// Replace JTextField with JComboBox for priority field to be selected as a dropdown
@@ -238,6 +250,8 @@ public class ParentAccountGUI extends JFrame{
 
 		// Add the chore panel to the main panel
 		JLabel choreCreationLabel = new JLabel("Chore Creation");
+		choreCreationLabel.setForeground(new Color(0, 0, 160));
+		choreCreationLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
 		choreCreationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mainPanel.add(choreCreationLabel);
 		
