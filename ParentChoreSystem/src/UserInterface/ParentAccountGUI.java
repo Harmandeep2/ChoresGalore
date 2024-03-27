@@ -232,14 +232,14 @@ public class ParentAccountGUI extends JFrame{
 		
 		chorePanel2.add(new JLabel("Chore Description: "));
 		chorePanel2.add(choreDescriptionField);	
-		chorePanel2.add(new JLabel("Set Deadline (MM/dd/yyyy): "));
+		chorePanel2.add(new JLabel("Set Deadline (MM/DD/YYYY): "));
 		
 		deadlineChooser = new JDateChooser();
 		deadlineChooser.setAutoscrolls(true);
 		deadlineChooser.setRequestFocusEnabled(false);
 		deadlineChooser.setPreferredSize(new Dimension(30, 19));
 		deadlineChooser.setVerifyInputWhenFocusTarget(false);
-		deadlineChooser.setDateFormatString("MM/DD/YYYY");
+		deadlineChooser.setDateFormatString("MM/dd/yyyy");
 		JTextFieldDateEditor editor = (JTextFieldDateEditor) deadlineChooser.getDateEditor();
 		editor.setEditable(false);
 		//BorderLayout borderLayout = (BorderLayout) deadlineChooser.getLayout();
