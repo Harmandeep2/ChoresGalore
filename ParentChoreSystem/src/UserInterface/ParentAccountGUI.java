@@ -229,9 +229,9 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel2.add(createChoreButton);
 		
 		// Replace JTextField with JComboBox for priority field to be selected as a dropdown
-        String[] priorityOptions = {"High", "Mid", "Low"};
+        String[] priorityOptions = {"Select","High", "Mid", "Low"};
         priorityDropdown = new JComboBox<>(priorityOptions);
-        priorityDropdown.setSelectedIndex(1); // Default selection
+        priorityDropdown.setSelectedIndex(0); // Default selection
         priorityDropdown.setPreferredSize(chorePriorityField.getPreferredSize()); // Match size
         chorePanel.add(new JLabel("Priority (High, Mid, Low): "));
         chorePanel.add(priorityDropdown);
@@ -428,11 +428,11 @@ public class ParentAccountGUI extends JFrame{
 		String choreCategory = choreCategoryField.getText();
 		double choreTime = Double.parseDouble(choreTimeField.getText());
 		double chorePayment = Double.parseDouble(chorePaymentField.getText());
-		String chorePriority = "";
+		String chorePriority = (String) priorityDropdown.getSelectedItem();
 		Date choreDate = null;
 		int choreRating = Integer.parseInt(choreRatingField.getText());;
 		
-		if (chorePriorityField.getText().equals("High")||chorePriorityField.getText().equals("Mid")||chorePriorityField.getText().equals("Low")) {
+		if (chorePriority.equals("High")||chorePriority.equals("Mid")||chorePriority.equals("Low")) {
 			chorePriority = chorePriorityField.getText();
 		} 
 		else {
