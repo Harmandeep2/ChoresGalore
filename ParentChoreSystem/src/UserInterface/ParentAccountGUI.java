@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
 import java.time.LocalDate;  // To import the local date
+import java.time.ZoneId;
 import java.awt.FlowLayout;  // To center/left/right align the text as need be
 
 import javax.swing.*;
@@ -463,9 +464,32 @@ public class ParentAccountGUI extends JFrame{
 		choreDescription = choreDescription.isEmpty() ? null : choreDescription;
 		String chorePriority = (String) priorityDropdown.getSelectedItem();
 		chorePriority = chorePriority.equals("Select") ? null : chorePriority;
-		java.util.Date date = deadlineChooser.getDate();
-		java.sql.Date deadline = date != null ? new java.sql.Date(date.getTime()) : null;
-
+		
+		// Stores the current date
+		java.util.Date currentDate = new java.util.Date(); // Current date
+		
+		// Validate deadline
+	    java.util.Date selectedDate = deadlineChooser.getDate();
+	    
+	    // Convert java.util.Date to LocalDate
+	    LocalDate selectedLocalDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    // Adding a day to the local date so that we can account for today's date
+	    LocalDate nextDay = selectedLocalDate.plusDays(1); 
+	    
+	    // Convert LocalDate back to java.util.Date
+	    java.util.Date nextDate = java.util.Date.from(nextDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	    
+	    // If statement for if the date is either null or in the past.
+	    if (selectedDate == null || nextDate.before(currentDate)) {
+	        JOptionPane.showMessageDialog(this, "Please select a valid deadline! Deadline can not be in the past either!", "Error", JOptionPane.ERROR_MESSAGE);
+	        // Returns to the program
+	        return;
+	    }
+	    
+	    // Stores the validated date and validated deadline
+	    java.util.Date date = deadlineChooser.getDate();
+	    java.sql.Date deadline = date != null ? new java.sql.Date(date.getTime()) : null;
+	    
 		// Insert new chore into the database using DatabaseOperations class
 		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
 		// Insert the chore into the database using DatabaseOperations class
