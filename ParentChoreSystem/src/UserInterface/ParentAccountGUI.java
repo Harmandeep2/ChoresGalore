@@ -193,7 +193,7 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(choreCategoryField);
 		chorePanel.add(new JLabel("Time: "));
 		chorePanel.add(choreTimeField);
-		chorePanel.add(new JLabel("Payment: "));
+		chorePanel.add(new JLabel("Payment: $"));
 		chorePanel.add(chorePaymentField);
 		chorePanel.add(new JLabel("Chore Description: "));
 		chorePanel.add(choreDescriptionField);	
