@@ -227,10 +227,6 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel2.add(createChoreButton);
 		chorePanel.add(new JLabel("Set Deadline: "));
 		chorePanel.add(choreDeadlineField);
-		chorePanel.add(new JLabel("Chore Description: "));
-		chorePanel.add(choreDescriptionField);	
-		chorePanel.add(new JLabel("Priority (high,mid,low): "));
-		chorePanel.add(chorePriorityField);
 		chorePanel.add(createChoreButton);
 
 		// Add the chore panel to the main panel
