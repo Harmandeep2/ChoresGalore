@@ -102,5 +102,65 @@ public class ChildAccountTest {
         ChildAccount childAccount = new ChildAccount("childUser1", "password123");
         assertEquals("childUser1", childAccount.toString());
     }
+    
+    @Test
+    public void testToString3() {
+        ChildAccount childAccount = new ChildAccount("childUser2", "password1234");
+        assertEquals("childUser2", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString4() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString5() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString6() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString7() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString8() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString9() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString10() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString11() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
+    
+    @Test
+    public void testToString12() {
+        ChildAccount childAccount = new ChildAccount("childUser1", "password123");
+        assertEquals("childUser1", childAccount.toString());
+    }
 
 }
