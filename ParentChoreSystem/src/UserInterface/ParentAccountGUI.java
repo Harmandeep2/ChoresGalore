@@ -32,7 +32,7 @@ public class ParentAccountGUI extends JFrame{
 	private JLabel welcomeLabel, dateLabel;
 	private JComboBox<ChildAccount> childDropdown;
 	private JComboBox<String> priorityDropdown;
-	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField;
+	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, choreDescriptionField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
 	private JTable choreTable;
@@ -448,6 +448,7 @@ public class ParentAccountGUI extends JFrame{
 		
 		//Additional details
 		String choreDescription = choreDescriptionField.getText();
+		choreDescription = choreDescription.isEmpty() ? null : choreDescription;
 		String chorePriority = (String) priorityDropdown.getSelectedItem();
 		chorePriority = chorePriority.equals("Select") ? null : chorePriority;
 		java.util.Date date = deadlineChooser.getDate();
@@ -473,7 +474,8 @@ public class ParentAccountGUI extends JFrame{
 		choreTimeField.setText("");
 		chorePaymentField.setText("");
 		choreDescriptionField.setText("");
-		chorePriorityField.setText("");
+		priorityDropdown.setSelectedIndex(0);
+		deadlineChooser.setDate(null);
 	}
 
 	/**
