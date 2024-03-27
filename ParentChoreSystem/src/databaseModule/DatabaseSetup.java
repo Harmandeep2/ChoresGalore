@@ -39,7 +39,7 @@ public class DatabaseSetup {
             + "parentUsername VARCHAR(255),"
             + "isPaid BOOLEAN NOT NULL,"
             + "isCompleted BOOLEAN NOT NULL,"
-            + "rating INT DEFAULT NULL,"
+            + "rating INT DEFAULT -1,"
             + "completedBy VARCHAR(255) DEFAULT NULL,"
 			+ "FOREIGN KEY (completedBy) REFERENCES ChildAccounts(childUsername) ON DELETE SET NULL,"
     		+ "FOREIGN KEY (parentUsername) REFERENCES Accounts(username))";

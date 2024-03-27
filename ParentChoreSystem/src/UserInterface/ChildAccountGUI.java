@@ -98,6 +98,7 @@ public class ChildAccountGUI extends JFrame{
 			tableModel.addColumn("Payment");
 			tableModel.addColumn("isCompleted");
 			tableModel.addColumn("isPaid");
+			tableModel.addColumn("Rating");
 			choreTable = new JTable(tableModel);
 			JScrollPane scrollPane = new JScrollPane(choreTable);
 			mainPanel.add(scrollPane);
@@ -349,9 +350,11 @@ public class ChildAccountGUI extends JFrame{
 			// Fetch and display chores associated with the parent account
 			List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
 			for (Chore chore : childChores) {
+				
+				String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
 				Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
 						chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
-						chore.isPaid() ? "Yes" : "No"};
+						chore.isPaid() ? "Yes" : "No", ratingStatus};
 				tableModel.addRow(rowData);
 			}
 		}
@@ -451,10 +454,13 @@ public class ChildAccountGUI extends JFrame{
 	    	DefaultTableModel tableModel = (DefaultTableModel) choreTable.getModel();
 			tableModel.setRowCount(0);
 			
+			
 			for (Chore chore : chores) {
+				
+				String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
 				Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
 						chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
-						chore.isPaid() ? "Yes" : "No"};
+						chore.isPaid() ? "Yes" : "No", ratingStatus};
 				tableModel.addRow(rowData);
 			}
 	    }

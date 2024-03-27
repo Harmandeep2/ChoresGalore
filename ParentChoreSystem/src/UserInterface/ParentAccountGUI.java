@@ -184,7 +184,6 @@ public class ParentAccountGUI extends JFrame{
 		tableModel.addColumn("isCompleted");
 		tableModel.addColumn("isPaid");
 		tableModel.addColumn("Rating");
-		tableModel.addColumn("Assigned to");
 
 
 		// Creating the chore table using the table model
@@ -430,7 +429,6 @@ public class ParentAccountGUI extends JFrame{
 		double chorePayment = Double.parseDouble(chorePaymentField.getText());
 		String chorePriority = (String) priorityDropdown.getSelectedItem();
 		Date choreDate = null;
-		int choreRating = Integer.parseInt(choreRatingField.getText());;
 		
 		if (chorePriority.equals("High")||chorePriority.equals("Mid")||chorePriority.equals("Low")) {
 			chorePriority = chorePriorityField.getText();
@@ -442,7 +440,7 @@ public class ParentAccountGUI extends JFrame{
 		String choreDescription = choreDescriptionField.getText();
 
 		// Insert new chore into the database using DatabaseOperations class
-		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment, choreRating);
+		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
 		// Insert the chore into the database using DatabaseOperations class
 		DatabaseOperations.insertChore(newChore, parentAccount.getUsername());
 		
@@ -567,7 +565,7 @@ public class ParentAccountGUI extends JFrame{
 		List<Chore> parentChores = DatabaseOperations.getAllChoresofParent(parentAccount.getUsername());
 		for (Chore chore : parentChores) {
 			// Determine the rating status
-	        String ratingStatus = chore.getRating() == 0 ? "Not rated yet" : String.valueOf(chore.getRating());
+	        String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
 			
 			// Adding each chore to the table model
 			Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
