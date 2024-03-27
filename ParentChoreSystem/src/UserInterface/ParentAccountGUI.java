@@ -242,6 +242,7 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(chorePaymentField);
 		chorePanel.add(createChoreButton);
 		
+		
 		chorePanel2.add(new JLabel("Chore Description: "));
 		chorePanel2.add(choreDescriptionField);	
 		chorePanel2.add(new JLabel("Set Deadline (MM/DD/YYYY): "));
