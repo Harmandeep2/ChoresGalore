@@ -3,6 +3,7 @@ package UserInterface;
 
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +43,7 @@ public class ParentAccountGUI extends JFrame{
 	 */
 	private void initialize() {
 		setTitle("Parent Account");
-		setSize(1000, 500);
+		setSize(900, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center the frame on the screen
 		setResizable(true);
@@ -81,7 +82,9 @@ public class ParentAccountGUI extends JFrame{
 		
 		// Top Buttons Panel
 		JPanel topButtonsPanel = new JPanel();
+
 		topButtonsPanel.setLayout(new BoxLayout(topButtonsPanel, BoxLayout.X_AXIS));
+
 		
 		// Add Child Button
 		addChildButton = new JButton("Add Child"); // Added button
@@ -174,7 +177,10 @@ public class ParentAccountGUI extends JFrame{
 		// Chore Creation Panel
 		// Create a panel for chore creation with titled border
 		JPanel chorePanel = new JPanel();
-		chorePanel.setBorder(BorderFactory.createTitledBorder("Chore Creation"));
+		JPanel chorePanel2 = new JPanel();
+		//Create borders
+		chorePanel.setLayout(new BoxLayout(chorePanel, BoxLayout.X_AXIS));
+		chorePanel2.setLayout(new BoxLayout(chorePanel2, BoxLayout.X_AXIS));
 
 		// Create text fields and buttons for chore attributes and creation
 		choreNameField = new JTextField(15);
@@ -195,18 +201,37 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(choreTimeField);
 		chorePanel.add(new JLabel("Payment: $"));
 		chorePanel.add(chorePaymentField);
-		chorePanel.add(new JLabel("Chore Description: "));
-		chorePanel.add(choreDescriptionField);	
-		chorePanel.add(new JLabel("Priority (high,mid,low): "));
-		chorePanel.add(chorePriorityField);
-		chorePanel.add(createChoreButton);
+		chorePanel2.add(new JLabel("Chore Description: "));
+		chorePanel2.add(choreDescriptionField);	
+		chorePanel2.add(new JLabel("Priority (high,mid,low): "));
+		chorePanel2.add(chorePriorityField);
+		chorePanel2.add(createChoreButton);
 
 		// Add the chore panel to the main panel
+
+		JLabel choreCreationLabel = new JLabel("Chore Creation");
+		choreCreationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		mainPanel.add(choreCreationLabel);
+		
 		mainPanel.add(chorePanel);
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(chorePanel2);
+		
+		mainPanel.add(new JLabel(" "));
+		mainPanel.add(new JLabel(" "));
+
+
+		chorePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
+		chorePanel.getBorder())); 
+		chorePanel2.getBorder(); 
+		chorePanel2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), // Border around the panel itself
+	    BorderFactory.createEmptyBorder(5, 5, 5, 5))); // Add padding to the panel
+
 		 // Add vertical spacing
 		mainPanel.add(new JLabel(" "));
 		 // Add vertical spacing
-		mainPanel.add(new JLabel(" "));
+
+
 
 		/*
 		 *  Bottom Buttons Panel
@@ -214,7 +239,7 @@ public class ParentAccountGUI extends JFrame{
 		
         // Creating a panel for bottom buttons
 		JPanel bottomButtonsPanel = new JPanel();
-		bottomButtonsPanel.setLayout(new BoxLayout(bottomButtonsPanel, BoxLayout.X_AXIS));
+		//bottomButtonsPanel.setLayout(new BoxLayout(bottomButtonsPanel, BoxLayout.X_AXIS));
 		
 		/*
 		 *  Checking Balance Button
