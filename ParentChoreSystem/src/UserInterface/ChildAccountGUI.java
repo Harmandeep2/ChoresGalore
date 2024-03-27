@@ -2,9 +2,11 @@ package UserInterface;
 
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.*;
@@ -29,7 +31,7 @@ public class ChildAccountGUI extends JFrame{
     private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton;
     private JButton logoutButton;
     private JButton markAsCompletedButton, hoursWorkedButton;
-    private JLabel welcomeLabel;
+    private JLabel welcomeLabel, dateLabel;
     private ChildAccount childAccount;
     private JTable choreTable;
     
@@ -73,6 +75,20 @@ public class ChildAccountGUI extends JFrame{
 			mainPanel.add(welcomePanel);
 			
 			mainPanel.add(welcomePanel);
+			
+			// Creating a date panel on the GUI to show the parent what the date is
+			JPanel datePanel = new JPanel();
+		
+			// Creating an object that will store the local date
+			LocalDate dateObj = LocalDate.now();
+			
+			// Putting todays date in the label
+			dateLabel = new JLabel("Today's Date: " + dateObj);
+			datePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			
+			// Adding it to the date panel and then the main panel.
+			datePanel.add(dateLabel);		
+			mainPanel.add(datePanel);
 	        
 	     // Initialize table model and chore table format
 	        DefaultTableModel tableModel = new DefaultTableModel();

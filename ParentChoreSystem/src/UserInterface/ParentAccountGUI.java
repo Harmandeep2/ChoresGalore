@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
 import java.time.LocalDate;  // To import the local date
-import java.time.LocalTime; // import the LocalTime class to import local time
 import java.awt.FlowLayout;  // To center/left/right align the text as need be
 
 import javax.swing.*;
@@ -77,29 +76,14 @@ public class ParentAccountGUI extends JFrame{
 		LocalDate dateObj = LocalDate.now();
 		
 		// Putting todays date in the label
-		dateLabel = new JLabel("Today's Date/Time: " + dateObj);
+		dateLabel = new JLabel("Today's Date: " + dateObj);
 		datePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		// Adding it to the date panel and then the main panel.
 		datePanel.add(dateLabel);		
 		mainPanel.add(datePanel);
 		
-		// Creating a time panel on the GUI to show the parent what the time is
-		JPanel timePanel = new JPanel();
-			
-		// Creating an object that will store the local date
-		LocalTime timeObj = LocalTime.now();
 				
-		// Putting todays date in the label
-	    timeLabel = new JLabel("Time: " + timeObj);
-	    timePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-				
-		// Adding it to the date panel and then the main panel.
-		timePanel.add(timeLabel);		
-		mainPanel.add(timePanel);
-				
-		
-
 		// Child Dropdown
 		List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
 		childDropdown = new JComboBox<>(children.toArray(new ChildAccount[0]));

@@ -2,6 +2,7 @@ package UserInterface;
 
 import java.util.List;
 import java.awt.event.*;
+import java.time.LocalDate;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -28,6 +29,7 @@ public class CompetitionGUI extends JFrame{
     private JButton startCompetitionButton, backButton; 
     // Field for entering competition name
     private JTextField competitionNameField; 
+    private JLabel dateLabel;
     
 	
 	/**
@@ -93,6 +95,21 @@ public class CompetitionGUI extends JFrame{
 		label.setAlignmentX(Component.LEFT_ALIGNMENT);
 		// Adding label to main panel
 		mainPanel.add(label); 
+		
+		// Creating a date panel on the GUI to show the parent what the date is
+		JPanel datePanel = new JPanel();
+			
+		// Creating an object that will store the local date
+		LocalDate dateObj = LocalDate.now();
+				
+		// Putting todays date in the label
+		dateLabel = new JLabel("Today's Date: " + dateObj);
+		datePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+				
+		// Adding it to the date panel and then the main panel.
+	    datePanel.add(dateLabel);		
+		mainPanel.add(datePanel);
+				
 		
 		// Fetching children associated with the parent account
 		List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
