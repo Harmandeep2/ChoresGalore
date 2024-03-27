@@ -25,7 +25,8 @@ public class ParentAccountGUI extends JFrame{
 	// Instance variables used
 	private ParentAccount parentAccount;
 	private JLabel welcomeLabel, dateLabel;
-	private JComboBox<ChildAccount> childDropdown, priorityDropdown;
+	private JComboBox<ChildAccount> childDropdown;
+	private JComboBox<String> priorityDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField, choreDeadlineField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
@@ -45,7 +46,6 @@ public class ParentAccountGUI extends JFrame{
 	 */
 	private void initialize() {
 		setTitle("Parent Account");
-		setSize(900, 600);
 		setSize(1500, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center the frame on the screen
@@ -201,13 +201,13 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel2.setLayout(new BoxLayout(chorePanel2, BoxLayout.X_AXIS));
 
 		// Create text fields and buttons for chore attributes and creation
-		choreNameField = new JTextField(10);
-		choreCategoryField = new JTextField(10);
+		choreNameField = new JTextField(5);
+		choreCategoryField = new JTextField(5);
 		choreTimeField = new JTextField(5);
 		chorePaymentField = new JTextField(5);
 		chorePriorityField = new JTextField(5);
-		choreDeadlineField = new JTextField(7);
-		choreDescriptionField = new JTextField(10);
+		choreDeadlineField = new JTextField(5);
+		choreDescriptionField = new JTextField(5);
 		choreRatingField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
 
@@ -222,14 +222,19 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(chorePaymentField);
 		chorePanel2.add(new JLabel("Chore Description: "));
 		chorePanel2.add(choreDescriptionField);	
-		chorePanel.add(new JLabel("Priority (high,mid,low): "));
-		chorePanel.add(chorePriorityField);
 		chorePanel.add(new JLabel("Set Deadline: "));
 		chorePanel.add(choreDeadlineField);
 		chorePanel2.add(createChoreButton);
+		
+		// Replace JTextField with JComboBox for priority field to be selected as a dropdown
+        String[] priorityOptions = {"High", "Mid", "Low"};
+        priorityDropdown = new JComboBox<>(priorityOptions);
+        priorityDropdown.setSelectedIndex(1); // Default selection
+        priorityDropdown.setPreferredSize(chorePriorityField.getPreferredSize()); // Match size
+        chorePanel.add(new JLabel("Priority (High, Mid, Low): "));
+        chorePanel.add(priorityDropdown);
 
 		// Add the chore panel to the main panel
-
 		JLabel choreCreationLabel = new JLabel("Chore Creation");
 		choreCreationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mainPanel.add(choreCreationLabel);
@@ -425,10 +430,11 @@ public class ParentAccountGUI extends JFrame{
 		Date choreDate = null;
 		int choreRating = Integer.parseInt(choreRatingField.getText());;
 		
-		if (chorePriorityField.getText().equals("high")||chorePriorityField.getText().equals("mid")||chorePriorityField.getText().equals("low")) {
+		if (chorePriorityField.getText().equals("High")||chorePriorityField.getText().equals("Mid")||chorePriorityField.getText().equals("Low")) {
 			chorePriority = chorePriorityField.getText();
-		} else {
-			JOptionPane.showMessageDialog(this, "Please choose 'high', 'mid', 'low'!", "Error", JOptionPane.ERROR_MESSAGE);
+		} 
+		else {
+			JOptionPane.showMessageDialog(this, "Please choose 'High', 'Mid', 'Low'!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		//chore description saved and transferred to be stored in choreAdditionalDetails database
 		String choreDescription = choreDescriptionField.getText();

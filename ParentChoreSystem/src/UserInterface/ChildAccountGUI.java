@@ -35,7 +35,6 @@ public class ChildAccountGUI extends JFrame{
     private ChildAccount childAccount;
     private JTable choreTable;
     
-
     	/**
     	 * 
     	 * @param childAccount
@@ -110,8 +109,7 @@ public class ChildAccountGUI extends JFrame{
 			sortButtonPanel.setLayout(new BoxLayout(sortButtonPanel, BoxLayout.X_AXIS));
 			sortButtonPanel2.setLayout(new BoxLayout(sortButtonPanel2, BoxLayout.X_AXIS));
 			sortButtonPanel2.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // Add padding to separate rows
-			
-
+	
 			
 			/**
 			 * Adding sorting and filtering features by use of buttons
