@@ -223,6 +223,24 @@ public class DatabaseOperations {
                e.printStackTrace();
            }
     }
+    
+    // get chore deadline so that chore history can be implemented 
+    public static Date getChoreDeadline(int choreID) {
+        try (Connection connection = DatabaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT deadline FROM ChoreAdditionalDetails WHERE id = ?")) {
+            preparedStatement.setInt(1, choreID);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getDate("deadline");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static List<Chore> getAllChoresofChild(String childUsername) {
         List<Chore> chores = new ArrayList<>();

@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -352,7 +353,7 @@ public class ChildAccountGUI extends JFrame{
 			choreHistoryButton.addActionListener(new ActionListener () {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					//showChoreHistory();
+					showChoreHistory();
 				}
 			});
 			
@@ -420,7 +421,65 @@ public class ChildAccountGUI extends JFrame{
 	    
 	 // Method to display chore history of child
 	    private void showChoreHistory() {
-	    	
+	    	// Get the table model associated with the chore table
+	    	 DefaultTableModel tableModel = (DefaultTableModel) choreTable.getModel();
+	    	// Clear any existing data from the table model
+	    	    tableModel.setRowCount(0);
+	    	    
+	    	    // Fetch all chores associated with the child account from the database
+	    	    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+	    	    // Get the current date
+	    	    Date currentDate = new Date(System.currentTimeMillis());
+	    	    
+	    	    // Iterate through each chore fetched for the child
+	    	    for (Chore chore : childChores) {
+	    	    	// Determine the rating status for the chore
+	    	    	String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
+	    	    	// Check if the chore is marked as completed
+	    	    	boolean completed = chore.isCompleted();
+	    	    	// Get the deadline for the chore from the database
+	                Date deadline = DatabaseOperations.getChoreDeadline(chore.getId());
+	                // Check if the chore's deadline is after the current date
+	                boolean withinDeadline = deadline != null && deadline.after(currentDate); 
+	                // Declare a color variable to store the color for the row
+	                Color color;
+	                
+	                  /*
+	                   * if deadline has passed by after current date and chore
+	                   * is not marked complete, then mark as red
+	                   */
+					
+	                  /* 
+	                   * if deadline is in the future and chore is marked 
+	                   * complete, then highlight in green. 
+	                   * 
+	                   */
+	                
+	                // Setting color based on completion status and deadline
+	                if (completed && withinDeadline) {
+	                    color = Color.GREEN; // Completed within deadline
+	                } else if (!completed && deadline != null && deadline.before(currentDate)) { 
+	                    color = Color.RED; // Not completed by deadline
+	                } else {
+	                    color = Color.BLACK; // Default color
+	                }
+	                
+	                // Adding chore details to the table model with appropriate color
+	                Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
+	                        chore.getPayment(), completed ? "Yes" : "No",
+	                        chore.isPaid() ? "Yes" : "No", ratingStatus};
+	                tableModel.addRow(rowData);
+	                
+	                // Applying color to the row
+	                int row = tableModel.getRowCount() - 1;
+	                for (int i = 0; i < tableModel.getColumnCount(); i++) {
+	                    tableModel.setValueAt(rowData[i], row, i);
+	                    DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+	                    cellRenderer.setForeground(color);
+	                    // Set the cell renderer for the column to apply color to the cell
+	                    choreTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+	                }
+	    	    }
 	    }
 	    
 	    
