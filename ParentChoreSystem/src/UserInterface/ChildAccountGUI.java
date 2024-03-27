@@ -31,9 +31,10 @@ public class ChildAccountGUI extends JFrame{
     private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton, choreHistoryButton;
     private JButton logoutButton, choreDetailButton;
     private JButton markAsCompletedButton, markAsNotCompletedButton, hoursWorkedButton;
-    private JLabel welcomeLabel, dateLabel;
+    private JLabel welcomeLabel, dateLabel, choreLabel;
     private ChildAccount childAccount;
     private JTable choreTable;
+    private int choreCount = 0;
     
     	/**
     	 * 
@@ -77,17 +78,23 @@ public class ChildAccountGUI extends JFrame{
 			
 			// Creating a date panel on the GUI to show the parent what the date is
 			JPanel datePanel = new JPanel();
+			JPanel chorePanel = new JPanel();
 		
 			// Creating an object that will store the local date
 			LocalDate dateObj = LocalDate.now();
 			
 			// Putting todays date in the label
 			dateLabel = new JLabel("Today's Date: " + dateObj);
-			datePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			datePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+			
+			choreLabel = new JLabel("Chores Completed: " + choreCount);
+			chorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 			
 			// Adding it to the date panel and then the main panel.
-			datePanel.add(dateLabel);		
+			datePanel.add(dateLabel);
+			chorePanel.add(choreLabel);
 			mainPanel.add(datePanel);
+			mainPanel.add(chorePanel);
 	        
 	     // Initialize table model and chore table format
 	        DefaultTableModel tableModel = new DefaultTableModel();
@@ -306,6 +313,9 @@ public class ChildAccountGUI extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					markAsCompleted();
+					choreCount += 1;
+					choreLabel.setText("Chores Completed: " + choreCount);
+					chorePanel.add(choreLabel);
 					displayChildChores();
 				}
 			});
@@ -389,7 +399,6 @@ public class ChildAccountGUI extends JFrame{
 			// Fetch and display chores associated with the parent account
 			List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
 			for (Chore chore : childChores) {
-				
 				String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
 				Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
 						chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
@@ -418,6 +427,7 @@ public class ChildAccountGUI extends JFrame{
 	    
 	 // Method to allow child to mark chore complete
 	    private void markAsCompleted() {
+	    	choreCount = 0;
 	    	int selectedRow = choreTable.getSelectedRow();
 			if (selectedRow == -1) {
 				JOptionPane.showMessageDialog(this, "Please select a chore to mark as completed");
@@ -429,11 +439,14 @@ public class ChildAccountGUI extends JFrame{
 			if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
 				DatabaseOperations.markChoreAsCompleted(choreId, childAccount.getUsername());
 				JOptionPane.showMessageDialog(this, "Chore recorded as completed successfully!");
+				choreCount += 1;
+				choreLabel.setText("Chores Completed: " + choreCount);
 			}
 			else {
 				JOptionPane.showMessageDialog(this, "Chore already completed!");
 			}
 	    }
+	    
 	    
 	    private void markAsNotCompleted() {
 	    	int selectedRow = choreTable.getSelectedRow();
@@ -449,6 +462,8 @@ public class ChildAccountGUI extends JFrame{
 				if(choreCompletingChildUsername.equals(childAccount.getUsername())) {
 					DatabaseOperations.markChoreAsNotCompleted(choreId, childAccount.getUsername());
 					JOptionPane.showMessageDialog(this, "Chore updated as not completed successfully!");
+					choreCount -= 1;
+					choreLabel.setText("Chores Completed: " + choreCount);
 				}
 				else {
 					JOptionPane.showMessageDialog(this, "Chore not yet marked as completed by you, it was marked by " + choreCompletingChildUsername + "!");
