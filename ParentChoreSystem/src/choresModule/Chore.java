@@ -154,10 +154,18 @@ public class Chore {
 		paid = true;
 	}
 	
+	/**
+	 * getRating for chore
+	 * @return rating
+	 */
 	public int getRating() {
 		return rating;
 	}
 	
+	/**
+	 * setRating for chore
+	 * @param rating
+	 */
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
