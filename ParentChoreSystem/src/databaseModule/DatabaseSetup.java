@@ -64,9 +64,9 @@ public class DatabaseSetup {
     //NEW TABLE CREATION
     private static final String CREATE_CHOREADDITIONALDETAILS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChoreAdditionalDetails ("
     		+ "id INT PRIMARY KEY,"
-    		+ "priority ENUM('high','mid','low') NOT NULL,"
-    		+ "choreDescription VARCHAR(255) NOT NULL,"
-    		+ "deadline DATE NOT NULL,"
+    		+ "priority ENUM('High','Mid','Low'),"
+    		+ "choreDescription VARCHAR(255),"
+    		+ "deadline DATE,"
     		+ "FOREIGN KEY (id) REFERENCES Chores(id))";
     		
     

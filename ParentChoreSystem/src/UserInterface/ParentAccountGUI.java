@@ -32,7 +32,7 @@ public class ParentAccountGUI extends JFrame{
 	private JLabel welcomeLabel, dateLabel;
 	private JComboBox<ChildAccount> childDropdown;
 	private JComboBox<String> priorityDropdown;
-	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField;
+	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
 	private JTable choreTable;
@@ -206,7 +206,9 @@ public class ParentAccountGUI extends JFrame{
 		JPanel chorePanel2 = new JPanel();
 		//Create borders
 		chorePanel.setLayout(new BoxLayout(chorePanel, BoxLayout.X_AXIS));
+		chorePanel.setBorder(BorderFactory.createTitledBorder("Mandatory Chore Details"));
 		chorePanel2.setLayout(new BoxLayout(chorePanel2, BoxLayout.X_AXIS));
+		chorePanel2.setBorder(BorderFactory.createTitledBorder("Additional (Optional) Chore Details"));
 
 		// Create text fields and buttons for chore attributes and creation
 		choreNameField = new JTextField(5);
@@ -214,9 +216,7 @@ public class ParentAccountGUI extends JFrame{
 		choreTimeField = new JTextField(5);
 		choreTimeField.setPreferredSize(new Dimension(20, 19));
 		chorePaymentField = new JTextField(5);
-		chorePriorityField = new JTextField(5);
 		choreDescriptionField = new JTextField(5);
-		choreRatingField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
 
 		// Add labels and text fields to the chore panel
@@ -228,28 +228,31 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(choreTimeField);
 		chorePanel.add(new JLabel("Payment: $"));
 		chorePanel.add(chorePaymentField);
+		chorePanel.add(createChoreButton);
+		
 		chorePanel2.add(new JLabel("Chore Description: "));
 		chorePanel2.add(choreDescriptionField);	
-		chorePanel.add(new JLabel("Set Deadline: "));
+		chorePanel2.add(new JLabel("Set Deadline (MM/dd/yyyy): "));
 		
 		deadlineChooser = new JDateChooser();
 		deadlineChooser.setAutoscrolls(true);
 		deadlineChooser.setRequestFocusEnabled(false);
 		deadlineChooser.setPreferredSize(new Dimension(30, 19));
 		deadlineChooser.setVerifyInputWhenFocusTarget(false);
+		deadlineChooser.setDateFormatString("MM/dd/yyyy");
 		JTextFieldDateEditor editor = (JTextFieldDateEditor) deadlineChooser.getDateEditor();
 		editor.setEditable(false);
-		BorderLayout borderLayout = (BorderLayout) deadlineChooser.getLayout();
-		chorePanel.add(deadlineChooser);
-		chorePanel2.add(createChoreButton);
+		//BorderLayout borderLayout = (BorderLayout) deadlineChooser.getLayout();
+		chorePanel2.add(deadlineChooser);
+		
 		
 		// Replace JTextField with JComboBox for priority field to be selected as a dropdown
         String[] priorityOptions = {"Select","High", "Mid", "Low"};
         priorityDropdown = new JComboBox<>(priorityOptions);
         priorityDropdown.setSelectedIndex(0); // Default selection
-        priorityDropdown.setPreferredSize(chorePriorityField.getPreferredSize()); // Match size
-        chorePanel.add(new JLabel("Priority (High, Mid, Low): "));
-        chorePanel.add(priorityDropdown);
+        priorityDropdown.setMinimumSize(new Dimension(50, 19)); // Match size
+        chorePanel2.add(new JLabel("Priority (High, Mid, Low): "));
+        chorePanel2.add(priorityDropdown);
 
 		// Add the chore panel to the main panel
 		JLabel choreCreationLabel = new JLabel("Chore Creation");
@@ -268,9 +271,6 @@ public class ParentAccountGUI extends JFrame{
 
 		chorePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK),
 		chorePanel.getBorder())); 
-		chorePanel2.getBorder(); 
-		chorePanel2.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), // Border around the panel itself
-	    BorderFactory.createEmptyBorder(5, 5, 5, 5))); // Add padding to the panel
 
 		 // Add vertical spacing
 		mainPanel.add(new JLabel(" "));
@@ -437,7 +437,7 @@ public class ParentAccountGUI extends JFrame{
 		
 		if(choreNameField.getText().isEmpty() || choreCategoryField.getText().isEmpty() ||
 				choreTimeField.getText().isEmpty()|| chorePaymentField.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(this, "Please fill all the details!");
+			JOptionPane.showMessageDialog(this, "Please fill all the mandatory details!");
 			return;
 		}
 		 // Retrieval of chore attributes from text fields
@@ -445,26 +445,24 @@ public class ParentAccountGUI extends JFrame{
 		String choreCategory = choreCategoryField.getText();
 		double choreTime = Double.parseDouble(choreTimeField.getText());
 		double chorePayment = Double.parseDouble(chorePaymentField.getText());
-		String chorePriority = (String) priorityDropdown.getSelectedItem();
-		Date choreDate = null;
 		
-		if (chorePriority.equals("High")||chorePriority.equals("Mid")||chorePriority.equals("Low")) {
-			chorePriority = chorePriorityField.getText();
-		} 
-		else {
-			JOptionPane.showMessageDialog(this, "Please choose 'High', 'Mid', 'Low'!", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		//chore description saved and transferred to be stored in choreAdditionalDetails database
+		//Additional details
 		String choreDescription = choreDescriptionField.getText();
+		String chorePriority = (String) priorityDropdown.getSelectedItem();
+		chorePriority = chorePriority.equals("Select") ? null : chorePriority;
+		java.util.Date date = deadlineChooser.getDate();
+		java.sql.Date deadline = date != null ? new java.sql.Date(date.getTime()) : null;
 
 		// Insert new chore into the database using DatabaseOperations class
 		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
 		// Insert the chore into the database using DatabaseOperations class
 		DatabaseOperations.insertChore(newChore, parentAccount.getUsername());
-		
-		DatabaseOperations.insertChoreDetails(choreDescription, choreDate, chorePriority, newChore.getId());
 		// Update the table model with the new chore data
 		displayParentChores();
+		
+		int choreId = (int) choreTable.getValueAt(choreTable.getRowCount() - 1, 0);
+		DatabaseOperations.insertChoreDetails(choreDescription, deadline, chorePriority, choreId);
+		
 
 
 
@@ -474,6 +472,8 @@ public class ParentAccountGUI extends JFrame{
 		choreCategoryField.setText("");
 		choreTimeField.setText("");
 		chorePaymentField.setText("");
+		choreDescriptionField.setText("");
+		chorePriorityField.setText("");
 	}
 
 	/**
