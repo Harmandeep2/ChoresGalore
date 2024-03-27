@@ -23,7 +23,7 @@ public class ParentAccountGUI extends JFrame{
 	private ParentAccount parentAccount;
 	private JLabel welcomeLabel;
 	private JComboBox<ChildAccount> childDropdown;
-	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField;
+	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField, choreDeadlineField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
 	private JTable choreTable;
@@ -42,7 +42,7 @@ public class ParentAccountGUI extends JFrame{
 	 */
 	private void initialize() {
 		setTitle("Parent Account");
-		setSize(1000, 500);
+		setSize(1200, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center the frame on the screen
 		setResizable(true);
@@ -177,12 +177,13 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.setBorder(BorderFactory.createTitledBorder("Chore Creation"));
 
 		// Create text fields and buttons for chore attributes and creation
-		choreNameField = new JTextField(15);
-		choreCategoryField = new JTextField(15);
+		choreNameField = new JTextField(10);
+		choreCategoryField = new JTextField(10);
 		choreTimeField = new JTextField(5);
 		chorePaymentField = new JTextField(5);
 		chorePriorityField = new JTextField(5);
-		choreDescriptionField = new JTextField(5);
+		choreDeadlineField = new JTextField(7);
+		choreDescriptionField = new JTextField(10);
 		choreRatingField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
 
@@ -195,6 +196,8 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel.add(choreTimeField);
 		chorePanel.add(new JLabel("Payment: $"));
 		chorePanel.add(chorePaymentField);
+		chorePanel.add(new JLabel("Set Deadline: "));
+		chorePanel.add(choreDeadlineField);
 		chorePanel.add(new JLabel("Chore Description: "));
 		chorePanel.add(choreDescriptionField);	
 		chorePanel.add(new JLabel("Priority (high,mid,low): "));
