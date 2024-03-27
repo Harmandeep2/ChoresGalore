@@ -42,7 +42,7 @@ public class ParentAccountGUI extends JFrame{
 	 */
 	private void initialize() {
 		setTitle("Parent Account");
-		setSize(1000, 500);
+		setSize(1000, 950);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center the frame on the screen
 		setResizable(true);
