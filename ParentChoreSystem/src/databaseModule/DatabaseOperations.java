@@ -590,4 +590,49 @@ public class DatabaseOperations {
 	    return null;
     }
    
+    public static Map<String, Object> getDetailOfSingleChore(int choreId){
+    	Map<String, Object> map = new HashMap<>();
+    	
+    	try(Connection connection = DatabaseConnector.getConnection()){
+    		connection.setAutoCommit(false);
+    		
+    		try(PreparedStatement preparedStatement = connection.prepareStatement(
+	    		"SELECT * FROM Chores WHERE id = ?")) {
+		    	preparedStatement.setInt(1, choreId);
+		    	try(ResultSet resultSet = preparedStatement.executeQuery()) {
+		    		if(resultSet.next()) {
+		    			map.put("Chore ID", resultSet.getInt("id"));
+		    			map.put("Chore Name", resultSet.getString("name"));
+		    			map.put("Time", resultSet.getDouble("time"));
+		    			map.put("Payment", resultSet.getDouble("payment"));
+		    			map.put("isCompleted", resultSet.getBoolean("isCompleted"));
+		    			map.put("isPaid", resultSet.getBoolean("isPaid"));
+		    			map.put("Rating", resultSet.getInt("rating"));
+		    			map.put("Completed By", resultSet.getString("completedBy"));
+		    		}
+		    		else
+		    			return null;
+		    	}
+	    	}
+    		
+    		try(PreparedStatement preparedStatement = connection.prepareStatement(
+    	    		"SELECT * FROM ChoreAdditionalDetails WHERE id = ?")) {
+    		    	preparedStatement.setInt(1, choreId);
+    		    	try(ResultSet resultSet = preparedStatement.executeQuery()) {
+    		    		if(resultSet.next()) {
+    		    			map.put("Chore Description", resultSet.getString("choreDescription"));
+    		    			map.put("Priority", resultSet.getString("priority"));
+    		    			map.put("Deadline", resultSet.getDate("deadline"));
+    		    		}
+    		    		else
+    		    			return null;
+    		    	}
+    	    	}
+    		
+    		return map;
+	    } catch(SQLException e) {
+	    	e.printStackTrace();
+	    }
+	    return null;
+    }
 }

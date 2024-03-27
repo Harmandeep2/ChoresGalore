@@ -34,7 +34,7 @@ public class ParentAccountGUI extends JFrame{
 	private JComboBox<String> priorityDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, choreDescriptionField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
-	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
+	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton, choreDetailButton;
 	private JTable choreTable;
 	private JDateChooser deadlineChooser;
 
@@ -127,6 +127,8 @@ public class ParentAccountGUI extends JFrame{
 		payChoreButton = new JButton("Pay Chore");
 		topButtonsPanel.add(payChoreButton);
 		
+		choreDetailButton = new JButton("Chore Full Details");
+		topButtonsPanel.add(choreDetailButton);
 		/**
 		 *  Adding action listeners to buttons
 		 */
@@ -166,6 +168,14 @@ public class ParentAccountGUI extends JFrame{
 				payChore();
 				// Refresh the displayed chores after paying a chore
 				displayParentChores();
+			}
+		});
+		
+		choreDetailButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Call the choreDetail() method when the button is clicked
+				choreDetails();
 			}
 		});
 		
@@ -571,6 +581,17 @@ public class ParentAccountGUI extends JFrame{
 			// Show error message if the chore is already completed
 			JOptionPane.showMessageDialog(this, "Chore already completed!");
 		}
+	}
+	
+	private void choreDetails() {
+		int selectedRow = choreTable.getSelectedRow();
+		if (selectedRow == -1) {
+			JOptionPane.showMessageDialog(this, "Please select a chore to see full details!");
+			return;
+		}
+		
+		int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+		new SingleChoreDetails(choreId, this);
 	}
 
 	/**

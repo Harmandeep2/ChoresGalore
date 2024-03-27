@@ -29,7 +29,7 @@ public class ChildAccountGUI extends JFrame{
     
     // Buttons for other functionalities
     private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton, choreHistoryButton;
-    private JButton logoutButton;
+    private JButton logoutButton, choreDetailButton;
     private JButton markAsCompletedButton, hoursWorkedButton;
     private JLabel welcomeLabel, dateLabel;
     private ChildAccount childAccount;
@@ -255,6 +255,9 @@ public class ChildAccountGUI extends JFrame{
 	        checkBalanceButton = new JButton("Check Balance");
 	        buttonPanel.add(checkBalanceButton);
 	        
+	        choreDetailButton = new JButton("Chore Full Details");
+	        buttonPanel.add(choreDetailButton);
+	        
 	        //Mark as completed chore button
 	        markAsCompletedButton = new JButton("Mark as Completed");
 			buttonPanel.add(markAsCompletedButton);
@@ -286,6 +289,14 @@ public class ChildAccountGUI extends JFrame{
 	                checkBalance();
 	            }
 	        });
+	        
+	        choreDetailButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// Call the choreDetail() method when the button is clicked
+					choreDetails();
+				}
+			});
 	        
 	        //Action Listener to mark completed chore through markAsCompleted button
 			markAsCompletedButton.addActionListener(new ActionListener() {
@@ -375,6 +386,16 @@ public class ChildAccountGUI extends JFrame{
 			}
 		}
 	    
+		private void choreDetails() {
+			int selectedRow = choreTable.getSelectedRow();
+			if (selectedRow == -1) {
+				JOptionPane.showMessageDialog(this, "Please select a chore to see full details!");
+				return;
+			}
+			
+			int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+			new SingleChoreDetails(choreId, this);
+		}
 	    
 	 // Method to display chore history of child
 	    private void showChoreHistory() {
