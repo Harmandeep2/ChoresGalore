@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
+import java.time.LocalDate;  // To import the local date
+import java.time.LocalTime; // import the LocalTime class to import local time
+import java.awt.FlowLayout;  // To center/left/right align the text as need be
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -21,7 +24,7 @@ public class ParentAccountGUI extends JFrame{
 
 	// Instance variables used
 	private ParentAccount parentAccount;
-	private JLabel welcomeLabel;
+	private JLabel welcomeLabel, dateLabel, timeLabel;
 	private JComboBox<ChildAccount> childDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField, choreDeadlineField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
@@ -42,7 +45,7 @@ public class ParentAccountGUI extends JFrame{
 	 */
 	private void initialize() {
 		setTitle("Parent Account");
-		setSize(1200, 950);
+		setSize(1500, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center the frame on the screen
 		setResizable(true);
@@ -66,6 +69,36 @@ public class ParentAccountGUI extends JFrame{
 		welcomePanel.add(welcomeLabel);
 		//adding welcome panel onto main panel
 		mainPanel.add(welcomePanel);
+		
+		// Creating a date panel on the GUI to show the parent what the date is
+		JPanel datePanel = new JPanel();
+	
+		// Creating an object that will store the local date
+		LocalDate dateObj = LocalDate.now();
+		
+		// Putting todays date in the label
+		dateLabel = new JLabel("Today's Date/Time: " + dateObj);
+		datePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
+		// Adding it to the date panel and then the main panel.
+		datePanel.add(dateLabel);		
+		mainPanel.add(datePanel);
+		
+		// Creating a time panel on the GUI to show the parent what the time is
+		JPanel timePanel = new JPanel();
+			
+		// Creating an object that will store the local date
+		LocalTime timeObj = LocalTime.now();
+				
+		// Putting todays date in the label
+	    timeLabel = new JLabel("Time: " + timeObj);
+	    timePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+				
+		// Adding it to the date panel and then the main panel.
+		timePanel.add(timeLabel);		
+		mainPanel.add(timePanel);
+				
+		
 
 		// Child Dropdown
 		List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
