@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
+import java.time.LocalDate;  // To import the local date
+import java.time.LocalTime; // import the LocalTime class to import local time
+import java.awt.FlowLayout;  // To center/left/right align the text as need be
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -22,9 +25,9 @@ public class ParentAccountGUI extends JFrame{
 
 	// Instance variables used
 	private ParentAccount parentAccount;
-	private JLabel welcomeLabel;
+	private JLabel welcomeLabel, dateLabel, timeLabel;
 	private JComboBox<ChildAccount> childDropdown;
-	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField;
+	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, chorePriorityField, choreDescriptionField, choreRatingField, choreDeadlineField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton;
 	private JTable choreTable;
@@ -44,6 +47,7 @@ public class ParentAccountGUI extends JFrame{
 	private void initialize() {
 		setTitle("Parent Account");
 		setSize(900, 600);
+		setSize(1500, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center the frame on the screen
 		setResizable(true);
@@ -67,6 +71,36 @@ public class ParentAccountGUI extends JFrame{
 		welcomePanel.add(welcomeLabel);
 		//adding welcome panel onto main panel
 		mainPanel.add(welcomePanel);
+		
+		// Creating a date panel on the GUI to show the parent what the date is
+		JPanel datePanel = new JPanel();
+	
+		// Creating an object that will store the local date
+		LocalDate dateObj = LocalDate.now();
+		
+		// Putting todays date in the label
+		dateLabel = new JLabel("Today's Date/Time: " + dateObj);
+		datePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
+		// Adding it to the date panel and then the main panel.
+		datePanel.add(dateLabel);		
+		mainPanel.add(datePanel);
+		
+		// Creating a time panel on the GUI to show the parent what the time is
+		JPanel timePanel = new JPanel();
+			
+		// Creating an object that will store the local date
+		LocalTime timeObj = LocalTime.now();
+				
+		// Putting todays date in the label
+	    timeLabel = new JLabel("Time: " + timeObj);
+	    timePanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+				
+		// Adding it to the date panel and then the main panel.
+		timePanel.add(timeLabel);		
+		mainPanel.add(timePanel);
+				
+		
 
 		// Child Dropdown
 		List<ChildAccount> children = DatabaseOperations.getAllChildrenofParent(parentAccount.getUsername());
@@ -183,12 +217,13 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel2.setLayout(new BoxLayout(chorePanel2, BoxLayout.X_AXIS));
 
 		// Create text fields and buttons for chore attributes and creation
-		choreNameField = new JTextField(15);
-		choreCategoryField = new JTextField(15);
+		choreNameField = new JTextField(10);
+		choreCategoryField = new JTextField(10);
 		choreTimeField = new JTextField(5);
 		chorePaymentField = new JTextField(5);
 		chorePriorityField = new JTextField(5);
-		choreDescriptionField = new JTextField(5);
+		choreDeadlineField = new JTextField(7);
+		choreDescriptionField = new JTextField(10);
 		choreRatingField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
 
@@ -206,6 +241,13 @@ public class ParentAccountGUI extends JFrame{
 		chorePanel2.add(new JLabel("Priority (high,mid,low): "));
 		chorePanel2.add(chorePriorityField);
 		chorePanel2.add(createChoreButton);
+		chorePanel.add(new JLabel("Set Deadline: "));
+		chorePanel.add(choreDeadlineField);
+		chorePanel.add(new JLabel("Chore Description: "));
+		chorePanel.add(choreDescriptionField);	
+		chorePanel.add(new JLabel("Priority (high,mid,low): "));
+		chorePanel.add(chorePriorityField);
+		chorePanel.add(createChoreButton);
 
 		// Add the chore panel to the main panel
 
