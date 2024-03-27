@@ -19,6 +19,8 @@ import accountsModule.*;
 import choresModule.*;
 import databaseModule.*;
 import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JTextFieldDateEditor;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
@@ -235,6 +237,8 @@ public class ParentAccountGUI extends JFrame{
 		deadlineChooser.setRequestFocusEnabled(false);
 		deadlineChooser.setPreferredSize(new Dimension(30, 19));
 		deadlineChooser.setVerifyInputWhenFocusTarget(false);
+		JTextFieldDateEditor editor = (JTextFieldDateEditor) deadlineChooser.getDateEditor();
+		editor.setEditable(false);
 		BorderLayout borderLayout = (BorderLayout) deadlineChooser.getLayout();
 		chorePanel.add(deadlineChooser);
 		chorePanel2.add(createChoreButton);
