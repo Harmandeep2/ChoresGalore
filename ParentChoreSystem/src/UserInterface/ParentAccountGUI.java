@@ -239,7 +239,7 @@ public class ParentAccountGUI extends JFrame{
 		deadlineChooser.setRequestFocusEnabled(false);
 		deadlineChooser.setPreferredSize(new Dimension(30, 19));
 		deadlineChooser.setVerifyInputWhenFocusTarget(false);
-		deadlineChooser.setDateFormatString("MM/dd/yyyy");
+		deadlineChooser.setDateFormatString("MM/DD/YYYY");
 		JTextFieldDateEditor editor = (JTextFieldDateEditor) deadlineChooser.getDateEditor();
 		editor.setEditable(false);
 		//BorderLayout borderLayout = (BorderLayout) deadlineChooser.getLayout();
