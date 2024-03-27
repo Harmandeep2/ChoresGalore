@@ -201,6 +201,8 @@ public class ParentAccountGUI extends JFrame{
 		tableModel.addColumn("isCompleted");
 		tableModel.addColumn("isPaid");
 		tableModel.addColumn("Rating");
+		tableModel.addColumn("Assigned to");
+
 
 
 		// Creating the chore table using the table model
@@ -607,11 +609,17 @@ public class ParentAccountGUI extends JFrame{
 		for (Chore chore : parentChores) {
 			// Determine the rating status
 	        String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
+	        
+	        String assignedChild = DatabaseOperations.getChildAssignedToChore(chore.getId());
+	        if (assignedChild == null) {
+	            assignedChild = "N/A";
+	        }
+	        
 			
 			// Adding each chore to the table model
 			Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
 					chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
-					chore.isPaid() ? "Yes" : "No", ratingStatus};
+					chore.isPaid() ? "Yes" : "No", ratingStatus, assignedChild};
 			tableModel.addRow(rowData);
 		}
 	}
