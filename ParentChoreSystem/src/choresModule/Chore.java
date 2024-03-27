@@ -29,7 +29,7 @@ public class Chore {
 		this.payment = payment;
 		this.completed = false;
 		this.paid = false;
-		//this.rating = rating;
+		this.rating = -1;
 	}
 	
 	//Getters and Setters
