@@ -657,4 +657,51 @@ public class DatabaseOperations {
 	    }
 	    return null;
     }
+
+//    public static String getChildAssignedToChore(int choreId) {
+//        String assignedTo = null;
+//        String query = "SELECT username FROM ChoreAssignments WHERE chore_id = ?";
+//
+//    	try(Connection connection = DatabaseConnector.getConnection()){
+//             PreparedStatement stmt = conn.prepareStatement(query)); {
+//            stmt.setInt(1, choreId);
+//            ResultSet rs = stmt.executeQuery();
+//
+//            if (rs.next()) {
+//                assignedTo = rs.getString("username");
+//            }
+//        }} catch (SQLException e) {
+//            e.printStackTrace(); // Handle your exception appropriately
+//        }
+//
+//        return assignedTo;
+//    }
+
+    public static String getChildAssignedToChore(int choreId) {
+        String assignedTo = null;
+        String query = "SELECT childUsername FROM Competitions WHERE choreId = ?";
+
+        try (Connection conn = DatabaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, choreId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                assignedTo = rs.getString("childUsername");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle your exception appropriately
+        }
+
+        return assignedTo;
+    }
+
+
+
 }
+
+
+
+
+
+
