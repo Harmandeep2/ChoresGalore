@@ -45,8 +45,7 @@ public class ParentAccountGUI extends JFrame{
 	 */
 	private void initialize() {
 		setTitle("Parent Account");
-		setSize(900, 600);
-		setSize(1500, 700);
+		setSize(950, 650);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center the frame on the screen
 		setResizable(true);
@@ -184,6 +183,8 @@ public class ParentAccountGUI extends JFrame{
 		tableModel.addColumn("isCompleted");
 		tableModel.addColumn("isPaid");
 		tableModel.addColumn("Rating");
+		tableModel.addColumn("Assigned to");
+
 
 		// Creating the chore table using the table model
 		choreTable = new JTable(tableModel);
