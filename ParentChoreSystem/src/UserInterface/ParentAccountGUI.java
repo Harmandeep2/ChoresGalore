@@ -446,14 +446,20 @@ public class ParentAccountGUI extends JFrame{
 		double choreTime = Double.parseDouble(choreTimeField.getText());
 		double chorePayment = Double.parseDouble(chorePaymentField.getText());
 		String chorePriority = (String) priorityDropdown.getSelectedItem();
-		Date choreDate = null;
 		
-		if (chorePriority.equals("High")||chorePriority.equals("Mid")||chorePriority.equals("Low")) {
-			chorePriority = chorePriorityField.getText();
-		} 
-		else {
+		// Retrieve the selected date from the JDateChooser
+		Date choreDate = (Date) deadlineChooser.getDate();  // Type casting the date from the deadlineChooser to be of type Date
+		
+		// Validate the selected date
+	    if (choreDate == null) {
+	        JOptionPane.showMessageDialog(this, "Please choose a deadline for the chore!", "Error", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+		
+		if (chorePriority.equals("Select")) {
 			JOptionPane.showMessageDialog(this, "Please choose 'High', 'Mid', 'Low'!", "Error", JOptionPane.ERROR_MESSAGE);
 		}
+		
 		//chore description saved and transferred to be stored in choreAdditionalDetails database
 		String choreDescription = choreDescriptionField.getText();
 
