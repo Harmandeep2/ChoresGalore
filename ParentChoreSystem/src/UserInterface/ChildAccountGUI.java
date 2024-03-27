@@ -28,7 +28,7 @@ public class ChildAccountGUI extends JFrame{
     private JButton defaultSortButton;
     
     // Buttons for other functionalities
-    private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton;
+    private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton, choreHistoryButton;
     private JButton logoutButton;
     private JButton markAsCompletedButton, hoursWorkedButton;
     private JLabel welcomeLabel, dateLabel;
@@ -152,6 +152,9 @@ public class ChildAccountGUI extends JFrame{
 			defaultSortButton = new JButton("Default");
 			sortButtonPanel2.add(defaultSortButton);
 			
+			
+			
+			
 			/**
 			 * Adding action listeners for sorting and filtering buttons
 			 */
@@ -268,6 +271,10 @@ public class ChildAccountGUI extends JFrame{
 			competitionStandingsButton = new JButton("Competition Standings");
 			buttonPanel.add(competitionStandingsButton);
 			
+			//Chore History button
+			choreHistoryButton = new JButton("History");
+			buttonPanel.add(choreHistoryButton);
+			
 	        // Log Out Button
 	        logoutButton = new JButton("Log Out");
 	        buttonPanel.add(logoutButton);
@@ -308,6 +315,14 @@ public class ChildAccountGUI extends JFrame{
 				}
 			});
 			
+			//Action Listener to show list of chores complete/incomplete by child. 
+			choreHistoryButton.addActionListener(new ActionListener () {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//showChoreHistory();
+				}
+			});
+			
 			 //Action Listener to export chore list and info to a csv file through exportChores button
 			exportChoresButton.addActionListener(new ActionListener() {
 				@Override
@@ -341,6 +356,7 @@ public class ChildAccountGUI extends JFrame{
 	        JOptionPane.showMessageDialog(this, "Your Balance: $" + balance);
 	    }
 	    
+	    
 	 // Method to display child chores
 	    private void displayChildChores() {
 			// Clear existing data from the chore table
@@ -358,6 +374,14 @@ public class ChildAccountGUI extends JFrame{
 				tableModel.addRow(rowData);
 			}
 		}
+	    
+	    
+	 // Method to display chore history of child
+	    private void showChoreHistory() {
+	    	
+	    }
+	    
+	    
 	    
 	 // Method to allow child to mark chore complete
 	    private void markAsCompleted() {
