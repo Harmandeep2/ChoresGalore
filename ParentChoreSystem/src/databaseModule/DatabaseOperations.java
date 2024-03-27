@@ -195,7 +195,7 @@ public class DatabaseOperations {
     public static void insertChore(Chore chore, String parentUsername) {
         try (Connection connection = DatabaseConnector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO Chores (name, category, time, payment, parentUsername, isPaid, isCompleted, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+                     "INSERT INTO Chores (name, category, time, payment, parentUsername, isPaid, isCompleted) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
             preparedStatement.setString(1, chore.getName());
             preparedStatement.setString(2, chore.getCategory());
             preparedStatement.setDouble(3, chore.getTime());
@@ -203,7 +203,6 @@ public class DatabaseOperations {
             preparedStatement.setString(5, parentUsername);
             preparedStatement.setBoolean(6, chore.isPaid());
             preparedStatement.setBoolean(7, chore.isCompleted());
-            preparedStatement.setInt(8, chore.getRating());
             
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
