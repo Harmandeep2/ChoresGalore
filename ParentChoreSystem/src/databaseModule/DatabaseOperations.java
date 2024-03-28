@@ -695,24 +695,22 @@ public class DatabaseOperations {
 //        return assignedTo;
 //    }
 
-    public static String getChildAssignedToChore(int choreId) {
-        String assignedTo = null;
-        String query = "SELECT childUsername FROM Competitions WHERE choreId = ?";
-
-        try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, choreId);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                assignedTo = rs.getString("childUsername");
+    public static String getChildAssignedToChore(int choreID, String childUsername) {
+        try (Connection connection = DatabaseConnector.getConnection()) {
+            // Update Chores table
+            try (PreparedStatement updateChores = connection.prepareStatement(
+                    "UPDATE Chores SET assignedto ? WHERE choreID = ?")) {
+                updateChores.setString(1, childUsername);
+            	updateChores.setInt(2, choreID);
+                updateChores.executeUpdate();
             }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle your exception appropriately
-        }
 
-        return assignedTo;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		return childUsername;
     }
+
 
     public static boolean deleteChore(int choreID) {
         Connection conn = null;

@@ -8,7 +8,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.time.LocalDate;  // To import the local date
 import java.time.ZoneId;
 import java.awt.FlowLayout;  // To center/left/right align the text as need be
@@ -32,12 +35,14 @@ public class ParentAccountGUI extends JFrame{
 	private ParentAccount parentAccount;
 	private JLabel welcomeLabel, dateLabel;
 	private JComboBox<ChildAccount> childDropdown;
-	private JComboBox<String> priorityDropdown;
+	private JComboBox<String> priorityDropdown, choresDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, choreDescriptionField;
 	private JButton createChoreButton, assignChoreButton, payChoreButton, deleteChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton, choreDetailButton;
 	private JTable choreTable;
 	private JDateChooser deadlineChooser;
+	private Map<String, List<Integer>> assignedChoresMap = new HashMap<>();
+
 
 	 // Constructor created for ParentAccountGUI
 	public ParentAccountGUI(ParentAccount parentAccount) {
@@ -156,15 +161,12 @@ public class ParentAccountGUI extends JFrame{
 			}
 		});
 		
-		// Add action listener for the assign chore button
 		assignChoreButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Call the assignChore() method when the button is clicked
-				assignChore();
-		        String assignedChild = DatabaseOperations.getChildAssignedToChore(e.getID());
-
-			}
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        // Call the assignChore() method when the button is clicked
+		        assignChore();
+		    }
 		});
 		
 		// Add action listener for the pay chore button
@@ -218,7 +220,6 @@ public class ParentAccountGUI extends JFrame{
 		tableModel.addColumn("isCompleted");
 		tableModel.addColumn("isPaid");
 		tableModel.addColumn("Rating");
-		tableModel.addColumn("Assigned to");
 
 
 
@@ -228,6 +229,8 @@ public class ParentAccountGUI extends JFrame{
 		JScrollPane scrollPane = new JScrollPane(choreTable);
 		// Adding the scroll pane to the main panel
 		mainPanel.add(scrollPane);
+		
+
 
 		// Chore Creation Panel
 		// Create a panel for chore creation with titled border
@@ -247,6 +250,14 @@ public class ParentAccountGUI extends JFrame{
 		chorePaymentField = new JTextField(5);
 		choreDescriptionField = new JTextField(5);
 		createChoreButton = new JButton("Create Chore");
+		
+		String[] chorepresets = {"Other","Make Bed","Clean Room", "Dishes", "Mow Lawn", "Shovel"};
+        choresDropdown = new JComboBox<>(chorepresets);
+        choresDropdown.setSelectedIndex(0); // Default selection
+        choresDropdown.setMinimumSize(new Dimension(50, 19)); // Match size
+        chorePanel.add(new JLabel("Select Chore Preset "));
+        chorePanel.add(choresDropdown);
+		
 
 		// Add labels and text fields to the chore panel
 		chorePanel.add(new JLabel("Name: "));
@@ -290,6 +301,7 @@ public class ParentAccountGUI extends JFrame{
 		choreCreationLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 25));
 		choreCreationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mainPanel.add(choreCreationLabel);
+		
 		
 		mainPanel.add(chorePanel);
 		mainPanel.add(new JLabel(" "));
@@ -369,6 +381,15 @@ public class ParentAccountGUI extends JFrame{
 				showCompetitionStandings();
 			}
 		});
+		
+		// Adding action listener to competition standings button
+		choresDropdown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chorepresets();
+			}
+		});
+		
 	
 		// Add action listener to logout button
 		logoutButton.addActionListener(new ActionListener() {
@@ -608,37 +629,74 @@ public class ParentAccountGUI extends JFrame{
 
 	// Define a method to handle chore assignment
 	private void assignChore() {
+
+    ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+    // Getting the selected row from the chore table
+    int selectedRow = choreTable.getSelectedRow();
+    // Checking if a chore is selected
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Please select a chore to assign to the selected child");
+        return;
+    }
+
+    // Get the chore ID from the selected row
+    int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+
+    if (DatabaseOperations.checkIfChoreAlreadyAssignedToChild(choreId, selectedChild.getUsername())) {
+        JOptionPane.showMessageDialog(this, "<html> Chore <font color='blue'><b><u>already</u></b></font> assigned to <html>" + selectedChild.getUsername());
+        return;
+    }
+
+    // Check if the chore is not completed
+    if (choreTable.getValueAt(selectedRow, 5).equals("No")) {
+        // Assigning the chore to the selected child
+        DatabaseOperations.insertChoreAssignment(choreId, selectedChild.getUsername());
+        JOptionPane.showMessageDialog(this, "Chore assigned to " + selectedChild.getUsername());
+
+        // Update the assignedChoresMap
+        List<Integer> assignedChores = assignedChoresMap.getOrDefault(selectedChild.getUsername(), new ArrayList<>());
+        assignedChores.add(choreId);
+        assignedChoresMap.put(selectedChild.getUsername(), assignedChores);
+        System.out.println(selectedChild.getUsername());
+    } else {
+        // Show error message if the chore is already completed
+        JOptionPane.showMessageDialog(this, "Chore already completed!");
+    }}
+	    	// Initialize the chore count variable
+	    	// Get the index of the selected row in the chore table
+
 	
-		// Getting the selected child from the dropdown
-		ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
-		// Getting the selected row from the chore table
-		int selectedRow = choreTable.getSelectedRow();
-		// Checking if a chore is selected
-		if (selectedRow == -1) {
-			JOptionPane.showMessageDialog(this, "Please select a chore to assign to selected child");
-			return;
-		}
-		
-		// Get the chore ID from the selected row
-		int choreId = (int) choreTable.getValueAt(selectedRow, 0);
-		
-		if(DatabaseOperations.checkIfChoreAlreadyAssignedToChild(choreId, selectedChild.getUsername())) {
-			JOptionPane.showMessageDialog(this, "<html> Chore <font color='blue'><b><u>already</u></b></font> assigned to <html>" + selectedChild.getUsername());
-			return;
-		}
-		
-		// Check if the chore is not completed
-		if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
-			// Assigning the chore to the selected child
-			DatabaseOperations.insertChoreAssignment(choreId, selectedChild.getUsername());
-			JOptionPane.showMessageDialog(this, "Chore assigned to " + selectedChild.getUsername());
-		}
-		else {
-			// Show error message if the chore is already completed
-			JOptionPane.showMessageDialog(this, "Chore already completed!");
-		}
-	}
 	
+//	
+//	// Getting the selected child from the dropdown
+//	ChildAccount selectedChild = (ChildAccount) childDropdown.getSelectedItem();
+//	// Getting the selected row from the chore table
+//	int selectedRow = choreTable.getSelectedRow();
+//	// Checking if a chore is selected
+//	if (selectedRow == -1) {
+//		JOptionPane.showMessageDialog(this, "Please select a chore to assign to selected child");
+//		return;
+//	}
+//	
+//	// Get the chore ID from the selected row
+//	int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+//	
+//	if(DatabaseOperations.checkIfChoreAlreadyAssignedToChild(choreId, selectedChild.getUsername())) {
+//		JOptionPane.showMessageDialog(this, "<html> Chore <font color='blue'><b><u>already</u></b></font> assigned to <html>" + selectedChild.getUsername());
+//		return;
+//	}
+//	
+//	// Check if the chore is not completed
+//	if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
+//		// Assigning the chore to the selected child
+//		DatabaseOperations.insertChoreAssignment(choreId, selectedChild.getUsername());
+//		JOptionPane.showMessageDialog(this, "Chore assigned to " + selectedChild.getUsername());
+//	}
+//	else {
+//		// Show error message if the chore is already completed
+//		JOptionPane.showMessageDialog(this, "Chore already completed!");
+//	}
+// Getting the selected child from the dropdown
 	private void choreDetails() {
 		int selectedRow = choreTable.getSelectedRow();
 		if (selectedRow == -1) {
@@ -649,6 +707,9 @@ public class ParentAccountGUI extends JFrame{
 		int choreId = (int) choreTable.getValueAt(selectedRow, 0);
 		new SingleChoreDetails(choreId, this);
 	}
+	
+
+
 
 	/**
 	 *  Method created to display chores associated with the parent account
@@ -664,16 +725,11 @@ public class ParentAccountGUI extends JFrame{
 			// Determine the rating status
 	        String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
 	        
-	        String assignedChild = DatabaseOperations.getChildAssignedToChore(chore.getId());
-	        if (assignedChild == null) {
-	            assignedChild = "N/A";
-	        }
-	        
 			
 			// Adding each chore to the table model
 			Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
 					chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
-					chore.isPaid() ? "Yes" : "No", ratingStatus, assignedChild};
+					chore.isPaid() ? "Yes" : "No", ratingStatus};
 			tableModel.addRow(rowData);
 		}
 	}
@@ -734,6 +790,53 @@ public class ParentAccountGUI extends JFrame{
 		new CompetitionStandings(this.parentAccount, this);
 	}
 	
+	private void chorepresets() {	        
+	
+	String selectedPreset = (String) choresDropdown.getSelectedItem();
+    switch (selectedPreset) {
+    case "Make Bed":
+        choreNameField.setText("Make Bed");
+        choreCategoryField.setText("Bedroom");
+        choreTimeField.setText("5"); // Time in minutes 
+        chorePaymentField.setText("5"); // Payment amount
+        break;
+    case "Clean Room":
+        choreNameField.setText("Clean Room");
+        choreCategoryField.setText("Bedroom");
+        choreTimeField.setText("15"); // Time in minutes 
+        chorePaymentField.setText("10"); // Payment amount
+        break;
+    case "Dishes":
+        choreNameField.setText("Dishes");
+        choreCategoryField.setText("Kitchen");
+        choreTimeField.setText("15");
+        chorePaymentField.setText("10");
+        break;
+    case "Mow Lawn":
+        choreNameField.setText("Mow Lawn");
+        choreCategoryField.setText("Lawn");
+        choreTimeField.setText("30");
+        chorePaymentField.setText("15");
+        break;
+    case "Shovel":
+        choreNameField.setText("Shovel");
+        choreCategoryField.setText("Driveway");
+        choreTimeField.setText("30");
+        chorePaymentField.setText("15");
+        break;
+    case "Other":
+    	//Leave blank
+        choreNameField.setText("");
+        choreCategoryField.setText("");
+        choreTimeField.setText("");
+        chorePaymentField.setText("");
+        break;
+    default:
+        // Handle default case
+        break;
+}
+}
+	
 	/**
 	 * Main method to test the class
 	 * @param args
@@ -746,6 +849,10 @@ public class ParentAccountGUI extends JFrame{
 		new ParentAccountGUI(parentAccount);
 
 	}
+	
+	
+	}
 
 
-}
+
+
