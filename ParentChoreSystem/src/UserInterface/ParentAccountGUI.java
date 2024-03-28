@@ -33,7 +33,7 @@ public class ParentAccountGUI extends JFrame{
 	private JComboBox<ChildAccount> childDropdown;
 	private JComboBox<String> priorityDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, choreDescriptionField;
-	private JButton createChoreButton, assignChoreButton, payChoreButton, checkBalanceButton, addChildButton;
+	private JButton createChoreButton, assignChoreButton, payChoreButton, deleteChoreButton, checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton, choreDetailButton;
 	private JTable choreTable;
 	private JDateChooser deadlineChooser;
@@ -129,6 +129,10 @@ public class ParentAccountGUI extends JFrame{
 		
 		choreDetailButton = new JButton("Chore Full Details");
 		topButtonsPanel.add(choreDetailButton);
+		
+		deleteChoreButton = new JButton("Delete Chore");
+		topButtonsPanel.add(deleteChoreButton);
+		
 		/**
 		 *  Adding action listeners to buttons
 		 */
@@ -157,6 +161,8 @@ public class ParentAccountGUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// Call the assignChore() method when the button is clicked
 				assignChore();
+		        String assignedChild = DatabaseOperations.getChildAssignedToChore(e.getID());
+
 			}
 		});
 		
@@ -178,6 +184,16 @@ public class ParentAccountGUI extends JFrame{
 				choreDetails();
 			}
 		});
+		
+		deleteChoreButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Call the choreDetail() method when the button is clicked
+				deleteChore();
+			}
+		});
+		
+		
 		
 		// Add the panel containing the top buttons 
 		mainPanel.add(topButtonsPanel);	
@@ -622,6 +638,28 @@ public class ParentAccountGUI extends JFrame{
 					chore.isPaid() ? "Yes" : "No", ratingStatus, assignedChild};
 			tableModel.addRow(rowData);
 		}
+	}
+	
+	/**
+	 * Method to delete selected chore from Parent GUI, Child GUI, and database
+	 */
+	private void deleteChore() {
+	    int selectedRow = choreTable.getSelectedRow();
+	    if (selectedRow == -1) {
+	        JOptionPane.showMessageDialog(this, "Please select a chore to delete!");
+	        return;
+	    }
+
+	    int choreId = (int) choreTable.getValueAt(selectedRow, 0);
+	    // Call the method from DatabaseOperations to delete the chore from the database
+	    boolean deleted = DatabaseOperations.deleteChore(choreId);
+	    if (deleted) {
+	        JOptionPane.showMessageDialog(this, "Chore deleted successfully!");
+	        // After deleting, refresh the chore table
+	        displayParentChores();
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Failed to delete chore. Please try again.");
+	    }
 	}
 
 	/**
