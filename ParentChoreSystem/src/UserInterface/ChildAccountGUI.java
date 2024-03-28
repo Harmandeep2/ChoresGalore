@@ -428,15 +428,23 @@ public class ChildAccountGUI extends JFrame{
 	        // Set the default close operation to dispose the window when closed
 	        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        
-    	    // Get the table model associated with the chore table
+	        // Get the table model associated with the chore table
     	    DefaultTableModel historyTableModel = new DefaultTableModel();
+    	    // adding copy column for Chore ID
     	    historyTableModel.addColumn("Chore ID");
+    	    // adding copy column for name
     	    historyTableModel.addColumn("Name");
+    	    // adding copy column for Category
     	    historyTableModel.addColumn("Category");
+    	    // adding copy column for Time
     	    historyTableModel.addColumn("Time");
+    	    // adding copy column for Payment
     	    historyTableModel.addColumn("Payment");
+    	    // adding copy column for whether chore completed or not
     	    historyTableModel.addColumn("isCompleted");
+    	    // adding copy column for whether chore is paid or not 
     	    historyTableModel.addColumn("isPaid");
+    	    // adding copy column for chore rating 
     	    historyTableModel.addColumn("Rating");
     	    
     	    JTable historyTable = new JTable(historyTableModel);
