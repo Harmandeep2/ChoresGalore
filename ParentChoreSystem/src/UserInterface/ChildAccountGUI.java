@@ -1,6 +1,7 @@
 package UserInterface;
 
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -421,115 +422,179 @@ public class ChildAccountGUI extends JFrame{
 	    
 	 // Method to display chore history of child
 	    private void showChoreHistory() {
-	    	// Get the table model associated with the chore table
-	    	 DefaultTableModel tableModel = (DefaultTableModel) choreTable.getModel();
-	    	// Clear any existing data from the table model
-	    	    tableModel.setRowCount(0);
-	    	    
-	    	    // Fetch all chores associated with the child account from the database
-	    	    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
-	    	    // Get the current date
-	    	    Date currentDate = new Date(System.currentTimeMillis());
-	    	    
-	    	    // Iterate through each chore fetched for the child
-	    	    for (Chore chore : childChores) {
-	    	    	// Determine the rating status for the chore
-	    	    	String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
-	    	    	// Check if the chore is marked as completed
-	    	    	boolean completed = chore.isCompleted();
-	    	    	// Get the deadline for the chore from the database
-	                Date deadline = DatabaseOperations.getChoreDeadline(chore.getId());
-	                // Check if the chore's deadline is after the current date
-	                boolean withinDeadline = deadline != null && deadline.after(currentDate); 
-	                // Declare a color variable to store the color for the row
-	                Color color;
-	                
-	                  /*
-	                   * if deadline has passed by after current date and chore
-	                   * is not marked complete, then mark as red
-	                   */
-					
-	                  /* 
-	                   * if deadline is in the future and chore is marked 
-	                   * complete, then highlight in green. 
-	                   * 
-	                   */
-	                
-	                // Setting color based on completion status and deadline
-	                if (completed && withinDeadline) {
-	                    color = Color.GREEN; // Completed within deadline
-	                } else if (!completed && deadline != null && deadline.before(currentDate)) { 
-	                    color = Color.RED; // Not completed by deadline
-	                } else {
-	                    color = Color.BLACK; // Default color
-	                }
-	                
-	                // Adding chore details to the table model with appropriate color
-	                Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
-	                        chore.getPayment(), completed ? "Yes" : "No",
-	                        chore.isPaid() ? "Yes" : "No", ratingStatus};
-	                tableModel.addRow(rowData);
-	                
-	                // Applying color to the row
-	                int row = tableModel.getRowCount() - 1;
-	                for (int i = 0; i < tableModel.getColumnCount(); i++) {
-	                    tableModel.setValueAt(rowData[i], row, i);
-	                    DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-	                    cellRenderer.setForeground(color);
-	                    // Set the cell renderer for the column to apply color to the cell
-	                    choreTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
-	                }
-	    	    }
-	    }
+	    	
+	    	// Create a new JFrame for the popup window
+	        JFrame frame = new JFrame("Chore History");
+	        // Set the default close operation to dispose the window when closed
+	        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	        
+	        // Get the table model associated with the chore table
+    	    DefaultTableModel historyTableModel = new DefaultTableModel();
+    	    // adding copy column for Chore ID
+    	    historyTableModel.addColumn("Chore ID");
+    	    // adding copy column for name
+    	    historyTableModel.addColumn("Name");
+    	    // adding copy column for Category
+    	    historyTableModel.addColumn("Category");
+    	    // adding copy column for Time
+    	    historyTableModel.addColumn("Time");
+    	    // adding copy column for Payment
+    	    historyTableModel.addColumn("Payment");
+    	    // adding copy column for whether chore completed or not
+    	    historyTableModel.addColumn("isCompleted");
+    	    // adding copy column for whether chore is paid or not 
+    	    historyTableModel.addColumn("isPaid");
+    	    // adding copy column for chore rating 
+    	    historyTableModel.addColumn("Rating");
+    	    
+    	    JTable historyTable = new JTable(historyTableModel);
+
+    	    
+    	    // Fetch all chores associated with the child account from the database
+    	    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+    	    // Get the current date
+    	    Date currentDate = new Date(System.currentTimeMillis());
+    	    
+    	    // Iterate through each chore fetched for the child
+    	    for (Chore chore : childChores) {
+    	    	// Determine the rating status for the chore
+    	    	String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
+    	    	// Check if the chore is marked as completed
+    	    	boolean completed = chore.isCompleted();
+    	    	// Get the deadline for the chore from the database
+                Date deadline = DatabaseOperations.getChoreDeadline(chore.getId());
+                // Check if the chore's deadline is after the current date
+                boolean withinDeadline = deadline != null && deadline.after(currentDate); 
+            
+                
+                // Adding chore details to the table model with appropriate color
+                Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
+                        chore.getPayment(), completed ? "Yes" : "No",
+                        chore.isPaid() ? "Yes" : "No", ratingStatus};
+                historyTableModel.addRow(rowData);
+                
+                /*
+                 * if deadline has passed by after current date and chore
+                 * is not marked complete, then mark as red
+                 */
+				
+                /* 
+                 * if deadline is in the future and chore is marked 
+                 * complete, then highlight in green. 
+                 * 
+                 */
+             // Set cell renderer based on completion status and deadline
+                DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+                if (completed && withinDeadline) {
+                    cellRenderer.setForeground(Color.GREEN); // Completed within deadline
+                } else if (!completed && deadline != null && deadline.before(currentDate)) {
+                    cellRenderer.setForeground(Color.RED); // Not completed by deadline
+                } else {
+                    cellRenderer.setForeground(Color.BLACK); // Default color
+                }
+                
+
+                for (int i = 0; i < historyTableModel.getColumnCount(); i++) {
+                    historyTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+                }
+    	    }
+    	    // Add the table to a JScrollPane and add it to the frame
+    	    JScrollPane scrollPane = new JScrollPane(historyTable);
+    	    frame.add(scrollPane);
+    	
+
+    	    // Create a return button
+    	    JButton returnButton = new JButton("Return");
+    	    returnButton.addActionListener(new ActionListener() {
+    	        @Override
+    	        public void actionPerformed(ActionEvent e) {
+    	            // Close the chore history popup window when the return button is clicked
+    	            frame.dispose();
+    	        }
+    	    });
+    	    
+    	    // Add the return button to the frame
+    	    frame.add(returnButton, BorderLayout.SOUTH);
+
+    	    // Set the size of the frame
+    	    frame.setSize(700, 400);
+    	    // Make the frame visible
+    	    frame.setVisible(true);
+    }
 	    
+	  
 	    
 	    
 	 // Method to allow child to mark chore complete
 	    private void markAsCompleted() {
+	    	// Initialize the chore count variable
 	    	choreCount = 0;
+	    	// Get the index of the selected row in the chore table
 	    	int selectedRow = choreTable.getSelectedRow();
+	    	// Check if a chore is selected
 			if (selectedRow == -1) {
+				// Display error message if no chore is selected
 				JOptionPane.showMessageDialog(this, "Please select a chore to mark as completed");
 				return;
 			}
 			
+			// Get the chore ID from the selected row
 			int choreId = (int) choreTable.getValueAt(selectedRow, 0);
 			
+			// Check if the selected chore is not already marked as completed
 			if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
+				// Mark the chore as completed in the database
 				DatabaseOperations.markChoreAsCompleted(choreId, childAccount.getUsername());
+				// Show success message
 				JOptionPane.showMessageDialog(this, "Chore recorded as completed successfully!");
+				// Increment the chore count
 				choreCount += 1;
+				// Update the chore count label
 				choreLabel.setText("Chores Completed: " + choreCount);
 			}
 			else {
+				// Display message if the chore is already completed
 				JOptionPane.showMessageDialog(this, "Chore already completed!");
 			}
 	    }
 	    
-	    
+	    // Method to allow child to mark chore as not completed
 	    private void markAsNotCompleted() {
+	    	// Get the index of the selected row in the chore table
 	    	int selectedRow = choreTable.getSelectedRow();
+	    	// Check if a chore is selected
 			if (selectedRow == -1) {
+				// Display error message if no chore is selected
 				JOptionPane.showMessageDialog(this, "Please select a chore to mark as not completed if accidentally marked as completed");
 				return;
 			}
 			
+			// Get the chore ID from the selected row
 			int choreId = (int) choreTable.getValueAt(selectedRow, 0);
 			
+			// Check if the selected chore is marked as completed
 			if(choreTable.getValueAt(selectedRow, 5).equals("Yes")) {
+				// Get the child who completed the chore
 				String choreCompletingChildUsername = DatabaseOperations.getChoreCompletingChildUsername(choreId);
+				// Check if the chore was completed by the current child account
 				if(choreCompletingChildUsername.equals(childAccount.getUsername())) {
+					// Mark the chore as not completed in the database
 					DatabaseOperations.markChoreAsNotCompleted(choreId, childAccount.getUsername());
+					// Show success message
 					JOptionPane.showMessageDialog(this, "Chore updated as not completed successfully!");
+					// Decrement the chore count
 					choreCount -= 1;
+					// Update the chore count label
 					choreLabel.setText("Chores Completed: " + choreCount);
 				}
 				else {
+					// Display message if the chore was not completed by the current child account
 					JOptionPane.showMessageDialog(this, "Chore not yet marked as completed by you, it was marked by " + choreCompletingChildUsername + "!");
 				}
 				
 			}
 			else {
+				 // Display message if the chore is not marked as completed
 				JOptionPane.showMessageDialog(this, "Chore not yet marked as completed!");
 			}
 	    }
