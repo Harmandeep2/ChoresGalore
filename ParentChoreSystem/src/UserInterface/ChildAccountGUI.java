@@ -429,9 +429,18 @@ public class ChildAccountGUI extends JFrame{
 	        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	        
     	    // Get the table model associated with the chore table
-    	    DefaultTableModel tableModel = (DefaultTableModel) choreTable.getModel();
-    	    // Clear any existing data from the table model
-    	    tableModel.setRowCount(0);
+    	    DefaultTableModel historyTableModel = new DefaultTableModel();
+    	    historyTableModel.addColumn("Chore ID");
+    	    historyTableModel.addColumn("Name");
+    	    historyTableModel.addColumn("Category");
+    	    historyTableModel.addColumn("Time");
+    	    historyTableModel.addColumn("Payment");
+    	    historyTableModel.addColumn("isCompleted");
+    	    historyTableModel.addColumn("isPaid");
+    	    historyTableModel.addColumn("Rating");
+    	    
+    	    JTable historyTable = new JTable(historyTableModel);
+
     	    
     	    // Fetch all chores associated with the child account from the database
     	    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
@@ -448,48 +457,43 @@ public class ChildAccountGUI extends JFrame{
                 Date deadline = DatabaseOperations.getChoreDeadline(chore.getId());
                 // Check if the chore's deadline is after the current date
                 boolean withinDeadline = deadline != null && deadline.after(currentDate); 
-                // Declare a color variable to store the color for the row
-                Color color;
-                
-                  /*
-                   * if deadline has passed by after current date and chore
-                   * is not marked complete, then mark as red
-                   */
-				
-                  /* 
-                   * if deadline is in the future and chore is marked 
-                   * complete, then highlight in green. 
-                   * 
-                   */
-                
-                // Setting color based on completion status and deadline
-                if (completed && withinDeadline) {
-                    color = Color.GREEN; // Completed within deadline
-                } else if (!completed && deadline != null && deadline.before(currentDate)) { 
-                    color = Color.RED; // Not completed by deadline
-                } else {
-                    color = Color.BLACK; // Default color
-                }
+            
                 
                 // Adding chore details to the table model with appropriate color
                 Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
                         chore.getPayment(), completed ? "Yes" : "No",
                         chore.isPaid() ? "Yes" : "No", ratingStatus};
-                tableModel.addRow(rowData);
+                historyTableModel.addRow(rowData);
                 
-                // Applying color to the row
-                int row = tableModel.getRowCount() - 1;
-                for (int i = 0; i < tableModel.getColumnCount(); i++) {
-                    tableModel.setValueAt(rowData[i], row, i);
-                    DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-                    cellRenderer.setForeground(color);
-                    // Set the cell renderer for the column to apply color to the cell
-                    choreTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
+                /*
+                 * if deadline has passed by after current date and chore
+                 * is not marked complete, then mark as red
+                 */
+				
+                /* 
+                 * if deadline is in the future and chore is marked 
+                 * complete, then highlight in green. 
+                 * 
+                 */
+             // Set cell renderer based on completion status and deadline
+                DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+                if (completed && withinDeadline) {
+                    cellRenderer.setForeground(Color.GREEN); // Completed within deadline
+                } else if (!completed && deadline != null && deadline.before(currentDate)) {
+                    cellRenderer.setForeground(Color.RED); // Not completed by deadline
+                } else {
+                    cellRenderer.setForeground(Color.BLACK); // Default color
+                }
+                
+
+                for (int i = 0; i < historyTableModel.getColumnCount(); i++) {
+                    historyTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
                 }
     	    }
     	    // Add the table to a JScrollPane and add it to the frame
-    	    JScrollPane scrollPane = new JScrollPane(choreTable);
+    	    JScrollPane scrollPane = new JScrollPane(historyTable);
     	    frame.add(scrollPane);
+    	
 
     	    // Create a return button
     	    JButton returnButton = new JButton("Return");
@@ -509,7 +513,8 @@ public class ChildAccountGUI extends JFrame{
     	    // Make the frame visible
     	    frame.setVisible(true);
     }
-    
+	    
+	  
 	    
 	    
 	 // Method to allow child to mark chore complete
