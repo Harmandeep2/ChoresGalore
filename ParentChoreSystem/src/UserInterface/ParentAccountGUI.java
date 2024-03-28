@@ -465,71 +465,84 @@ public class ParentAccountGUI extends JFrame{
 	 */
 	private void createChore() {
 		
-		if(choreNameField.getText().isEmpty() || choreCategoryField.getText().isEmpty() ||
-				choreTimeField.getText().isEmpty()|| chorePaymentField.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(this, "Please fill all the mandatory details!");
-			return;
+		    if (choreNameField.getText().isEmpty() || choreCategoryField.getText().isEmpty() ||
+		            choreTimeField.getText().isEmpty() || chorePaymentField.getText().isEmpty()) {
+		        JOptionPane.showMessageDialog(this, "Please fill all the mandatory details!");
+		        return;
+		    }
+
+		    double choreTime;
+		    double chorePayment;
+		    try {
+		        choreTime = Double.parseDouble(choreTimeField.getText());
+		        chorePayment = Double.parseDouble(chorePaymentField.getText());
+		    } catch (NumberFormatException e) {
+		        JOptionPane.showMessageDialog(this, "Please enter valid numbers for time and/or payment!", "Error", JOptionPane.ERROR_MESSAGE);
+		        return;
+		    }
+
+		    // Retrieval of chore attributes from text fields
+		    String choreName = choreNameField.getText();
+		    String choreCategory = choreCategoryField.getText();
+
+		    // Additional details
+		    String choreDescription = choreDescriptionField.getText();
+		    choreDescription = choreDescription.isEmpty() ? null : choreDescription;
+		    String chorePriority = (String) priorityDropdown.getSelectedItem();
+		    chorePriority = chorePriority.equals("Select") ? null : chorePriority;
+
+		    // Stores the current date
+		    java.util.Date currentDate = new java.util.Date(); // Current date
+
+		    // Validate deadline
+		    java.util.Date selectedDate = deadlineChooser.getDate();
+
+		    // Convert java.util.Date to LocalDate
+		    LocalDate selectedLocalDate = null;
+		    if (selectedDate != null) {
+		        selectedLocalDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		        // Adding a day to the local date so that we can account for today's date
+		        selectedLocalDate = selectedLocalDate.plusDays(1);
+		    }
+
+		    // Convert LocalDate back to java.util.Date
+		    java.util.Date nextDate = null;
+		    if (selectedLocalDate != null) {
+		        nextDate = java.util.Date.from(selectedLocalDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		    }
+
+		    // If statement for if the date is either null or in the past.
+		    if (nextDate != null && nextDate.before(currentDate)) {
+		        JOptionPane.showMessageDialog(this, "Please select a valid deadline! Deadline cannot be in the past.", "Error", JOptionPane.ERROR_MESSAGE);
+		        // Returns to the program
+		        return;
+		    }
+
+		    // Stores the validated date and validated deadline
+		    java.sql.Date deadline = selectedDate != null ? new java.sql.Date(selectedDate.getTime()) : null;
+
+		    // Insert new chore into the database using DatabaseOperations class
+		    Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
+		    // Insert the chore into the database using DatabaseOperations class
+		    DatabaseOperations.insertChore(newChore, parentAccount.getUsername());
+		    // Update the table model with the new chore data
+		    displayParentChores();
+
+		    int choreId = (int) choreTable.getValueAt(choreTable.getRowCount() - 1, 0);
+		    DatabaseOperations.insertChoreDetails(choreDescription, deadline, chorePriority, choreId);
+
+		    // Display success message
+		    JOptionPane.showMessageDialog(this, "Chore created successfully!");
+		    choreNameField.setText("");
+		    choreCategoryField.setText("");
+		    choreTimeField.setText("");
+		    chorePaymentField.setText("");
+		    choreDescriptionField.setText("");
+		    priorityDropdown.setSelectedIndex(0);
+		    deadlineChooser.setDate(null);
 		}
-		 // Retrieval of chore attributes from text fields
-		String choreName = choreNameField.getText();
-		String choreCategory = choreCategoryField.getText();
-		double choreTime = Double.parseDouble(choreTimeField.getText());
-		double chorePayment = Double.parseDouble(chorePaymentField.getText());
-		
-		//Additional details
-		String choreDescription = choreDescriptionField.getText();
-		choreDescription = choreDescription.isEmpty() ? null : choreDescription;
-		String chorePriority = (String) priorityDropdown.getSelectedItem();
-		chorePriority = chorePriority.equals("Select") ? null : chorePriority;
-		
-		// Stores the current date
-		java.util.Date currentDate = new java.util.Date(); // Current date
-		
-		// Validate deadline
-	    java.util.Date selectedDate = deadlineChooser.getDate();
-	    
-	    // Convert java.util.Date to LocalDate
-	    LocalDate selectedLocalDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	    // Adding a day to the local date so that we can account for today's date
-	    LocalDate nextDay = selectedLocalDate.plusDays(1); 
-	    
-	    // Convert LocalDate back to java.util.Date
-	    java.util.Date nextDate = java.util.Date.from(nextDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
-	    
-	    // If statement for if the date is either null or in the past.
-	    if (selectedDate == null || nextDate.before(currentDate)) {
-	        JOptionPane.showMessageDialog(this, "Please select a valid deadline! Deadline can not be in the past either!", "Error", JOptionPane.ERROR_MESSAGE);
-	        // Returns to the program
-	        return;
-	    }
-	    
-	    // Stores the validated date and validated deadline
-	    java.util.Date date = deadlineChooser.getDate();
-	    java.sql.Date deadline = date != null ? new java.sql.Date(date.getTime()) : null;
-	    
-		// Insert new chore into the database using DatabaseOperations class
-		Chore newChore = new Chore(choreName, choreCategory, choreTime, chorePayment);
-		// Insert the chore into the database using DatabaseOperations class
-		DatabaseOperations.insertChore(newChore, parentAccount.getUsername());
-		// Update the table model with the new chore data
-		displayParentChores();
-		
-		int choreId = (int) choreTable.getValueAt(choreTable.getRowCount() - 1, 0);
-		DatabaseOperations.insertChoreDetails(choreDescription, deadline, chorePriority, choreId);
-		
 
-
-
-		// Display success message
-		JOptionPane.showMessageDialog(this, "Chore created successfully!");
-		choreNameField.setText("");
-		choreCategoryField.setText("");
-		choreTimeField.setText("");
-		chorePaymentField.setText("");
-		choreDescriptionField.setText("");
-		priorityDropdown.setSelectedIndex(0);
-		deadlineChooser.setDate(null);
-	}
+	
 
 	/**
 	 *  Method created to pay the children 
