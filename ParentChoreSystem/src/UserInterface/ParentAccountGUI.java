@@ -575,7 +575,6 @@ public class ParentAccountGUI extends JFrame{
 		    deadlineChooser.setDate(null);
 		}
 
-<<<<<<< HEAD
 		// Display success message
 		JOptionPane.showMessageDialog(this, "Chore created successfully!");
 		choreNameField.setText("");
@@ -586,9 +585,6 @@ public class ParentAccountGUI extends JFrame{
 		priorityDropdown.setSelectedIndex(0);
 		deadlineChooser.setDate(null);
 	}
-=======
-	
->>>>>>> 4825fed4e68d64a28c7f5a95aa4627e1325de5aa
 
 	/**
 	 *  Method created to pay the children 
