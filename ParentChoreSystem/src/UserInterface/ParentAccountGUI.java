@@ -669,7 +669,6 @@ public class ParentAccountGUI extends JFrame{
         List<Integer> assignedChores = assignedChoresMap.getOrDefault(selectedChild.getUsername(), new ArrayList<>());
         assignedChores.add(choreId);
         assignedChoresMap.put(selectedChild.getUsername(), assignedChores);
-        System.out.println(selectedChild.getUsername());
     } else {
         // Show error message if the chore is already completed
         JOptionPane.showMessageDialog(this, "Chore already completed!");
