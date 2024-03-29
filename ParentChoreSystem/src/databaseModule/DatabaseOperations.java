@@ -738,53 +738,47 @@ public class DatabaseOperations {
 
 
     public static boolean deleteChore(int choreID) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        
-            try (Connection connection = DatabaseConnector.getConnection()) {
-                // Delete related chore additional details
-                try (PreparedStatement deleteChoreDetails = connection.prepareStatement(
-                        "DELETE FROM ChoreAdditionalDetails WHERE id = ?")) {
-                    deleteChoreDetails.setInt(1, choreID);
-                    deleteChoreDetails.executeUpdate();
-                } catch (SQLException e) {
-                    System.err.println("Error deleting chore additional details: " + e.getMessage());
-                    e.printStackTrace();
-                    return false; // Return false if deletion failed
-                }
 
-                // Delete related chore assignments
-                try (PreparedStatement deleteChoreAssignments = connection.prepareStatement(
-                        "DELETE FROM ChoreAssignment WHERE choreID = ?")) {
-                    deleteChoreAssignments.setInt(1, choreID);
-                    deleteChoreAssignments.executeUpdate();
-                } catch (SQLException e) {
-                    System.err.println("Error deleting chore assignments: " + e.getMessage());
-                    e.printStackTrace();
-                    return false; // Return false if deletion failed
-                }
+    	    try (Connection connection = DatabaseConnector.getConnection()) {
+    	        connection.setAutoCommit(false); // Start a transaction
 
-                // Then, delete the chore entry from Chores table
-                try (PreparedStatement deleteChore = connection.prepareStatement(
-                        "DELETE FROM Chores WHERE id = ?")) {
-                    deleteChore.setInt(1, choreID);
-                    deleteChore.executeUpdate();
-                } catch (SQLException e) {
-                    System.err.println("Error deleting chore: " + e.getMessage());
-                    e.printStackTrace();
-                    return false; // Return false if deletion failed
-                }
+    	        try (PreparedStatement deleteChoreDetails = connection.prepareStatement(
+    	                    "DELETE FROM ChoreAdditionalDetails WHERE id = ?")) {
+    	            deleteChoreDetails.setInt(1, choreID);
+    	            deleteChoreDetails.executeUpdate();
+    	        }
 
-                // If we reach this point, deletion was successful
-                return true;
-            } catch (SQLException e) {
-                System.err.println("Database connection error: " + e.getMessage());
-                e.printStackTrace();
-                return false; // Return false if deletion failed
-            }
+    	        try (PreparedStatement deleteChoreAssignments = connection.prepareStatement(
+    	                    "DELETE FROM ChoreAssignment WHERE choreID = ?")) {
+    	            deleteChoreAssignments.setInt(1, choreID);
+    	            deleteChoreAssignments.executeUpdate();
+    	        }
+
+    	        // Delete related entries in the competitions table
+    	        try (PreparedStatement deleteCompetitions = connection.prepareStatement(
+    	                    "DELETE FROM competitions WHERE choreID = ?")) {
+    	            deleteCompetitions.setInt(1, choreID);
+    	            deleteCompetitions.executeUpdate();
+    	        }
+
+    	        try (PreparedStatement deleteChore = connection.prepareStatement(
+    	                    "DELETE FROM Chores WHERE id = ?")) {
+    	            deleteChore.setInt(1, choreID);
+    	            deleteChore.executeUpdate();
+    	        }
+
+    	        connection.commit(); // Commit the transaction
+    	        return true; // Deletion successful
+    	    } catch (SQLException e) {
+    	        System.err.println("Error deleting chore: " + e.getMessage());
+    	        e.printStackTrace();
+    	        return false; // Return false if deletion failed
+    	    }
+    	}
+
         }
 
-    }
+    
 
 
 
