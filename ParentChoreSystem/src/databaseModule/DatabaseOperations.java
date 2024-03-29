@@ -396,7 +396,9 @@ public class DatabaseOperations {
         }
     }
     
-    public static void markChoreAsCompleted(int choreID, String childUsername) {
+    
+    
+    public static void markChoreAsCompleted(int choreID, String childUsername, boolean completedByDeadline) {
         try (Connection connection = DatabaseConnector.getConnection()) {
             // Update Chores table
             try (PreparedStatement updateChores = connection.prepareStatement(
@@ -415,12 +417,23 @@ public class DatabaseOperations {
                 updateChildAccounts.setString(2, childUsername);
                 updateChildAccounts.executeUpdate();
             }
-        } catch (SQLException e) {
+            
+            try (PreparedStatement updateChoreAdditionalDetails = connection.prepareStatement(
+                    "UPDATE ChoreAdditionalDetails SET completedByDeadline = ? WHERE id = ?")) {
+                updateChoreAdditionalDetails.setBoolean(1, completedByDeadline);
+                updateChoreAdditionalDetails.setInt(2, choreID);
+                updateChoreAdditionalDetails.executeUpdate();
+            }
+            
+            
+        }
+            catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
 
-    public static void markChoreAsNotCompleted(int choreID, String childUsername) {
+    public static void markChoreAsNotCompleted(int choreID, String childUsername, boolean completedByDeadline) {
         try (Connection connection = DatabaseConnector.getConnection()) {
             // Update Chores table
             try (PreparedStatement updateChores = connection.prepareStatement(
@@ -439,6 +452,14 @@ public class DatabaseOperations {
                 updateChildAccounts.setString(2, childUsername);
                 updateChildAccounts.executeUpdate();
             }
+            
+            try (PreparedStatement updateChoreAdditionalDetails = connection.prepareStatement(
+                    "UPDATE ChoreAdditionalDetails SET completedByDeadline = ? WHERE id = ?")) {
+                updateChoreAdditionalDetails.setBoolean(1, completedByDeadline);
+                updateChoreAdditionalDetails.setInt(2, choreID);
+                updateChoreAdditionalDetails.executeUpdate();
+            }
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -762,9 +783,6 @@ public class DatabaseOperations {
                 return false; // Return false if deletion failed
             }
         }
-
-    
-
 
     }
 

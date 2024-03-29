@@ -67,6 +67,7 @@ public class DatabaseSetup {
     		+ "priority ENUM('High','Mid','Low'),"
     		+ "choreDescription VARCHAR(255),"
     		+ "deadline DATE,"
+    		+ "completedByDeadline BOOLEAN DEFAULT NULL,"
     		+ "FOREIGN KEY (id) REFERENCES Chores(id))";
     		
     
