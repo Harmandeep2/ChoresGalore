@@ -28,8 +28,11 @@ public class SingleChoreDetails extends JFrame {
         setLocationRelativeTo(null); // Center the frame on the screen
         setResizable(true);
 
+        //creating main panel
         JPanel mainPanel = new JPanel();
+        //setting a layout for main panel
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        //setting a border
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add some margin
 
         // Get chore details from the database
@@ -63,11 +66,14 @@ public class SingleChoreDetails extends JFrame {
             JScrollPane scrollPane = new JScrollPane(table);
             mainPanel.add(scrollPane, BorderLayout.CENTER);
         } else {
+        	//displaying error message when chore details are not found
             JLabel label = new JLabel("Chore details not found.");
             mainPanel.add(label, BorderLayout.CENTER);
         }
 
+        //creating a back button
         backButton = new JButton("Back");
+        //adding the back button to the main panel
         mainPanel.add(backButton);
         
         backButton.addActionListener(new ActionListener() {
