@@ -317,7 +317,6 @@ public class ChildAccountGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				markAsCompleted();
-				choreCount += 1;
 				choreLabel.setText("Chores Completed: " + choreCount);
 				chorePanel.add(choreLabel);
 				displayChildChores();
