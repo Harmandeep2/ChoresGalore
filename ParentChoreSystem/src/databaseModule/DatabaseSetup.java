@@ -10,16 +10,26 @@ public class DatabaseSetup {
 	 * Creating strings that allow interactions with the database 
 	 * 
 	 */
+	
+	/**
+	 * fetches password, link, and username from 'config.properties' file in the same module
+	 */
 
 	private static final String DB_NAME = "ParentChoreSystem";
     private static final String CREATE_DATABASE_SQL = "CREATE DATABASE IF NOT EXISTS " + DB_NAME;
     private static final String USE_DATABASE_SQL = "USE " + DB_NAME;
 
+    /**
+     * creating accounts table in mysql
+     */
     private static final String CREATE_ACCOUNTS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS Accounts ("
             + "username VARCHAR(255) PRIMARY KEY,"
             + "password VARCHAR(255) NOT NULL,"
             + "accountType ENUM('Parent', 'Child') NOT NULL)";
     
+    /**
+     * creating childaccounts table in mysql
+     */
     private static final String CREATE_CHILD_ACCOUNTS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChildAccounts ("
             + "childUsername VARCHAR(255) PRIMARY KEY,"
             + "parentUsername VARCHAR(255) DEFAULT NULL,"
@@ -29,7 +39,9 @@ public class DatabaseSetup {
             + "FOREIGN KEY (parentUsername) REFERENCES Accounts(username) ON DELETE SET NULL)";
 
 
-
+    /**
+     * creating the chores table in mysql
+     */
     private static final String CREATE_CHORES_TABLE_SQL = "CREATE TABLE IF NOT EXISTS Chores ("
             + "id INT AUTO_INCREMENT PRIMARY KEY,"
             + "name VARCHAR(255) NOT NULL,"
@@ -44,6 +56,9 @@ public class DatabaseSetup {
 			+ "FOREIGN KEY (completedBy) REFERENCES ChildAccounts(childUsername) ON DELETE SET NULL,"
     		+ "FOREIGN KEY (parentUsername) REFERENCES Accounts(username))";
 
+    /**
+     * creating chore assignment table in mysql
+     */
     private static final String CREATE_CHORE_ASSIGNMENT_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChoreAssignment ("
             + "choreID INT,"
             + "childUsername VARCHAR(255),"
@@ -51,6 +66,10 @@ public class DatabaseSetup {
             + "FOREIGN KEY (choreID) REFERENCES Chores(id),"
             + "FOREIGN KEY (childUsername) REFERENCES Accounts(username))";
     
+    
+    /**
+     * creating competition table in mysql
+     */
     private static final String CREATE_COMPETITIONS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS Competitions ("
     		+ "competitionName VARCHAR(255) NOT NULL,"
     		+ "parentUsername VARCHAR(255) NOT NULL,"
@@ -61,7 +80,9 @@ public class DatabaseSetup {
     		+ "FOREIGN KEY (childUsername) REFERENCES ChildAccounts(childUsername),"
     		+ "FOREIGN KEY (choreID) REFERENCES Chores(id))";
 
-    //NEW TABLE CREATION
+    /**
+     * creating choreadditionaldetails table in mysql
+     */
     private static final String CREATE_CHOREADDITIONALDETAILS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ChoreAdditionalDetails ("
     		+ "id INT PRIMARY KEY,"
     		+ "priority ENUM('High','Mid','Low'),"
@@ -110,9 +131,11 @@ public class DatabaseSetup {
 			//Create the 'ChoreAdditionalDetails' table if not exists
 			createChoreAdditionalDetails.executeUpdate();
 			
+			//Success message for proper database setup
             System.out.println("Database setup completed successfully.");
 
         } catch (SQLException e) {
+        	//error message
             e.printStackTrace();
         }
     }
