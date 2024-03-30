@@ -111,6 +111,7 @@ public class ChildAccountGUI extends JFrame{
 		tableModel.addColumn("Rating");
 		choreTable = new JTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(choreTable);
+		//adding the chore table to the main panel
 		mainPanel.add(scrollPane);
 
 		// Panel for sorting and filtering buttons
