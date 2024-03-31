@@ -385,6 +385,43 @@ public class ParentAccountTest {
         parentAccount.editChore(chore, "category", "Gardening");
         assertEquals("Gardening", chore.getCategory());
     }
+    
+    @Test
+    public void testEditChore4() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Walk dog", "Pets", 30, 3.0);
+        
+        parentAccount.editChore(chore, "name", "Feed cat");
+        assertEquals("Feed cat", chore.getName());
+        
+        parentAccount.editChore(chore, "time", 15.0);
+        assertEquals(15.0, chore.getTime(), 0.01);
+        
+        parentAccount.editChore(chore, "payment", 2.5);
+        assertEquals(2.5, chore.getPayment(), 0.01);
+        
+        parentAccount.editChore(chore, "category", "Pet Care");
+        assertEquals("Pet Care", chore.getCategory());
+    }
+
+    @Test
+    public void testEditChore5() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Vacuum living room", "Household", 45, 5.0);
+        
+        parentAccount.editChore(chore, "name", "Dust furniture");
+        assertEquals("Dust furniture", chore.getName());
+        
+        parentAccount.editChore(chore, "time", 30.0);
+        assertEquals(30.0, chore.getTime(), 0.01);
+        
+        parentAccount.editChore(chore, "payment", 3.0);
+        assertEquals(3.0, chore.getPayment(), 0.01);
+        
+        parentAccount.editChore(chore, "category", "Cleaning");
+        assertEquals("Cleaning", chore.getCategory());
+    }
+
 
     @Test
     public void testDeleteChoreInvalidChild() {
@@ -438,6 +475,24 @@ public class ParentAccountTest {
         ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
         ChildAccount childAccount = new ChildAccount("childUser", "password012");
         Chore chore = new Chore("Take out trash", "Household", 15, 2.0);
+        parentAccount.depositChorePayment(childAccount, chore);
+        assertEquals(0.0, childAccount.getBalance(), 0.01);
+    }
+    
+    @Test
+    public void testDepositChorePaymentInvalidChore4() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        ChildAccount childAccount = new ChildAccount("childUser", "password345");
+        Chore chore = new Chore("Wash dishes", "Kitchen", 20, 4.0);
+        parentAccount.depositChorePayment(childAccount, chore);
+        assertEquals(0.0, childAccount.getBalance(), 0.01);
+    }
+
+    @Test
+    public void testDepositChorePaymentInvalidChore5() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        ChildAccount childAccount = new ChildAccount("childUser", "password678");
+        Chore chore = new Chore("Mow lawn", "Outdoor", 120, 10.0);
         parentAccount.depositChorePayment(childAccount, chore);
         assertEquals(0.0, childAccount.getBalance(), 0.01);
     }
