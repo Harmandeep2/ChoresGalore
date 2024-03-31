@@ -44,5 +44,10 @@
 	<classpathentry kind="lib" path="lib/poi-bin-5.2.3-20220909/poi-bin-5.2.3/lib/SparseBitSet-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-j-8.3.0/mysql-connector-j-8.3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

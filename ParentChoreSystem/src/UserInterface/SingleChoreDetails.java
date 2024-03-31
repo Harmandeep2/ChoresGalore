@@ -1,6 +1,8 @@
 package UserInterface;
 
-import java.util.Map;
+import java.util.*;
+import java.util.List;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -40,7 +42,7 @@ public class SingleChoreDetails extends JFrame {
 
         if (choreMap != null) {
             String[] columnNames = {"Attribute", "Value"};
-            Object[][] rowData = new Object[choreMap.size()][2];
+            Object[][] rowData = new Object[choreMap.size() + 1][2];
             int index = 0;
 
             // Fill rowData with chore details
@@ -58,6 +60,28 @@ public class SingleChoreDetails extends JFrame {
                 }
                 index++;
             }
+            
+            List<String> assignees = DatabaseOperations.getChildAssignedToChore(this.choreId);
+            
+			if(!assignees.isEmpty()) {
+				StringBuilder sb = new StringBuilder();
+				for(int i = 0; i < assignees.size(); i++) {
+					String child = assignees.get(i);
+					
+					if(i != assignees.size() - 1) {
+						sb.append(child).append(", ");
+					}
+					else {
+						sb.append(child);
+					}
+				}
+				rowData[index][0] = "Assigned To";
+				rowData[index][1] = sb.toString();
+			}
+			else {
+				rowData[index][0] = "Assigned To";
+				rowData[index][1] = "<Not Yet Assigned to any child>";
+			}
 
             // Create JTable with the data
             JTable table = new JTable(new DefaultTableModel(rowData, columnNames));
