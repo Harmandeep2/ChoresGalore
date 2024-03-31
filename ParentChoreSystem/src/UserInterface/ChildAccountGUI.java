@@ -37,7 +37,7 @@ public class ChildAccountGUI extends JFrame{
 	private JLabel welcomeLabel, dateLabel, choreLabel, completionStatusLabel;
 	private ChildAccount childAccount;
 	private JTable choreTable;
-	private int choreCount = 0;
+	private int choreCount;
 
 	/**
 	 * 
