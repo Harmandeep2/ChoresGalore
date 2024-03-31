@@ -501,7 +501,10 @@ public class ChildAccountGUI extends JFrame{
                 if (isCompleted) {
                     int choreId = (int) table.getValueAt(row, 0); // Assuming ID is at column index 0
                     boolean completedByDeadline = DatabaseOperations.isChoreCompletedByDeadline(choreId);
+                	Date deadline = DatabaseOperations.getChoreDeadline(choreId);
                     if (completedByDeadline) {
+                        c.setBackground(Color.GREEN);
+                    }else if (deadline==null && isCompleted==true) {
                         c.setBackground(Color.GREEN);
                     } else {
                         c.setBackground(Color.RED);
