@@ -95,7 +95,7 @@ public class ChildAccountGUI extends JFrame{
 		dateLabel = new JLabel("Today's Date: " + dateObj);
 		datePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		choreLabel = new JLabel("Chores Completed: " + choreCount);
+		choreLabel = new JLabel("Chores Completed In This Session: " + choreCount);
 		chorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		// Adding it to the date panel and then the main panel.
@@ -322,8 +322,6 @@ public class ChildAccountGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				markAsCompleted();
-//				choreLabel.setText("Chores Completed: " + choreCount);
-//				chorePanel.add(choreLabel);
 				displayChildChores();
 			}
 		});
@@ -570,7 +568,7 @@ private void markAsCompleted() {
 		// Increment the chore count
 		choreCount = choreCount + 1;
 		// Update the chore count label
-		choreLabel.setText("Chores Completed: " + choreCount);
+		choreLabel.setText("Chores Completed In This Session: " + choreCount);
 		
 		
 	}
@@ -636,7 +634,7 @@ private void markAsNotCompleted() {
 			}
 			
 			// Update the chore count label
-			choreLabel.setText("Chores Completed: " + choreCount);
+			choreLabel.setText("Chores Completed In This Session: " + choreCount);
 		}
 		else {
 			// Display message if the chore was not completed by the current child account
