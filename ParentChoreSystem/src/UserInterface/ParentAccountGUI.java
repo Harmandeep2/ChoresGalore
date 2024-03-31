@@ -417,7 +417,7 @@ public class ParentAccountGUI extends JFrame{
         if (completedChoresCount > 0 && (completedChoresCount > completedPaidCount) ) {
             JOptionPane.showMessageDialog(this, "Number of Completed Chores so Far: " + completedChoresCount + "\nNumber of Chores Paid so Far: " + completedPaidCount + " \nPlease pay these chores now!", "Completed Chores", JOptionPane.INFORMATION_MESSAGE);
         }
-        
+       
 	}
 
 	// Method created to add a child to the parent account
