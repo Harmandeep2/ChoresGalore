@@ -175,4 +175,84 @@ class accountsAndChoresTest {
         choresList2.addChore(chore2);
         assertEquals(2, choresList2.getNumberOfChores()); // Number of chores should be two
     }
+    
+    @Test
+    public void testGetNumberOfChores3() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
+    
+    @Test
+    public void testGetNumberOfChores4() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
+    
+    @Test
+    public void testGetNumberOfChores5() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
+    
+    @Test
+    public void testGetNumberOfChores6() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
+    
+    @Test
+    public void testGetNumberOfChores7() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
+    
+    @Test
+    public void testGetNumberOfChores8() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
+    
+    @Test
+    public void testGetNumberOfChores9() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
+    
+    @Test
+    public void testGetNumberOfChores10() {
+        ChoresList choresList = new ChoresList();
+        Chore chore1 = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        Chore chore2 = new Chore("Clean room", "Household", 30, 3.0); // 30-minute chore
+        choresList.addChore(chore1);
+        choresList.addChore(chore2);
+        assertEquals(2, choresList.getNumberOfChores()); // Number of chores should be two
+    }
 }
