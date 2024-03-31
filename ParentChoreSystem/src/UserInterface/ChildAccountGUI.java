@@ -499,8 +499,11 @@ public class ChildAccountGUI extends JFrame{
                     int choreId = (int) table.getValueAt(row, 0); // Assuming ID is at column index 0
                     boolean completedByDeadline = DatabaseOperations.isChoreCompletedByDeadline(choreId);
                     String completedByChild = DatabaseOperations.getChoreCompletingChildUsername(choreId);
+                	Date deadline = DatabaseOperations.getChoreDeadline(choreId);
                     if(completedByChild.equals(childAccount.getUsername())) {
 	                    if (completedByDeadline && completedByChild.equals(childAccount.getUsername())) {
+	                        c.setBackground(Color.GREEN);
+	                    }else if (deadline==null && isCompleted==true) {
 	                        c.setBackground(Color.GREEN);
 	                    } else {
 	                        c.setBackground(Color.RED);
@@ -515,6 +518,8 @@ public class ChildAccountGUI extends JFrame{
 
                 return c;
             }
+            
+
         });
     
 	    // Add the table to a JScrollPane and add it to the frame

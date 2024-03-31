@@ -713,24 +713,34 @@ public class ParentAccountGUI extends JFrame{
 	/**
 	 * Method to delete selected chore from Parent GUI, Child GUI, and database
 	 */
+
+	
 	private void deleteChore() {
-	    int selectedRow = choreTable.getSelectedRow();
-	    if (selectedRow == -1) {
-	        JOptionPane.showMessageDialog(this, "Please select a chore to delete!");
+	    int[] selectedRows = choreTable.getSelectedRows();
+	    if (selectedRows.length == 0) {
+	        JOptionPane.showMessageDialog(this, "Please select chores to delete!");
 	        return;
 	    }
 
-	    int choreId = (int) choreTable.getValueAt(selectedRow, 0);
-	    // Call the method from DatabaseOperations to delete the chore from the database
-	    boolean deleted = DatabaseOperations.deleteChore(choreId);
-	    if (deleted) {
-	        JOptionPane.showMessageDialog(this, "Chore deleted successfully!");
-	        // After deleting, refresh the chore table
-	        displayParentChores();
-	    } else {
-	        JOptionPane.showMessageDialog(this, "Failed to delete chore. Please try again.");
+	    int confirmed = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete the selected chores?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+	    if (confirmed != JOptionPane.YES_OPTION) {
+	        return;
 	    }
+
+	    for (int i = selectedRows.length - 1; i >= 0; i--) {
+	        int choreId = (int) choreTable.getValueAt(selectedRows[i], 0);
+	        // Call the method from DatabaseOperations to delete the chore from the database
+	        boolean deleted = DatabaseOperations.deleteChore(choreId);
+	        if (!deleted) {
+	            JOptionPane.showMessageDialog(this, "Failed to delete chore with ID " + choreId + ". Please try again.");
+	        }
+	    }
+
+	    JOptionPane.showMessageDialog(this, "Selected chores deleted successfully!");
+	    // After deleting, refresh the chore table
+	    displayParentChores();
 	}
+
 	
 
 	/**
