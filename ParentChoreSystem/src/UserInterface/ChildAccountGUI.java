@@ -398,7 +398,6 @@ public class ChildAccountGUI extends JFrame{
 	    // Add the status panel to the main panel
 	    getContentPane().add(statusPanel, BorderLayout.NORTH);
 
-	    // Existing code...
 
 	    // Update the completion status label based on the number of pending chores
 	    updateCompletionStatusLabel(completionStatusLabel);
