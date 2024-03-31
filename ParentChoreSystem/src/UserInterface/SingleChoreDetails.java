@@ -80,7 +80,7 @@ public class SingleChoreDetails extends JFrame {
 			}
 			else {
 				rowData[index][0] = "Assigned To";
-				rowData[index][1] = "<Not Yet Assigned to any child>";
+				rowData[index][1] = "<Not Assigned to any child Yet>";
 			}
 
             // Create JTable with the data
