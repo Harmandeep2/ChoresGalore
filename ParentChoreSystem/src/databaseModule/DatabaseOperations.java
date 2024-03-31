@@ -258,6 +258,26 @@ public class DatabaseOperations {
 	    }
 	    return false;
     }
+    
+    public static int getChoreCompletedCountOfChild(String childUsername) {
+	    try (Connection connection = DatabaseConnector.getConnection();
+	            PreparedStatement preparedStatement = connection.prepareStatement(
+		            "SELECT COUNT(*) FROM Chores "
+		            + "JOIN ChoreAssignment ON Chores.id = ChoreAssignment.choreID "
+		            + "WHERE childUsername = ? AND isCompleted = 1")) {           
+	        preparedStatement.setString(1, childUsername);
+	        
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+		        if (resultSet.next()) {
+		            return resultSet.getInt(1);
+		        }
+	        }
+	    } catch (SQLException e) {
+		    e.printStackTrace();
+		   return 0;
+	    }
+	    return 0;
+    }
 
     public static List<Chore> getAllChoresofChild(String childUsername) {
         List<Chore> chores = new ArrayList<>();
