@@ -322,8 +322,8 @@ public class ChildAccountGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				markAsCompleted();
-				choreLabel.setText("Chores Completed: " + choreCount);
-				chorePanel.add(choreLabel);
+//				choreLabel.setText("Chores Completed: " + choreCount);
+//				chorePanel.add(choreLabel);
 				displayChildChores();
 			}
 		});
@@ -553,7 +553,6 @@ public class ChildAccountGUI extends JFrame{
 // Method to allow child to mark chore complete
 private void markAsCompleted() {
 	// Initialize the chore count variable
-	choreCount = 0;
 	// Get the index of the selected row in the chore table
 	int selectedRow = choreTable.getSelectedRow();
 	// Check if a chore is selected
@@ -573,7 +572,7 @@ private void markAsCompleted() {
 		// Show success message
 		JOptionPane.showMessageDialog(this, "Chore recorded as completed successfully!");
 		// Increment the chore count
-		choreCount += 1;
+		choreCount = choreCount + 1;
 		// Update the chore count label
 		choreLabel.setText("Chores Completed: " + choreCount);
 		
@@ -634,7 +633,12 @@ private void markAsNotCompleted() {
 			// Show success message
 			JOptionPane.showMessageDialog(this, "Chore updated as not completed successfully!");
 			// Decrement the chore count
-			choreCount -= 1;
+			if (choreCount > 0) {
+				choreCount = choreCount - 1;
+			} else {
+				choreCount = 0;
+			}
+			
 			// Update the chore count label
 			choreLabel.setText("Chores Completed: " + choreCount);
 		}
