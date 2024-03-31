@@ -65,5 +65,60 @@ class CompetitionTest {
         assertEquals(child2, competition.getWinner());
     }
 	
+	@Test
+    public void testNoWinner() {
+        Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
+        assertNull(competition.getWinner());
+    }
+    
+    @Test
+    public void testGetWinner_Child1WinsWithMultipleChores() {
+        Chore chore2 = new Chore("Wash Dishes", "Household", 30, 5.0);
+        Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
+        child1.markChoreCompleted(chore);
+        child1.markChoreCompleted(chore2);
+        assertEquals(child1, competition.getWinner());
+    }
+    
+    @Test
+    public void testGetWinner_Child2WinsWithMultipleChores() {
+        Chore chore2 = new Chore("Wash Dishes", "Household", 30, 5.0);
+        Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
+        child2.markChoreCompleted(chore);
+        child2.markChoreCompleted(chore2);
+        assertEquals(child2, competition.getWinner());
+    }
+    
+    @Test
+    public void testNoWinnerWithNoChoresCompleted() {
+        Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
+        assertNull(competition.getWinner());
+    }
+    
+    @Test
+    public void testGetWinner_Child1WinsWithEqualHours() {
+        child2.setHoursWorked(10); // Make child2's hours equal to child1 at start
+        Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
+        child1.markChoreCompleted(chore);
+        assertEquals(child1, competition.getWinner());
+    }
+    
+    @Test
+    public void testGetWinner_Child2WinsWithEqualHours() {
+        child1.setHoursWorked(10); // Make child1's hours equal to child2 at start
+        Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
+        child2.markChoreCompleted(chore);
+        assertEquals(child2, competition.getWinner());
+    }
+    
+    @Test
+    public void testNoWinnerWithEqualHours() {
+        child1.setHoursWorked(10); // Make child1's hours equal to child2 at start
+        Competition competition = new Competition(parent, new ArrayList<>(List.of(child1, child2)), chore);
+        assertNull(competition.getWinner());
+    }
+	
+	
+	
 
 }
