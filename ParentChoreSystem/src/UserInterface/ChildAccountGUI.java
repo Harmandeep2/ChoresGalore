@@ -578,6 +578,7 @@ private void markAsCompleted() {
 		JOptionPane.showMessageDialog(this, "Chore already completed!");
 		
 	}
+	updateCompletionStatusLabel();
 }
 
 private void updateCompletionStatusLabel() {
@@ -595,10 +596,10 @@ private void updateCompletionStatusLabel() {
 
     // Update the completion status label text and color based on whether any chore is incomplete
     if (anyChoreIncomplete) {
-        completionStatusLabel.setText("Pending chores to do");
+        completionStatusLabel.setText(" You still have pending chores! ");
         completionStatusLabel.setForeground(Color.RED);
     } else {
-        completionStatusLabel.setText("All chores completed");
+        completionStatusLabel.setText(" All chores completed! ");
         completionStatusLabel.setForeground(Color.GREEN);
     }
 }
@@ -638,6 +639,8 @@ private void markAsNotCompleted() {
 		// Display message if the chore is not marked as completed
 		JOptionPane.showMessageDialog(this, "Chore not yet marked as completed!");
 	}
+	
+	updateCompletionStatusLabel();
 }
 
 //Method to display hours worked
