@@ -162,5 +162,104 @@ public class ChildAccountTest {
         ChildAccount childAccount = new ChildAccount("childUser1", "password123");
         assertEquals("childUser1", childAccount.toString());
     }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted2() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted3() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted4() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted5() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted6() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted7() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted8() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted9() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
+    
+    @Test
+    public void testMarkChoreCompletedInvalidChoreAlreadyCompleted10() {
+        ChildAccount childAccount = new ChildAccount("childUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        chore.markCompleted();
+        childAccount.getChores().add(chore);
+        childAccount.markChoreCompleted(chore);
+        assertTrue(chore.isCompleted());
+        assertEquals(0.0, childAccount.getHoursWorked(), 0.01); // No hours worked
+    }
 
 }
