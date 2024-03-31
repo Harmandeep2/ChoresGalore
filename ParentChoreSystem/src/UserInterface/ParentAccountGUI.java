@@ -330,8 +330,6 @@ public class ParentAccountGUI extends JFrame{
 		mainPanel.add(new JLabel(" "));
 		 // Add vertical spacing
 
-
-
 		/*
 		 *  Bottom Buttons Panel
 		 */
@@ -550,6 +548,7 @@ public class ParentAccountGUI extends JFrame{
 		        // Returns to the program
 		        return;
 		    }
+		    
 
 		    // Stores the validated date and validated deadline
 		    java.sql.Date deadline = selectedDate != null ? new java.sql.Date(selectedDate.getTime()) : null;

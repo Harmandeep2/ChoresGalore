@@ -34,7 +34,7 @@ public class ChildAccountGUI extends JFrame{
 	private JButton checkBalanceButton, exportChoresButton, competitionStandingsButton, choreHistoryButton;
 	private JButton logoutButton, choreDetailButton;
 	private JButton markAsCompletedButton, markAsNotCompletedButton, hoursWorkedButton;
-	private JLabel welcomeLabel, dateLabel, choreLabel;
+	private JLabel welcomeLabel, dateLabel, choreLabel, completionStatusLabel;
 	private ChildAccount childAccount;
 	private JTable choreTable;
 	private int choreCount = 0;
@@ -48,6 +48,7 @@ public class ChildAccountGUI extends JFrame{
 		this.childAccount = childAccount;
 		initialize();
 		displayChildChores();
+		
 	}
 
 	private void initialize() {
@@ -56,7 +57,8 @@ public class ChildAccountGUI extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center the frame on the screen
 		setResizable(true);
-
+		
+		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
@@ -78,6 +80,9 @@ public class ChildAccountGUI extends JFrame{
 		mainPanel.add(welcomePanel);
 
 		mainPanel.add(welcomePanel);
+		
+		
+		
 
 		// Creating a date panel on the GUI to show the parent what the date is
 		JPanel datePanel = new JPanel();
@@ -379,6 +384,24 @@ public class ChildAccountGUI extends JFrame{
 		mainPanel.add(buttonPanel);
 		getContentPane().add(mainPanel);
 		setVisible(true);
+		
+		 // Create a panel for the completion status
+	    JPanel statusPanel = new JPanel();
+	    statusPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+	    statusPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+
+	    // Create a JLabel for displaying the completion status
+	    JLabel completionStatusLabel = new JLabel();
+	    completionStatusLabel.setFont(new Font("Calibri", Font.PLAIN, 16));
+	    statusPanel.add(completionStatusLabel);
+
+	    // Add the status panel to the main panel
+	    getContentPane().add(statusPanel, BorderLayout.NORTH);
+
+	    // Existing code...
+
+	    // Update the completion status label based on the number of pending chores
+	    updateCompletionStatusLabel(completionStatusLabel);
 
 	}
 
@@ -490,16 +513,16 @@ public class ChildAccountGUI extends JFrame{
             DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
             if (completed && withinDeadline) {
                 cellRenderer.setForeground(Color.GREEN); // Completed within deadline
-            } else if (!completed && deadline != null && deadline.before(currentDate)) {
-                cellRenderer.setForeground(Color.RED); // Not completed by deadline
             } else {
-                cellRenderer.setForeground(Color.BLACK); // Default color
+                cellRenderer.setForeground(Color.RED); // Not completed by deadline
             }
             
 
             for (int i = 0; i < historyTableModel.getColumnCount(); i++) {
                 historyTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
             }
+            
+        
 	    }
 	    // Add the table to a JScrollPane and add it to the frame
 	    JScrollPane scrollPane = new JScrollPane(historyTable);
@@ -554,11 +577,37 @@ private void markAsCompleted() {
 		choreCount += 1;
 		// Update the chore count label
 		choreLabel.setText("Chores Completed: " + choreCount);
+		
+		
 	}
 	else {
 		// Display message if the chore is already completed
 		JOptionPane.showMessageDialog(this, "Chore already completed!");
+		
 	}
+}
+
+private void updateCompletionStatusLabel(JLabel completionStatusLabel) {
+    // Fetch the list of child chores
+    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
+
+    // Check if any chore is incomplete
+    boolean anyChoreIncomplete = false;
+    for (Chore chore : childChores) {
+        if (!chore.isCompleted()) {
+            anyChoreIncomplete = true;
+            break;
+        }
+    }
+
+    // Update the completion status label text and color based on whether any chore is incomplete
+    if (anyChoreIncomplete) {
+        completionStatusLabel.setText("Pending chores to do");
+        completionStatusLabel.setForeground(Color.RED);
+    } else {
+        completionStatusLabel.setText("All chores completed");
+        completionStatusLabel.setForeground(Color.GREEN);
+    }
 }
 
 // Method to allow child to mark chore as not completed
@@ -688,6 +737,8 @@ private void displayListOnTable(List<Chore> chores) {
 		tableModel.addRow(rowData);
 	}
 }
+
+
 
 //Method to show competition standings
 private void showCompetitionStandings() {
