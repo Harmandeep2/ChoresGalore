@@ -562,8 +562,8 @@ private void markAsCompleted() {
 	//check if deadline has passed
 	Date currentDate = new Date(System.currentTimeMillis());
 	Date deadline = DatabaseOperations.getChoreDeadline(choreId);
-	boolean withinDeadline = deadline != null && deadline.after(currentDate);
-	
+	boolean withinDeadline = deadline != null && !currentDate.after(deadline) && !deadline.before(currentDate);
+	withinDeadline = deadline.getDate() == currentDate.getDate() ? true : false;
 	// Check if the selected chore is not already marked as completed
 	if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
 		// Mark the chore as completed in the database
