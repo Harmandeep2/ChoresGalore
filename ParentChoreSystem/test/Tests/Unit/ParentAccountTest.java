@@ -134,7 +134,84 @@ public class ParentAccountTest {
     }
 
     @Test
-    public void testEditChoreInvalidChangeType() {
+    public void testEditChoreInvalidChangeType2() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        parentAccount.editChore(chore, "invalidChangeType", "NewValue");
+        assertEquals("Do homework", chore.getName());
+        assertEquals(60.0, chore.getTime(), 0.01);
+        assertEquals(5.0, chore.getPayment(), 0.01);
+        assertEquals("Education", chore.getCategory());
+    }
+    
+    @Test
+    public void testEditChoreInvalidChangeType3() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        parentAccount.editChore(chore, "invalidChangeType", "NewValue");
+        assertEquals("Do homework", chore.getName());
+        assertEquals(60.0, chore.getTime(), 0.01);
+        assertEquals(5.0, chore.getPayment(), 0.01);
+        assertEquals("Education", chore.getCategory());
+    }
+    
+    @Test
+    public void testEditChoreInvalidChangeType4() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        parentAccount.editChore(chore, "invalidChangeType", "NewValue");
+        assertEquals("Do homework", chore.getName());
+        assertEquals(60.0, chore.getTime(), 0.01);
+        assertEquals(5.0, chore.getPayment(), 0.01);
+        assertEquals("Education", chore.getCategory());
+    }
+    
+    @Test
+    public void testEditChoreInvalidChangeType5() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        parentAccount.editChore(chore, "invalidChangeType", "NewValue");
+        assertEquals("Do homework", chore.getName());
+        assertEquals(60.0, chore.getTime(), 0.01);
+        assertEquals(5.0, chore.getPayment(), 0.01);
+        assertEquals("Education", chore.getCategory());
+    }
+    
+    @Test
+    public void testEditChoreInvalidChangeType6() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        parentAccount.editChore(chore, "invalidChangeType", "NewValue");
+        assertEquals("Do homework", chore.getName());
+        assertEquals(60.0, chore.getTime(), 0.01);
+        assertEquals(5.0, chore.getPayment(), 0.01);
+        assertEquals("Education", chore.getCategory());
+    }
+    
+    @Test
+    public void testEditChoreInvalidChangeType7() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        parentAccount.editChore(chore, "invalidChangeType", "NewValue");
+        assertEquals("Do homework", chore.getName());
+        assertEquals(60.0, chore.getTime(), 0.01);
+        assertEquals(5.0, chore.getPayment(), 0.01);
+        assertEquals("Education", chore.getCategory());
+    }
+    
+    @Test
+    public void testEditChoreInvalidChangeType8() {
+        ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
+        Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
+        parentAccount.editChore(chore, "invalidChangeType", "NewValue");
+        assertEquals("Do homework", chore.getName());
+        assertEquals(60.0, chore.getTime(), 0.01);
+        assertEquals(5.0, chore.getPayment(), 0.01);
+        assertEquals("Education", chore.getCategory());
+    }
+    
+    @Test
+    public void testEditChoreInvalidChangeType9() {
         ParentAccount parentAccount = new ParentAccount("parentUser", "password123");
         Chore chore = new Chore("Do homework", "Education", 60, 5.0); // 1 hour chore
         parentAccount.editChore(chore, "invalidChangeType", "NewValue");
