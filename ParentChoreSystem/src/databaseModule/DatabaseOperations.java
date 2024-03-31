@@ -752,6 +752,45 @@ public class DatabaseOperations {
 
         return assignedChildren;
     }
+    
+    // Method to get the count of completed chores associated with a parent account
+    public static int getCompletedChoresCount(String parentUsername) {
+        int completedChoresCount = 0;
+        try (Connection connection = DatabaseConnector.getConnection()) {
+            // Perform query to count completed chores
+            String query = "SELECT COUNT(*) FROM Chores WHERE parentUsername = ? AND isCompleted = true";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, parentUsername);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        completedChoresCount = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle database errors
+        }
+        return completedChoresCount;
+    }
+    
+    public static int countPaidChores(String parentUsername) {
+        int paidChoresCount = 0;
+        try (Connection connection = DatabaseConnector.getConnection()) {
+        	// Perform query to count completed chores
+            String query = "SELECT COUNT(*) FROM Chores WHERE parentUsername = ? AND isPaid = true";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+            	statement.setString(1, parentUsername);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        paidChoresCount = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return paidChoresCount;
+    }
 
 
     public static boolean deleteChore(int choreID) {

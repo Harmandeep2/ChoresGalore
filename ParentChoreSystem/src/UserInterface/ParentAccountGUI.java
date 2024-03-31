@@ -406,8 +406,19 @@ public class ParentAccountGUI extends JFrame{
         getContentPane().add(mainPanel);
         // Setting the frame to visible
         setVisible(true);
+        
+        // Creating a completed chores count variable that keeps track of how many chores have been completed
+        int completedChoresCount = DatabaseOperations.getCompletedChoresCount(parentAccount.getUsername());
+        
+        // Creating a chores count variable that keeps track of how many chores have been paid or not
+        int completedPaidCount = DatabaseOperations.countPaidChores(parentAccount.getUsername());
+        
+        // Checks if the count is greater than 0 and also checks if the completed chores count > paid account so that it only reminds the parent if a chore hasnt been paid.
+        if (completedChoresCount > 0 && (completedChoresCount > completedPaidCount) ) {
+            JOptionPane.showMessageDialog(this, "Number of Completed Chores so Far: " + completedChoresCount + "\nNumber of Chores Paid so Far: " + completedPaidCount + " \nPlease pay these chores now!", "Completed Chores", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
 	}
-	///////////////
 
 	// Method created to add a child to the parent account
 	private void addChild() {
