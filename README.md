@@ -25,8 +25,6 @@ Please click the following links to view the videos:
 
 [Customer Video] https://youtu.be/edRkbj_j44c
 
-2nd Customer Video
-
 [2nd Customer Video] https://youtu.be/i_8PhnTj44M
 
 
