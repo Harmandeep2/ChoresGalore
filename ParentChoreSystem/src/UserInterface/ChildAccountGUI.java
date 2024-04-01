@@ -88,8 +88,7 @@ public class ChildAccountGUI extends JFrame{
 		dateLabel = new JLabel("Today's Date: " + dateObj);
 		datePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		int choreCount = DatabaseOperations.getChoreCompletedCountOfChild(childAccount.getUsername());
-		choreLabel = new JLabel("Chores Completed : " + choreCount);
+		choreLabel = new JLabel("");
 		choreLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		chorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		completionStatusLabel = new JLabel("");
@@ -97,6 +96,8 @@ public class ChildAccountGUI extends JFrame{
 
 	    // Update the completion status label based on the number of pending chores
 	    updateCompletionStatusLabel();
+	    //Update the completed chore count
+	    updateChoreCountLabel();
 
 		// Adding it to the date panel and then the main panel.
 		datePanel.add(dateLabel);
@@ -596,8 +597,14 @@ private void markAsCompleted() {
 		
 	}
 	updateCompletionStatusLabel();
+	updateChoreCountLabel();
 	// After successfully marking the chore as completed, update the completed chores count
     updateCompletedChoresCount();
+}
+
+private void updateChoreCountLabel() {
+	int choreCount = DatabaseOperations.getChoreCompletedCountOfChild(this.childAccount.getUsername());
+	choreLabel.setText("Chore Completed: " + choreCount);
 }
 
 private void updateCompletionStatusLabel() {
@@ -660,6 +667,7 @@ private void markAsNotCompleted() {
 	}
 	
 	updateCompletionStatusLabel();
+	updateChoreCountLabel();
 }
 
 //Method to display hours worked
