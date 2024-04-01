@@ -139,7 +139,7 @@ public class ChildAccountGUI extends JFrame{
 
 		//Button created to sort by chore category
 		filterByCategoryButton = new JButton("Filter by Category");
-		sortButtonPanel.add(filterByCategoryButton);
+		sortButtonPanel.add(filterByCategoryButton); 
 
 		//Button created to sort by duration of chore
 		sortByTimeButton = new JButton("Sort by Time");
@@ -397,7 +397,7 @@ public class ChildAccountGUI extends JFrame{
 	    // Add the status panel to the main panel
 	    getContentPane().add(statusPanel, BorderLayout.NORTH);
 
-
+	 
 	    
 	}
 
@@ -596,6 +596,8 @@ private void markAsCompleted() {
 		
 	}
 	updateCompletionStatusLabel();
+	// After successfully marking the chore as completed, update the completed chores count
+    updateCompletedChoresCount();
 }
 
 private void updateCompletionStatusLabel() {
@@ -756,6 +758,27 @@ private void showCompetitionStandings() {
 	 *  passing child account and reference to this GUI
 	 */
 	new CompetitionStandings(this.childAccount, this);
+}
+
+//Declare a variable to track the number of completed chores
+private int completedChoresCount = 0;
+
+//Method to update completed chores count
+private void updateCompletedChoresCount() {
+	completedChoresCount++;
+ 
+	//Array to hold milestone counts
+	int[] milestones = {5, 10, 20, 50, 100};
+ 
+	// Check if the completed chores count matches any milestone
+	for (int milestone : milestones) {
+		if (completedChoresCount == milestone) {
+			// Display a congratulatory pop-up
+			JOptionPane.showMessageDialog(this, "Congratulations on completing " + milestone + " chores! /nAsk your Parent for an Extra Reward!!");
+			
+			break; // Exit loop after displaying message for the first milestone reached
+		}
+	}
 }
 
 // Main method
