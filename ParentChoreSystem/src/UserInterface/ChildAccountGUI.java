@@ -477,52 +477,43 @@ public class ChildAccountGUI extends JFrame{
 	    
 	    // Fetch all chores associated with the child account from the database
 	    List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
-	    // Get the current date
-	    Date currentDate = new Date(System.currentTimeMillis());
-	    
+        
 	    // Iterate through each chore fetched for the child
 	    for (Chore chore : childChores) {
 	    	// Determine the rating status for the chore
 	    	String ratingStatus = chore.getRating() == -1 ? "Not rated yet" : String.valueOf(chore.getRating());
-	    	// Check if the chore is marked as completed
-	    	boolean completed = chore.isCompleted();
-	    	// Get the deadline for the chore from the database
-            Date deadline = DatabaseOperations.getChoreDeadline(chore.getId());
-            // Check if the chore's deadline is after the current date
-            boolean withinDeadline = deadline != null && deadline.after(currentDate); 
-        
             
             // Adding chore details to the table model with appropriate color
             Object[] rowData = {chore.getId(), chore.getName(), chore.getCategory(), chore.getTime(),
-                    chore.getPayment(), completed ? "Yes" : "No",
+                    chore.getPayment(), chore.isCompleted() ? "Yes" : "No",
                     chore.isPaid() ? "Yes" : "No", ratingStatus};
             historyTableModel.addRow(rowData);
-            
-            /*
-             * if deadline has passed by after current date and chore
-             * is not marked complete, then mark as red
-             */
-			
-            /* 
-             * if deadline is in the future and chore is marked 
-             * complete, then highlight in green. 
-             * 
-             */
-         // Set cell renderer based on completion status and deadline
-            DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-            if (completed && withinDeadline) {
-                cellRenderer.setForeground(Color.GREEN); // Completed within deadline
-            } else {
-                cellRenderer.setForeground(Color.RED); // Not completed by deadline
-            }
-            
-
-            for (int i = 0; i < historyTableModel.getColumnCount(); i++) {
-                historyTable.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
-            }
-            
-        
+          
 	    }
+	    
+	    // Custom TableCellRenderer to color rows
+        historyTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                boolean isCompleted = table.getValueAt(row, 5).equals("Yes") ? true : false;
+                if (isCompleted) {
+                    int choreId = (int) table.getValueAt(row, 0); // Assuming ID is at column index 0
+                    boolean completedByDeadline = DatabaseOperations.isChoreCompletedByDeadline(choreId);
+                    if (completedByDeadline) {
+                        c.setBackground(Color.GREEN);
+                    } else {
+                        c.setBackground(Color.RED);
+                    }
+                } else {
+                    c.setBackground(Color.WHITE);
+                }
+
+                return c;
+            }
+        });
+    
 	    // Add the table to a JScrollPane and add it to the frame
 	    JScrollPane scrollPane = new JScrollPane(historyTable);
 	    frame.add(scrollPane);
@@ -564,11 +555,16 @@ private void markAsCompleted() {
 
 	// Get the chore ID from the selected row
 	int choreId = (int) choreTable.getValueAt(selectedRow, 0);
-
+	
+	//check if deadline has passed
+	Date currentDate = new Date(System.currentTimeMillis());
+	Date deadline = DatabaseOperations.getChoreDeadline(choreId);
+	boolean withinDeadline = deadline != null && deadline.after(currentDate);
+	
 	// Check if the selected chore is not already marked as completed
 	if(choreTable.getValueAt(selectedRow, 5).equals("No")) {
 		// Mark the chore as completed in the database
-		DatabaseOperations.markChoreAsCompleted(choreId, childAccount.getUsername(), true);
+		DatabaseOperations.markChoreAsCompleted(choreId, childAccount.getUsername(), withinDeadline);
 		// Show success message
 		JOptionPane.showMessageDialog(this, "Chore recorded as completed successfully!");
 		// Increment the chore count

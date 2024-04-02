@@ -241,6 +241,23 @@ public class DatabaseOperations {
         }
         return null;
     }
+    
+    public static boolean isChoreCompletedByDeadline(int choreID) {
+	    try (Connection connection = DatabaseConnector.getConnection();
+	            PreparedStatement preparedStatement = connection.prepareStatement(
+		            "SELECT completedByDeadline FROM ChoreAdditionalDetails WHERE id = ?")) {
+	        preparedStatement.setInt(1, choreID);
+	        
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+		        if (resultSet.next()) {
+		            return resultSet.getBoolean("completedByDeadline");
+		        }
+	        }
+	    } catch (SQLException e) {
+		    e.printStackTrace();
+	    }
+	    return false;
+    }
 
     public static List<Chore> getAllChoresofChild(String childUsername) {
         List<Chore> chores = new ArrayList<>();
@@ -775,8 +792,9 @@ public class DatabaseOperations {
     	        return false; // Return false if deletion failed
     	    }
     	}
+    
 
-        }
+}
 
     
 
