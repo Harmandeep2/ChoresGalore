@@ -37,7 +37,6 @@ public class ChildAccountGUI extends JFrame{
 	private JLabel welcomeLabel, dateLabel, choreLabel, completionStatusLabel;
 	private ChildAccount childAccount;
 	private JTable choreTable;
-	private int choreCount;
 
 	/**
 	 * 
@@ -79,28 +78,30 @@ public class ChildAccountGUI extends JFrame{
 		//adding welcome panel onto main panel
 		mainPanel.add(welcomePanel);
 
-		mainPanel.add(welcomePanel);
-		
-		
-		
-
 		// Creating a date panel on the GUI to show the parent what the date is
 		JPanel datePanel = new JPanel();
 		JPanel chorePanel = new JPanel();
-
 		// Creating an object that will store the local date
 		LocalDate dateObj = LocalDate.now();
 
 		// Putting todays date in the label
 		dateLabel = new JLabel("Today's Date: " + dateObj);
 		datePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		choreLabel = new JLabel("Chores Completed In This Session: " + choreCount);
+		
+		int choreCount = DatabaseOperations.getChoreCompletedCountOfChild(childAccount.getUsername());
+		choreLabel = new JLabel("Chores Completed : " + choreCount);
+		choreLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		chorePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		completionStatusLabel = new JLabel("");
+		completionStatusLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+
+	    // Update the completion status label based on the number of pending chores
+	    updateCompletionStatusLabel();
 
 		// Adding it to the date panel and then the main panel.
 		datePanel.add(dateLabel);
 		chorePanel.add(choreLabel);
+		chorePanel.add(completionStatusLabel);
 		mainPanel.add(datePanel);
 		mainPanel.add(chorePanel);
 
@@ -397,9 +398,7 @@ public class ChildAccountGUI extends JFrame{
 	    getContentPane().add(statusPanel, BorderLayout.NORTH);
 
 
-	    // Update the completion status label based on the number of pending chores
-	    updateCompletionStatusLabel(completionStatusLabel);
-
+	    
 	}
 
 	/**
@@ -499,13 +498,16 @@ public class ChildAccountGUI extends JFrame{
                 if (isCompleted) {
                     int choreId = (int) table.getValueAt(row, 0); // Assuming ID is at column index 0
                     boolean completedByDeadline = DatabaseOperations.isChoreCompletedByDeadline(choreId);
-                	Date deadline = DatabaseOperations.getChoreDeadline(choreId);
-                    if (completedByDeadline) {
-                        c.setBackground(Color.GREEN);
-                    }else if (deadline==null && isCompleted==true) {
-                        c.setBackground(Color.GREEN);
-                    } else {
-                        c.setBackground(Color.RED);
+                    String completedByChild = DatabaseOperations.getChoreCompletingChildUsername(choreId);
+                    if(completedByChild.equals(childAccount.getUsername())) {
+	                    if (completedByDeadline && completedByChild.equals(childAccount.getUsername())) {
+	                        c.setBackground(Color.GREEN);
+	                    } else {
+	                        c.setBackground(Color.RED);
+	                    }
+                    }
+                    else {
+	                    c.setBackground(Color.ORANGE);
                     }
                 } else {
                     c.setBackground(Color.WHITE);
@@ -568,10 +570,6 @@ private void markAsCompleted() {
 		DatabaseOperations.markChoreAsCompleted(choreId, childAccount.getUsername(), withinDeadline);
 		// Show success message
 		JOptionPane.showMessageDialog(this, "Chore recorded as completed successfully!");
-		// Increment the chore count
-		choreCount = choreCount + 1;
-		// Update the chore count label
-		choreLabel.setText("Chores Completed In This Session: " + choreCount);
 		
 		
 	}
@@ -582,7 +580,7 @@ private void markAsCompleted() {
 	}
 }
 
-private void updateCompletionStatusLabel(JLabel completionStatusLabel) {
+private void updateCompletionStatusLabel() {
     // Fetch the list of child chores
     List<Chore> childChores = DatabaseOperations.getAllChoresofChild(childAccount.getUsername());
 
@@ -629,15 +627,6 @@ private void markAsNotCompleted() {
 			DatabaseOperations.markChoreAsNotCompleted(choreId, childAccount.getUsername(), false);
 			// Show success message
 			JOptionPane.showMessageDialog(this, "Chore updated as not completed successfully!");
-			// Decrement the chore count
-			if (choreCount > 0) {
-				choreCount = choreCount - 1;
-			} else {
-				choreCount = 0;
-			}
-			
-			// Update the chore count label
-			choreLabel.setText("Chores Completed In This Session: " + choreCount);
 		}
 		else {
 			// Display message if the chore was not completed by the current child account
