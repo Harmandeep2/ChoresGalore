@@ -37,11 +37,10 @@ public class ParentAccountGUI extends JFrame{
 	private JComboBox<ChildAccount> childDropdown;
 	private JComboBox<String> priorityDropdown, choresDropdown;
 	private JTextField choreNameField, choreCategoryField, choreTimeField, chorePaymentField, choreDescriptionField;
-	private JButton createChoreButton, assignChoreButton, payChoreButton, deleteChoreButton, showAssignedChildrenButton, checkBalanceButton, addChildButton;
+	private JButton createChoreButton, assignChoreButton, payChoreButton, deleteChoreButton,  checkBalanceButton, addChildButton;
 	private JButton logoutButton, competitionStandingsButton, addCompetitionButton, removeChildButton, choreDetailButton;
 	private JTable choreTable;
 	private JDateChooser deadlineChooser;
-	private Map<String, List<Integer>> assignedChoresMap = new HashMap<>();
 
 
 	 // Constructor created for ParentAccountGUI
@@ -135,9 +134,6 @@ public class ParentAccountGUI extends JFrame{
 		choreDetailButton = new JButton("Chore Full Details");
 		topButtonsPanel.add(choreDetailButton);
 		
-		showAssignedChildrenButton = new JButton("Assigned to");
-		topButtonsPanel.add(showAssignedChildrenButton);
-		
 		deleteChoreButton = new JButton("Delete Chore");
 		topButtonsPanel.add(deleteChoreButton);
 		
@@ -198,15 +194,6 @@ public class ParentAccountGUI extends JFrame{
 				// Call the deleteChore() method when the button is clicked
 				deleteChore();
 			}
-		});
-		
-		showAssignedChildrenButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-				// Call the showAssignedChildren() method when the button is clicked
-		    	showAssignedChildren();
-
-		    }
 		});
 		
 		
@@ -663,11 +650,7 @@ public class ParentAccountGUI extends JFrame{
         // Assigning the chore to the selected child
         DatabaseOperations.insertChoreAssignment(choreId, selectedChild.getUsername());
         JOptionPane.showMessageDialog(this, "Chore assigned to " + selectedChild.getUsername());
-
-        // Update the assignedChoresMap
-        List<Integer> assignedChores = assignedChoresMap.getOrDefault(selectedChild.getUsername(), new ArrayList<>());
-        assignedChores.add(choreId);
-        assignedChoresMap.put(selectedChild.getUsername(), assignedChores);
+       
     } else {
         // Show error message if the chore is already completed
         JOptionPane.showMessageDialog(this, "Chore already completed!");
@@ -738,38 +721,6 @@ public class ParentAccountGUI extends JFrame{
 	    }
 	}
 	
-	/**
-	 * Method to show which children are assigned to chosen chore
-	 */
-	private void showAssignedChildren() {
-		
-		
-		int selectedRow = choreTable.getSelectedRow();
-        // Retrieve the children assigned to the selected chore from the database
-    
-        // Check if a chore is selected
-		if (selectedRow == -1) {
-	        JOptionPane.showMessageDialog(this, "Please select a chore to see assigned children!");
-	        return;
-	    }
-		
-		int selectedChoreId = (int) choreTable.getValueAt(selectedRow, 0);
-        List<String> assignedChildren = DatabaseOperations.getChildAssignedToChore(selectedChoreId);
-
-
-		
-        // Display the assigned children
-        if (assignedChildren.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No children assigned to this chore.");
-        } else {
-            StringBuilder message = new StringBuilder("Children assigned to chore " + selectedChoreId + ":\n");
-            for (String child : assignedChildren) {
-                message.append("- ").append(child).append("\n");
-            }
-            JOptionPane.showMessageDialog(null, message.toString());
-        }
-		
-	}
 
 	/**
 	 *  Method created to check the balance of a child account
